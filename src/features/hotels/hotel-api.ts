@@ -21,12 +21,15 @@ interface SearchHotelsResponse {
     })[];
 }
 
+export type HotelRoom = Room & {
+    quote: Quote;
+    unitsLeft: number;
+    canAccommodate: boolean;
+};
+
 interface HotelDetailsResponse {
     hotel: Hotel;
-    rooms: (Room & {
-        quote: Quote;
-        unitsLeft: number;
-    })[];
+    rooms: HotelRoom[];
 }
 
 export const hotelsApi = baseApi.injectEndpoints({
