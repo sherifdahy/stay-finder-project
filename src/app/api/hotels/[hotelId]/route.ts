@@ -4,14 +4,8 @@ import { toApiError } from "@/src/server/http/apiError";
 import { getHotelDetails } from "@/src/server/services/hotels";
 import { withChaos } from "@/src/server/withChaos";
 
-interface RouteContext {
-    params: Promise<{
-        hotelId: string;
-    }>;
-}
-
 export const GET = withChaos(
-    async (request: Request, { params }: RouteContext) => {
+    async (request: Request, { params }: RouteContext<"/api/hotels/[hotelId]">) => {
         try {
             const { hotelId } = await params;
             const { searchParams } = new URL(request.url);

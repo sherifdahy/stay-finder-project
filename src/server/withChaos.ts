@@ -1,5 +1,5 @@
 
-type RouteHandler<TContext = undefined> = (
+type RouteHandler<TContext = unknown> = (
     request: Request,
     context: TContext
 ) => Promise<Response>;
@@ -43,7 +43,7 @@ function serverError(): Response {
     );
 }
 
-export function withChaos<TContext = undefined>(
+export function withChaos<TContext = unknown>(
     handler: RouteHandler<TContext>,
     options: ChaosOptions = {}
 ): RouteHandler<TContext> {

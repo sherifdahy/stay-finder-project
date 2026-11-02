@@ -3,14 +3,8 @@ import { toApiError } from "@/src/server/http/apiError";
 import { cancelBooking } from "@/src/server/services/bookings";
 import { withChaos } from "@/src/server/withChaos";
 
-interface RouteContext {
-    params: Promise<{
-        bookingId: string;
-    }>;
-}
-
 export const POST = withChaos(
-    async (_request: Request, { params }: RouteContext) => {
+    async (_request: Request, { params }: RouteContext<"/api/bookings/[bookingId]/cancel">) => {
         try {
             const { bookingId } = await params;
 

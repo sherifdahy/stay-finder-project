@@ -4,14 +4,8 @@ import { toApiError } from "@/src/server/http/apiError";
 import { confirmBooking } from "@/src/server/services/bookings";
 import { withChaos } from "@/src/server/withChaos";
 
-interface RouteContext {
-    params: Promise<{
-        bookingId: string;
-    }>;
-}
-
 export const POST = withChaos(
-    async (request: Request, { params }: RouteContext) => {
+    async (request: Request, { params }: RouteContext<"/api/bookings/[bookingId]/confirm">) => {
         try {
             const { bookingId } = await params;
 
