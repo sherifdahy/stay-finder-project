@@ -1,6 +1,5 @@
-
 import { createHoldSchema } from "@/src/domain/validations/create-hold.Schema";
-import { toApiError } from "@/src/server/http/apiError";
+import { errorResponse, toApiError } from "@/src/server/http/apiError";
 import { createHold, getAllBookings } from "@/src/server/services/bookings";
 import { withChaos } from "@/src/server/withChaos";
 
@@ -11,15 +10,11 @@ export const POST = withChaos(async (request: Request) => {
         const validation = createHoldSchema.safeParse(body);
 
         if (!validation.success) {
-            return Response.json(
-                {
-                    error: {
-                        code: "VALIDATION_ERROR",
-                        message: "Invalid booking data.",
-                        details: validation.error.issues,
-                    },
-                },
-                { status: 422 }
+            return errorResponse(
+                "VALIDATION_ERROR",
+                "Invalid booking data.",
+                422,
+                validation.error.issues
             );
         }
 

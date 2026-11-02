@@ -16,9 +16,11 @@ export interface HotelSearchResult extends Hotel {
 export interface HotelRoomResult extends Room {
     quote: ReturnType<typeof buildQuote>;
     unitsLeft: number;
+    canAccommodate: boolean;
 }
 
-export interface HotelDetailsResult extends Hotel {
+export interface HotelDetailsResult {
+    hotel: Hotel;
     rooms: HotelRoomResult[];
 }
 
@@ -121,10 +123,11 @@ export function getHotelDetails(
         ...room,
         quote: buildQuote(room.baseRate, checkIn, checkOut),
         unitsLeft: getUnitsLeft(room, checkIn, checkOut),
+        canAccommodate: adults <= room.maxGuests,
     }));
 
     return {
-        ...hotel,
+        hotel,
         rooms: roomResults,
     };
 }

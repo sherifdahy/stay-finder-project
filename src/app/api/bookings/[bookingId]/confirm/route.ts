@@ -1,6 +1,6 @@
 
 import { guestSchema } from "@/src/domain/validations/guest.schema";
-import { toApiError } from "@/src/server/http/apiError";
+import { errorResponse, toApiError } from "@/src/server/http/apiError";
 import { confirmBooking } from "@/src/server/services/bookings";
 import { withChaos } from "@/src/server/withChaos";
 
@@ -13,15 +13,10 @@ export const POST = withChaos(
                 request.headers.get("Idempotency-Key");
 
             if (!idempotencyKey) {
-                return Response.json(
-                    {
-                        error: {
-                            code: "VALIDATION_ERROR",
-                            message: "Idempotency-Key header is required.",
-                            details: null,
-                        },
-                    },
-                    { status: 422 }
+                return errorResponse(
+                    "VALIDATION_ERROR",
+                    "Idempotency-Key header is required.",
+                    422
                 );
             }
 
@@ -30,15 +25,11 @@ export const POST = withChaos(
             const validation = guestSchema.safeParse(body);
 
             if (!validation.success) {
-                return Response.json(
-                    {
-                        error: {
-                            code: "VALIDATION_ERROR",
-                            message: "Invalid guest information.",
-                            details: validation.error.issues,
-                        },
-                    },
-                    { status: 422 }
+                return errorResponse(
+                    "VALIDATION_ERROR",
+                    "Invalid guest information.",
+                    422,
+                    validation.error.issues
                 );
             }
 

@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 
 import { Booking, BookingGuest } from "@/src/domain/types/booking";
 import { getBookingById } from "../db/memory-db/bookings/get-booking-by-id";
+import { getHotelById } from "../db/memory-db/hotels/get-hotel-by-id";
 import { getRoomById } from "../db/memory-db/rooms/get-room-by-id";
 import { getUnitsLeft } from "../db/memory-db/units/get-units-left";
 import { buildQuote } from "@/src/domain/pricing";
@@ -24,6 +25,12 @@ export interface CreateHoldInput {
     adults: number;
     quotedTotal: number;
 }
+
+export type BookingView = Booking & {
+    hotelName: string;
+    roomName: string;
+    refundable: boolean;
+};
 
 export interface CreateHoldResult {
     booking: Booking;
@@ -311,8 +318,18 @@ export function cancelBooking(bookingId: string): Booking {
 
 // Get all bookings.
 
-export function getAllBookings(): Booking[] {
-    return getBookings();
+export function getAllBookings(): BookingView[] {
+    return getBookings().map((booking) => {
+        const room = getRoomById(booking.roomId);
+        const hotel = getHotelById(booking.hotelId);
+
+        return {
+            ...booking,
+            hotelName: hotel?.name ?? "",
+            roomName: room?.name ?? "",
+            refundable: room?.refundable ?? false,
+        };
+    });
 }
 
 // Get one booking.
