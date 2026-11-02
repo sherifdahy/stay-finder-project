@@ -24,3 +24,9 @@ export interface Booking {
 
 
 export type BookingGuest = Guest;
+
+export type BookingView = Booking & {
+    hotelName: string;
+    roomName: string;
+    refundable: boolean;
+};

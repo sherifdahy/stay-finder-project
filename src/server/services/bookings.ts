@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { Booking, BookingGuest } from "@/src/domain/types/booking";
+import { Booking, BookingGuest, BookingView } from "@/src/domain/types/booking";
 import { getBookingById } from "../db/memory-db/bookings/get-booking-by-id";
 import { getHotelById } from "../db/memory-db/hotels/get-hotel-by-id";
 import { rateAdjustments } from "../db/memory-db/memoryDb";
@@ -27,12 +27,6 @@ export interface CreateHoldInput {
     adults: number;
     quotedTotal: number;
 }
-
-export type BookingView = Booking & {
-    hotelName: string;
-    roomName: string;
-    refundable: boolean;
-};
 
 export interface CreateHoldResult {
     booking: Booking;

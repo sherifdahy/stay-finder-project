@@ -1,8 +1,10 @@
-import { Booking } from "@/src/domain/types/booking";
+import type {
+    Booking,
+    BookingGuest,
+    BookingView,
+} from "@/src/domain/types/booking";
 import { baseApi } from "@/src/store/baseApi";
 
-
-// البيانات المطلوبة لإنشاء حجز مؤقت
 type CreateHoldRequest = Pick<
     Booking,
     "hotelId" | "roomId" | "checkIn" | "checkOut" | "adults"
@@ -10,51 +12,43 @@ type CreateHoldRequest = Pick<
     quotedTotal: Booking["quote"]["total"];
 };
 
-// بيانات تأكيد الحجز
 type ConfirmBookingRequest = {
     bookingId: string;
-    guest: NonNullable<Booking["guest"]>;
+    guest: BookingGuest;
     idempotencyKey: string;
 };
 
-// الاستجابة التي تحتوي على بيانات الحجز ووقت الخادم
-type BookingWithServerTime = Booking & {
+type BookingResponse = {
+    booking: Booking;
     serverTime: string;
 };
 
 export const bookingsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        // جلب كل الحجوزات
-        getBookings: builder.query<Booking[], void>({
+        getBookings: builder.query<BookingView[], void>({
             query: () => "/bookings",
+            transformResponse: (response: { bookings: BookingView[] }) =>
+                response.bookings,
             providesTags: ["Booking"],
         }),
 
-        // جلب حجز محدد
-        getBookingById: builder.query<
-            BookingWithServerTime,
-            string
-        >({
+        getBookingById: builder.query<BookingResponse, string>({
             query: (bookingId) => `/bookings/${bookingId}`,
             providesTags: ["Booking"],
         }),
 
-        // إنشاء حجز مؤقت
-        createHold: builder.mutation<
-            BookingWithServerTime,
-            CreateHoldRequest
-        >({
+        // Invalidates "Hotel" even when it fails, so rooms refresh after ROOM_UNAVAILABLE.
+        createHold: builder.mutation<BookingResponse, CreateHoldRequest>({
             query: (body) => ({
                 url: "/bookings",
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Booking"],
+            invalidatesTags: ["Booking", "Hotel"],
         }),
 
-        // تأكيد الحجز
         confirmBooking: builder.mutation<
-            Booking,
+            BookingResponse,
             ConfirmBookingRequest
         >({
             query: ({ bookingId, guest, idempotencyKey }) => ({
@@ -68,13 +62,34 @@ export const bookingsApi = baseApi.injectEndpoints({
             invalidatesTags: ["Booking"],
         }),
 
-        // إلغاء الحجز
-        cancelBooking: builder.mutation<Booking, string>({
+        // Optimistic: mark as cancelled at once, roll back if the request fails.
+        cancelBooking: builder.mutation<BookingResponse, string>({
             query: (bookingId) => ({
                 url: `/bookings/${bookingId}/cancel`,
                 method: "POST",
             }),
-            invalidatesTags: ["Booking"],
+            async onQueryStarted(bookingId, { dispatch, queryFulfilled }) {
+                const patch = dispatch(
+                    bookingsApi.util.updateQueryData(
+                        "getBookings",
+                        undefined,
+                        (draft) => {
+                            const booking = draft.find(
+                                (item) => item.id === bookingId
+                            );
+
+                            if (booking) booking.status = "cancelled";
+                        }
+                    )
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patch.undo();
+                }
+            },
+            invalidatesTags: ["Booking", "Hotel"],
         }),
     }),
 });
