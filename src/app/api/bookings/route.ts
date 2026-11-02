@@ -3,7 +3,7 @@ import { errorResponse, toApiError } from "@/src/server/http/apiError";
 import { createHold, getAllBookings } from "@/src/server/services/bookings";
 import { withChaos } from "@/src/server/withChaos";
 
-export const POST = withChaos(async (request: Request) => {
+export const POST = withChaos(async (request: Request, _context: unknown, chaos) => {
     try {
         const body: unknown = await request.json();
 
@@ -18,7 +18,9 @@ export const POST = withChaos(async (request: Request) => {
             );
         }
 
-        const result = createHold(validation.data);
+        const result = createHold(validation.data, {
+            changePrice: chaos.shouldChangePrice(),
+        });
 
         return Response.json(result, { status: 201 });
     } catch (error) {

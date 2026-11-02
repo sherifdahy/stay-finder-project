@@ -11,22 +11,5 @@ export const rooms: Room[] = seed.rooms as Room[];
 
 export const bookings = new Map<string, Booking>();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// roomId -> price multiplier, raised by the chaos price-change simulation.
+export const rateAdjustments = new Map<string, number>();

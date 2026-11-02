@@ -3,6 +3,8 @@ import { randomUUID } from "node:crypto";
 import { Booking, BookingGuest } from "@/src/domain/types/booking";
 import { getBookingById } from "../db/memory-db/bookings/get-booking-by-id";
 import { getHotelById } from "../db/memory-db/hotels/get-hotel-by-id";
+import { rateAdjustments } from "../db/memory-db/memoryDb";
+import { getEffectiveBaseRate } from "../db/memory-db/rooms/get-effective-base-rate";
 import { getRoomById } from "../db/memory-db/rooms/get-room-by-id";
 import { getUnitsLeft } from "../db/memory-db/units/get-units-left";
 import { buildQuote } from "@/src/domain/pricing";
@@ -77,6 +79,7 @@ function getBookingOrThrow(bookingId: string): Booking {
 
 export function createHold(
     input: CreateHoldInput,
+    options: { changePrice?: boolean } = {},
 ): CreateHoldResult {
     if (
         !Number.isInteger(input.adults) ||
@@ -133,9 +136,19 @@ export function createHold(
         );
     }
 
+    // Chaos: raise the room price 5-15% for good, so the new quote is the real one.
+    if (options.changePrice) {
+        const increase = 1.05 + Math.random() * 0.1;
+
+        rateAdjustments.set(
+            room.id,
+            (rateAdjustments.get(room.id) ?? 1) * increase,
+        );
+    }
+
     // Always calculate the quote again on the server.
     const currentQuote: Quote = buildQuote(
-        room.baseRate,
+        getEffectiveBaseRate(room),
         input.checkIn,
         input.checkOut,
     );

@@ -5,6 +5,7 @@ import { getHotels } from "../db/memory-db/hotels/get-hotels";
 import { getRoomsByHotelId } from "../db/memory-db/rooms/get-rooms-by-hotel-id";
 import { getUnitsLeft } from "../db/memory-db/units/get-units-left";
 import type { HotelSearchInput } from "@/src/domain/validations/hotel-search.schema";
+import { getEffectiveBaseRate } from "../db/memory-db/rooms/get-effective-base-rate";
 import { getHotelById } from "../db/memory-db/hotels/get-hotel-by-id";
 
 
@@ -70,7 +71,7 @@ export function searchHotels(
             }
 
             const quote = buildQuote(
-                room.baseRate,
+                getEffectiveBaseRate(room),
                 checkIn,
                 checkOut,
             );
@@ -121,7 +122,7 @@ export function getHotelDetails(
 
     const roomResults: HotelRoomResult[] = rooms.map((room) => ({
         ...room,
-        quote: buildQuote(room.baseRate, checkIn, checkOut),
+        quote: buildQuote(getEffectiveBaseRate(room), checkIn, checkOut),
         unitsLeft: getUnitsLeft(room, checkIn, checkOut),
         canAccommodate: adults <= room.maxGuests,
     }));

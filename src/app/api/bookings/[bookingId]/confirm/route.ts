@@ -44,5 +44,5 @@ export const POST = withChaos(
             return toApiError(error);
         }
     },
-    { simulateLostResponse: true }
+    { errorTiming: "after" }
 );

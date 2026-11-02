@@ -1,11 +1,18 @@
 
+export interface ChaosControls {
+    /** True when this request should see a higher room price. */
+    shouldChangePrice: () => boolean;
+}
+
 type RouteHandler<TContext = unknown> = (
     request: Request,
-    context: TContext
+    context: TContext,
+    chaos: ChaosControls
 ) => Promise<Response>;
 
 interface ChaosOptions {
-    simulateLostResponse?: boolean;
+    /** "before": fail without running the handler. "after": run it, then lose the response. */
+    errorTiming?: "before" | "after";
 }
 
 function getNumberEnv(name: string, fallback: number): number {
@@ -34,7 +41,7 @@ function serverError(): Response {
     return Response.json(
         {
             error: {
-                code: "INTERNAL_SERVER_ERROR",
+                code: "INTERNAL_ERROR",
                 message: "An unexpected server error occurred.",
                 details: null,
             },
@@ -46,42 +53,41 @@ function serverError(): Response {
 export function withChaos<TContext = unknown>(
     handler: RouteHandler<TContext>,
     options: ChaosOptions = {}
-): RouteHandler<TContext> {
+): (request: Request, context: TContext) => Promise<Response> {
+    const errorTiming = options.errorTiming ?? "before";
+
     return async (request, context): Promise<Response> => {
         if (!isChaosEnabled()) {
-            return handler(request, context);
+            return handler(request, context, {
+                shouldChangePrice: () => false,
+            });
         }
 
-        // 1. Simulate random latency.
+        // 1. Random latency.
         const maxLatency = Math.max(
             0,
             getNumberEnv("CHAOS_MAX_LATENCY_MS", 1500)
         );
 
-        const delay = Math.floor(Math.random() * (maxLatency + 1));
+        await sleep(Math.floor(Math.random() * (maxLatency + 1)));
 
-        await sleep(delay);
-
-        // 2. Simulate random server errors before executing the handler.
         const errorRate = getNumberEnv("CHAOS_ERROR_RATE", 0.1);
+        const shouldFail = randomChance(errorRate);
 
-        if (randomChance(errorRate)) {
+        // 2. Random server error before the handler runs.
+        if (shouldFail && errorTiming === "before") {
             return serverError();
         }
 
-        // 3. Execute the actual API handler.
-        const response = await handler(request, context);
+        // 3. Run the handler.
+        const response = await handler(request, context, {
+            shouldChangePrice: () =>
+                randomChance(getNumberEnv("CHAOS_PRICE_CHANGE_RATE", 0.1)),
+        });
 
-        // 4. Simulate a lost response after successful execution.
-        if (options.simulateLostResponse && response.ok) {
-            const lostResponseRate = getNumberEnv(
-                "CHAOS_LOST_RESPONSE_RATE",
-                0.1
-            );
-
-            if (randomChance(lostResponseRate)) {
-                return serverError();
-            }
+        // 4. Random error after the handler ran (the work is already done).
+        if (shouldFail && errorTiming === "after") {
+            return serverError();
         }
 
         return response;
