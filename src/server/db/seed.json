@@ -1,0 +1,379 @@
+{
+    "hotels": [
+        {
+            "id": "hotel-001",
+            "name": "Riyadh Grand Hotel",
+            "city": "riyadh",
+            "stars": 5,
+            "rating": 9.2,
+            "image": "https://placehold.co/800x600?text=Riyadh+Grand",
+            "amenities": [
+                "wifi",
+                "pool",
+                "gym",
+                "parking"
+            ]
+        },
+        {
+            "id": "hotel-002",
+            "name": "Olaya Business Hotel",
+            "city": "riyadh",
+            "stars": 4,
+            "rating": 8.7,
+            "image": "https://placehold.co/800x600?text=Olaya",
+            "amenities": [
+                "wifi",
+                "restaurant",
+                "parking"
+            ]
+        },
+        {
+            "id": "hotel-003",
+            "name": "Kingdom View Hotel",
+            "city": "riyadh",
+            "stars": 5,
+            "rating": 9.0,
+            "image": "https://placehold.co/800x600?text=Kingdom+View",
+            "amenities": [
+                "wifi",
+                "pool",
+                "gym"
+            ]
+        },
+        {
+            "id": "hotel-004",
+            "name": "Riyadh Comfort Inn",
+            "city": "riyadh",
+            "stars": 3,
+            "rating": 8.1,
+            "image": "https://placehold.co/800x600?text=Comfort+Inn",
+            "amenities": [
+                "wifi",
+                "parking"
+            ]
+        },
+        {
+            "id": "hotel-005",
+            "name": "Jeddah Sea View",
+            "city": "jeddah",
+            "stars": 5,
+            "rating": 9.4,
+            "image": "https://placehold.co/800x600?text=Sea+View",
+            "amenities": [
+                "wifi",
+                "pool",
+                "beach",
+                "restaurant"
+            ]
+        },
+        {
+            "id": "hotel-006",
+            "name": "Jeddah Plaza",
+            "city": "jeddah",
+            "stars": 4,
+            "rating": 8.8,
+            "image": "https://placehold.co/800x600?text=Jeddah+Plaza",
+            "amenities": [
+                "wifi",
+                "gym",
+                "parking"
+            ]
+        },
+        {
+            "id": "hotel-007",
+            "name": "Corniche Residence",
+            "city": "jeddah",
+            "stars": 5,
+            "rating": 9.1,
+            "image": "https://placehold.co/800x600?text=Corniche",
+            "amenities": [
+                "wifi",
+                "pool",
+                "beach"
+            ]
+        },
+        {
+            "id": "hotel-008",
+            "name": "Jeddah City Hotel",
+            "city": "jeddah",
+            "stars": 3,
+            "rating": 7.9,
+            "image": "https://placehold.co/800x600?text=City+Hotel",
+            "amenities": [
+                "wifi",
+                "restaurant"
+            ]
+        },
+        {
+            "id": "hotel-009",
+            "name": "Dubai Marina Luxury",
+            "city": "dubai",
+            "stars": 5,
+            "rating": 9.5,
+            "image": "https://placehold.co/800x600?text=Marina+Luxury",
+            "amenities": [
+                "wifi",
+                "pool",
+                "gym",
+                "spa"
+            ]
+        },
+        {
+            "id": "hotel-010",
+            "name": "Downtown Dubai Hotel",
+            "city": "dubai",
+            "stars": 5,
+            "rating": 9.3,
+            "image": "https://placehold.co/800x600?text=Downtown",
+            "amenities": [
+                "wifi",
+                "pool",
+                "restaurant"
+            ]
+        },
+        {
+            "id": "hotel-011",
+            "name": "Dubai Business Suites",
+            "city": "dubai",
+            "stars": 4,
+            "rating": 8.6,
+            "image": "https://placehold.co/800x600?text=Business+Suites",
+            "amenities": [
+                "wifi",
+                "gym",
+                "parking"
+            ]
+        },
+        {
+            "id": "hotel-012",
+            "name": "Palm Garden Hotel",
+            "city": "dubai",
+            "stars": 3,
+            "rating": 8.0,
+            "image": "https://placehold.co/800x600?text=Palm+Garden",
+            "amenities": [
+                "wifi",
+                "pool",
+                "garden"
+            ]
+        }
+    ],
+    "rooms": [
+        {
+            "id": "room-001",
+            "hotelId": "hotel-001",
+            "name": "Standard Room",
+            "maxGuests": 2,
+            "baseRate": 45000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-002",
+            "hotelId": "hotel-001",
+            "name": "Deluxe Suite",
+            "maxGuests": 4,
+            "baseRate": 85000,
+            "refundable": true,
+            "units": 1
+        },
+        {
+            "id": "room-003",
+            "hotelId": "hotel-002",
+            "name": "Standard Room",
+            "maxGuests": 2,
+            "baseRate": 35000,
+            "refundable": false,
+            "units": 3
+        },
+        {
+            "id": "room-004",
+            "hotelId": "hotel-002",
+            "name": "Executive Room",
+            "maxGuests": 3,
+            "baseRate": 55000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-005",
+            "hotelId": "hotel-003",
+            "name": "Classic Room",
+            "maxGuests": 2,
+            "baseRate": 40000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-006",
+            "hotelId": "hotel-003",
+            "name": "Royal Suite",
+            "maxGuests": 4,
+            "baseRate": 95000,
+            "refundable": true,
+            "units": 1
+        },
+        {
+            "id": "room-007",
+            "hotelId": "hotel-004",
+            "name": "Economy Room",
+            "maxGuests": 2,
+            "baseRate": 22000,
+            "refundable": false,
+            "units": 3
+        },
+        {
+            "id": "room-008",
+            "hotelId": "hotel-004",
+            "name": "Family Room",
+            "maxGuests": 4,
+            "baseRate": 40000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-009",
+            "hotelId": "hotel-005",
+            "name": "Sea View Room",
+            "maxGuests": 2,
+            "baseRate": 80000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-010",
+            "hotelId": "hotel-005",
+            "name": "Ocean Suite",
+            "maxGuests": 4,
+            "baseRate": 140000,
+            "refundable": true,
+            "units": 1
+        },
+        {
+            "id": "room-011",
+            "hotelId": "hotel-006",
+            "name": "Standard Room",
+            "maxGuests": 2,
+            "baseRate": 45000,
+            "refundable": false,
+            "units": 3
+        },
+        {
+            "id": "room-012",
+            "hotelId": "hotel-006",
+            "name": "Premium Room",
+            "maxGuests": 3,
+            "baseRate": 65000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-013",
+            "hotelId": "hotel-007",
+            "name": "Corniche Room",
+            "maxGuests": 2,
+            "baseRate": 70000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-014",
+            "hotelId": "hotel-007",
+            "name": "Family Suite",
+            "maxGuests": 4,
+            "baseRate": 120000,
+            "refundable": true,
+            "units": 1
+        },
+        {
+            "id": "room-015",
+            "hotelId": "hotel-008",
+            "name": "Standard Room",
+            "maxGuests": 2,
+            "baseRate": 30000,
+            "refundable": false,
+            "units": 3
+        },
+        {
+            "id": "room-016",
+            "hotelId": "hotel-008",
+            "name": "Deluxe Room",
+            "maxGuests": 3,
+            "baseRate": 45000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-017",
+            "hotelId": "hotel-009",
+            "name": "Marina Room",
+            "maxGuests": 2,
+            "baseRate": 110000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-018",
+            "hotelId": "hotel-009",
+            "name": "Luxury Suite",
+            "maxGuests": 4,
+            "baseRate": 190000,
+            "refundable": true,
+            "units": 1
+        },
+        {
+            "id": "room-019",
+            "hotelId": "hotel-010",
+            "name": "Downtown Room",
+            "maxGuests": 2,
+            "baseRate": 95000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-020",
+            "hotelId": "hotel-010",
+            "name": "Premium Suite",
+            "maxGuests": 4,
+            "baseRate": 160000,
+            "refundable": false,
+            "units": 1
+        },
+        {
+            "id": "room-021",
+            "hotelId": "hotel-011",
+            "name": "Business Room",
+            "maxGuests": 2,
+            "baseRate": 65000,
+            "refundable": false,
+            "units": 3
+        },
+        {
+            "id": "room-022",
+            "hotelId": "hotel-011",
+            "name": "Executive Suite",
+            "maxGuests": 3,
+            "baseRate": 90000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-023",
+            "hotelId": "hotel-012",
+            "name": "Garden Room",
+            "maxGuests": 2,
+            "baseRate": 38000,
+            "refundable": true,
+            "units": 2
+        },
+        {
+            "id": "room-024",
+            "hotelId": "hotel-012",
+            "name": "Family Room",
+            "maxGuests": 4,
+            "baseRate": 60000,
+            "refundable": true,
+            "units": 1
+        }
+    ]
+}

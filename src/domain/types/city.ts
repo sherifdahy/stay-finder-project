@@ -1,0 +1,1 @@
+export type City = "riyadh" | "jeddah" | "dubai";
