@@ -1,3 +1,4 @@
+import type { ISODate } from "../types/primitives";
 import { parseISODate } from "../utils/parse-iso-date";
 import { nights } from "./nights";
 

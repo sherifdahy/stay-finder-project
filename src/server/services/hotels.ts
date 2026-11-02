@@ -4,20 +4,10 @@ import { Room } from "@/src/domain/types/room";
 import { getHotels } from "../db/memory-db/hotels/get-hotels";
 import { getRoomsByHotelId } from "../db/memory-db/rooms/get-rooms-by-hotel-id";
 import { getUnitsLeft } from "../db/memory-db/units/get-units-left";
+import type { HotelSearchInput } from "@/src/domain/validations/hotel-search.schema";
 import { getHotelById } from "../db/memory-db/hotels/get-hotel-by-id";
 
 
-export type HotelSort = "price_asc" | "rating_desc";
-
-export interface HotelSearchParams {
-    city?: string;
-    checkIn: string;
-    checkOut: string;
-    adults: number;
-    maxPrice?: number;
-    stars?: number;
-    sort?: HotelSort;
-}
 
 export interface HotelSearchResult extends Hotel {
     fromTotal: number;
@@ -33,7 +23,7 @@ export interface HotelDetailsResult extends Hotel {
 }
 
 export function searchHotels(
-    params: HotelSearchParams,
+    params: HotelSearchInput,
 ): HotelSearchResult[] {
     const {
         city,
@@ -56,7 +46,7 @@ export function searchHotels(
         }
 
         // Filter by stars.
-        if (stars !== undefined && hotel.stars !== stars) {
+        if (stars?.length && !stars.includes(hotel.stars)) {
             continue;
         }
 
@@ -104,9 +94,9 @@ export function searchHotels(
         });
     }
 
-    if (sort === "price_asc") {
+    if (sort === "price") {
         results.sort((a, b) => a.fromTotal - b.fromTotal);
-    } else if (sort === "rating_desc") {
+    } else if (sort === "rating") {
         results.sort((a, b) => b.rating - a.rating);
     }
 

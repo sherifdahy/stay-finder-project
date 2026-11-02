@@ -1,3 +1,4 @@
+import type { Money } from "@/src/domain/types/primitives";
 import { City } from "@/src/domain/types/city";
 import { Hotel } from "@/src/domain/types/hotel";
 import { Quote } from "@/src/domain/types/quote";

@@ -1,3 +1,4 @@
+import type { ISODate } from "@/src/domain/types/primitives";
 import { Room } from "@/src/domain/types/room";
 import { bookings } from "../memoryDb";
 import { expireOldHolds } from "../bookings/expire-old-holds";

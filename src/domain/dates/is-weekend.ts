@@ -1,3 +1,4 @@
+import type { ISODate } from "../types/primitives";
 import { parseISODate } from "../utils/parse-iso-date";
 
 export function isWeekend(date: ISODate): boolean {

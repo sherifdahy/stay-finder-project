@@ -1,11 +1,9 @@
 import z from "zod";
-import { isoDateSchema } from "./iso-date.schema";
+import { refineStay, stayShape } from "./stay.schema";
 
-export const hotelDetailsSearchSchema = z.object({
-    checkIn: isoDateSchema,
-    checkOut: isoDateSchema,
-    adults: z.coerce.number().int().min(1).max(4),
-});
+export const hotelDetailsSearchSchema = z
+    .object(stayShape)
+    .superRefine(refineStay);
 
 
 export type HotelDetailsSearchInput = z.infer<

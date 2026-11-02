@@ -1,4 +1,6 @@
+import type { ISODate } from "./primitives";
 import { BookingStatus } from "../constants/booking-status";
+import type { Guest } from "../validations/guest.schema";
 import { Quote } from "./quote";
 
 export interface Booking {
@@ -21,8 +23,4 @@ export interface Booking {
 }
 
 
-export interface BookingGuest {
-    fullName: string;
-    email: string;
-    phone: string;
-}
+export type BookingGuest = Guest;

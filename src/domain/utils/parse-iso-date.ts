@@ -1,3 +1,4 @@
+import type { ISODate } from "../types/primitives";
 export function parseISODate(date: ISODate): Date {
     const parsed = new Date(`${date}T00:00:00.000Z`);
 

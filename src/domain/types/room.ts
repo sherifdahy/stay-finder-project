@@ -1,3 +1,4 @@
+import type { Money } from "./primitives";
 export interface Room {
   id: string;
   hotelId: string;

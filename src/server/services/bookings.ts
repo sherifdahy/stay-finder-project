@@ -48,44 +48,6 @@ function getHoldTtlSeconds(): number {
     return configuredValue;
 }
 
-function validateStay(checkIn: string, checkOut: string): void {
-    const start = new Date(`${checkIn}T00:00:00.000Z`);
-    const end = new Date(`${checkOut}T00:00:00.000Z`);
-    const today = new Date().toISOString().slice(0, 10);
-
-    if (
-        Number.isNaN(start.getTime()) ||
-        Number.isNaN(end.getTime()) ||
-        start.toISOString().slice(0, 10) !== checkIn ||
-        end.toISOString().slice(0, 10) !== checkOut
-    ) {
-        throw new ServiceError(
-            "VALIDATION_ERROR",
-            "Invalid check-in or check-out date.",
-            422,
-        );
-    }
-
-    if (checkIn < today) {
-        throw new ServiceError(
-            "VALIDATION_ERROR",
-            "Check-in date cannot be in the past.",
-            422,
-        );
-    }
-
-    const nights =
-        (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
-
-    if (!Number.isInteger(nights) || nights < 1 || nights > 14) {
-        throw new ServiceError(
-            "VALIDATION_ERROR",
-            "Stay must be between 1 and 14 nights.",
-            422,
-        );
-    }
-}
-
 function getCurrentServerTime(): string {
     return new Date().toISOString();
 }
@@ -109,8 +71,6 @@ function getBookingOrThrow(bookingId: string): Booking {
 export function createHold(
     input: CreateHoldInput,
 ): CreateHoldResult {
-    validateStay(input.checkIn, input.checkOut);
-
     if (
         !Number.isInteger(input.adults) ||
         input.adults < 1 ||

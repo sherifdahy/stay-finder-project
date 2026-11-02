@@ -1,3 +1,4 @@
+import type { ISODate, Money } from "./types/primitives";
 
 import { getStayDates } from "./dates/get-stay-dates";
 import { isWeekend } from "./dates/is-weekend";

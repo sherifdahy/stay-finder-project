@@ -5,3 +5,5 @@ export const guestSchema = z.object({
     email: z.string().trim().email(),
     phone: z.string().trim().min(8).max(20),
 });
+
+export type Guest = z.infer<typeof guestSchema>;

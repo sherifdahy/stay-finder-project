@@ -1,6 +1,6 @@
 import { hotelSearchSchema } from "@/src/domain/validations/hotel-search.schema";
 import { toApiError } from "@/src/server/http/apiError";
-import { HotelSearchParams, searchHotels } from "@/src/server/services/hotels";
+import { searchHotels } from "@/src/server/services/hotels";
 import { withChaos } from "@/src/server/withChaos";
 
 
@@ -40,7 +40,7 @@ export const GET = withChaos(async (request: Request) => {
             );
         }
 
-        const hotels = searchHotels(validation.data as HotelSearchParams);
+        const hotels = searchHotels(validation.data);
 
         return Response.json({ hotels });
     } catch (error) {
