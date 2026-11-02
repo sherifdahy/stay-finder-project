@@ -28,7 +28,7 @@ export default function HotelDetailsPage() {
 
     if (!hasDates) {
         return (
-            <main className="mx-auto max-w-4xl space-y-4 p-8 text-center">
+            <main className="mx-auto w-full max-w-4xl space-y-4 p-8 text-center">
                 <p>Select your dates first</p>
                 <Link href="/" className={buttonVariants()}>
                     Back to search
@@ -39,7 +39,7 @@ export default function HotelDetailsPage() {
 
     if (isLoading) {
         return (
-            <main className="mx-auto max-w-4xl space-y-4 p-8">
+            <main className="mx-auto w-full max-w-4xl space-y-4 p-8">
                 <Skeleton className="h-64 w-full" />
                 <Skeleton className="h-8 w-1/2" />
                 <Skeleton className="h-40 w-full" />
@@ -50,7 +50,7 @@ export default function HotelDetailsPage() {
     if (error) {
         if (isApiError(error) && error.code === "NOT_FOUND") {
             return (
-                <main className="mx-auto max-w-4xl space-y-4 p-8 text-center">
+                <main className="mx-auto w-full max-w-4xl space-y-4 p-8 text-center">
                     <p>Hotel not found</p>
                     <Link href="/" className={buttonVariants()}>
                         Back to search
@@ -60,7 +60,7 @@ export default function HotelDetailsPage() {
         }
 
         return (
-            <main className="mx-auto max-w-4xl p-8">
+            <main className="mx-auto w-full max-w-4xl p-8">
                 <ErrorState
                     message={isApiError(error) ? error.message : "Something went wrong."}
                     onRetry={refetch}
@@ -74,7 +74,7 @@ export default function HotelDetailsPage() {
     const { hotel, rooms } = data;
 
     return (
-        <main className="mx-auto max-w-4xl space-y-6 p-4 sm:p-8">
+        <main className="mx-auto w-full max-w-4xl space-y-6 p-4 sm:p-8">
             <img
                 src={hotel.image}
                 alt={hotel.name}
