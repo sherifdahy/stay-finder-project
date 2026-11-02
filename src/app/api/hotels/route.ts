@@ -1,8 +1,11 @@
 import { hotelSearchSchema } from "@/src/domain/validations/hotel-search.schema";
 import { toApiError } from "@/src/server/http/apiError";
 import { HotelSearchParams, searchHotels } from "@/src/server/services/hotels";
+import { withChaos } from "@/src/server/withChaos";
 
-export async function GET(request: Request) {
+
+
+export const GET = withChaos(async (request: Request) => {
     try {
         const { searchParams } = new URL(request.url);
 
@@ -43,4 +46,4 @@ export async function GET(request: Request) {
     } catch (error) {
         return toApiError(error);
     }
-}
+});

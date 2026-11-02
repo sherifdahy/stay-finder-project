@@ -1,8 +1,10 @@
+
 import { createHoldSchema } from "@/src/domain/validations/create-hold.Schema";
 import { toApiError } from "@/src/server/http/apiError";
 import { createHold, getAllBookings } from "@/src/server/services/bookings";
+import { withChaos } from "@/src/server/withChaos";
 
-export async function POST(request: Request) {
+export const POST = withChaos(async (request: Request) => {
     try {
         const body: unknown = await request.json();
 
@@ -27,9 +29,9 @@ export async function POST(request: Request) {
     } catch (error) {
         return toApiError(error);
     }
-}
+});
 
-export async function GET() {
+export const GET = withChaos(async () => {
     try {
         const bookings = getAllBookings();
 
@@ -40,4 +42,4 @@ export async function GET() {
     } catch (error) {
         return toApiError(error);
     }
-}
+});
