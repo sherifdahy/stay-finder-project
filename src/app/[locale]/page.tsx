@@ -1,12 +1,10 @@
-import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { SearchPage } from "@/src/features/hotels/components/search/search-page";
+import { SearchPageSkeleton } from "@/src/features/hotels/components/search/search-page-skeleton";
 
-export default async function HomePage() {
-    const t = await getTranslations("Common");
-
+export default function HomePage() {
     return (
-        <Suspense fallback={<main className="p-8">{t("loading")}</main>}>
+        <Suspense fallback={<SearchPageSkeleton />}>
             <SearchPage />
         </Suspense>
     );

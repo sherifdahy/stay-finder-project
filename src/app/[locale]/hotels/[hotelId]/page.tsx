@@ -1,12 +1,10 @@
-import HotelDetailsPage from "@/src/features/hotels/components/details/hotel-details-page";
-import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
+import HotelDetailsPage from "@/src/features/hotels/components/details/hotel-details-page";
+import { HotelDetailsSkeleton } from "@/src/features/hotels/components/details/hotel-details-skeleton";
 
-export default async function HotelPage() {
-    const t = await getTranslations("Common");
-
+export default function HotelPage() {
     return (
-        <Suspense fallback={<main className="p-8">{t("loading")}</main>}>
+        <Suspense fallback={<HotelDetailsSkeleton />}>
             <HotelDetailsPage />
         </Suspense>
     );

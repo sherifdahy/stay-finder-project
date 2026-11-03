@@ -13,10 +13,10 @@ import { isApiError } from "@/src/store/baseApi";
 import { toast } from "sonner";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { ErrorState } from "@/src/shared/ui/error-state";
-import { Skeleton } from "@/src/shared/ui/skeleton";
 import { useGetHotelDetailsQuery } from "../../hotel.api";
 import { parseSearchParams } from "../../search-params";
 import { AmenityIcon } from "../amenity-icon";
+import { HotelDetailsSkeleton } from "./hotel-details-skeleton";
 import { PriceChangedDialog } from "./price-changed-dialog";
 import { RoomCard } from "./room-card";
 import { HotelRoom } from "../../dtos/details/hotel-room.dto";
@@ -88,13 +88,7 @@ export default function HotelDetailsPage() {
     }
 
     if (isLoading) {
-        return (
-            <main className="container space-y-6 py-8">
-                <Skeleton className="h-64 w-full" />
-                <Skeleton className="h-8 w-1/2" />
-                <Skeleton className="h-40 w-full" />
-            </main>
-        );
+        return <HotelDetailsSkeleton />;
     }
 
     // A failed background refetch keeps the old data; only show the error when there is nothing to show.

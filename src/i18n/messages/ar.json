@@ -23,8 +23,7 @@
         "nonRefundable": "غير قابل للاسترداد",
         "adults": "{count, plural, one {بالغ} two {بالغان} few {# بالغين} many {# بالغًا} other {# بالغ}}",
         "guests": "{count, plural, one {ضيف} two {ضيفان} few {# ضيوف} many {# ضيفًا} other {# ضيف}}",
-        "reserving": "جارٍ الحجز…",
-        "loading": "جارٍ التحميل…"
+        "reserving": "جارٍ الحجز…"
     },
     "Search": {
         "title": "ابحث عن إقامتك القادمة",

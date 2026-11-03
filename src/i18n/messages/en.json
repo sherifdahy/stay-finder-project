@@ -23,8 +23,7 @@
         "nonRefundable": "Non-refundable",
         "adults": "{count, plural, one {# adult} other {# adults}}",
         "guests": "{count, plural, one {# guest} other {# guests}}",
-        "reserving": "Reserving…",
-        "loading": "Loading…"
+        "reserving": "Reserving…"
     },
     "Search": {
         "title": "Find your next stay",

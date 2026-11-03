@@ -13,7 +13,6 @@ import { Alert, AlertDescription } from "@/src/shared/ui/alert";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { Card } from "@/src/shared/ui/card";
 import { ErrorState } from "@/src/shared/ui/error-state";
-import { Skeleton } from "@/src/shared/ui/skeleton";
 import type { Guest } from "@/src/domain/validations/guest.schema";
 import { useErrorMessage } from "@/src/shared/hooks/use-error-message";
 import { isApiError } from "@/src/store/baseApi";
@@ -21,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import { useConfirmBookingMutation, useGetBookingByIdQuery } from "../booking.api";
 import { ensureIdempotencyKey, selectIdempotencyKey } from "../bookingSlice";
 import { useHoldCountdown } from "../hooks/use-hold-countdown";
+import { CheckoutSkeleton } from "./checkout-skeleton";
 import { GuestForm } from "./guest-form";
 
 export default function CheckoutPage() {
@@ -85,12 +85,7 @@ export default function CheckoutPage() {
     }
 
     if (isLoading) {
-        return (
-            <main className="container space-y-6 py-8">
-                <Skeleton className="h-8 w-1/2" />
-                <Skeleton className="h-40 w-full" />
-            </main>
-        );
+        return <CheckoutSkeleton />;
     }
 
     // A failed background refetch keeps the old data; only show the error when there is nothing to show.
