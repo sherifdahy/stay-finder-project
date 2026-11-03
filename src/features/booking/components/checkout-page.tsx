@@ -3,7 +3,7 @@
 import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { hotelHref } from "@/src/features/hotels/search-params";
 import { formatCountdown } from "../utils/format-countdown";
@@ -38,6 +38,24 @@ export default function CheckoutPage() {
     const [confirmBooking, { isLoading: isConfirming }] = useConfirmBookingMutation();
     const [confirmError, setConfirmError] = useState<string | null>(null);
     const [holdExpired, setHoldExpired] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
+    const redirected = useRef(false);
+
+    const finishBooking = useCallback(() => {
+        // The success path and the effect below can both get here; only the first one counts.
+        if (redirected.current) return;
+        redirected.current = true;
+
+        toast.success("Your booking is confirmed!");
+        router.replace("/bookings");
+    }, [router]);
+
+    // A 500 on confirm can mean the booking went through and only the reply was lost.
+    useEffect(() => {
+        if (hasSubmitted && booking?.status === "confirmed") {
+            finishBooking();
+        }
+    }, [hasSubmitted, booking?.status, finishBooking]);
 
     // One key per booking; every retry sends the same Idempotency-Key.
     useEffect(() => {
@@ -47,11 +65,11 @@ export default function CheckoutPage() {
     async function handleConfirm(guest: Guest) {
         if (!idempotencyKey) return;
         setConfirmError(null);
+        setHasSubmitted(true);
 
         try {
             await confirmBooking({ bookingId, guest, idempotencyKey }).unwrap();
-            toast.success("Your booking is confirmed!");
-            router.replace("/bookings");
+            finishBooking();
         } catch (error) {
             if (isApiError(error) && error.code === API_ERROR_CODE.HOLD_EXPIRED) {
                 setHoldExpired(true);
