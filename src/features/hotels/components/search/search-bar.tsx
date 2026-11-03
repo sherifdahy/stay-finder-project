@@ -155,7 +155,7 @@ export function SearchBar(props: SearchBarProps) {
             </div>
 
             <div className="flex items-end">
-                <Button type="submit" className="w-full lg:w-auto lg:px-6">
+                <Button type="submit" className="w-full lg:w-auto lg:px-6 has-data-[icon=inline-start]:lg:ps-6">
                     <Search data-icon="inline-start" />
                     {t("submit")}
                 </Button>
