@@ -38,7 +38,7 @@ Reviewer settings: `CHAOS_MAX_LATENCY_MS=3000 CHAOS_ERROR_RATE=0.3 CHAOS_PRICE_C
 | M4 Checkout and countdown | Done |
 | M5 My bookings and cancel UI | Done |
 | M6 Error and not-found states (`error.tsx`, `global-error.tsx`, `not-found.tsx`) | Done |
-| Bonuses | Skipped |
+| Bonuses | Done: translation (English and Arabic, with RTL) and Vercel deployment |
 
 ## Where state lives
 
