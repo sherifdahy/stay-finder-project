@@ -51,7 +51,7 @@ export function BookingCard({ booking, onCancel }: BookingCardProps) {
                     <p className="text-xl font-bold">{formatMoney(booking.quote.total)}</p>
 
                     {isConfirmed && booking.refundable && (
-                        <Button type="button" variant="outline" onClick={onCancel}>
+                        <Button type="button" variant="destructive" onClick={onCancel}>
                             Cancel booking
                         </Button>
                     )}
