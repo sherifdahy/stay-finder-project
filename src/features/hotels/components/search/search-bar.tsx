@@ -87,7 +87,7 @@ export function SearchBar(props: SearchBarProps) {
     return (
         <form
             onSubmit={handleSubmit}
-            className="grid gap-4 rounded-xl border p-4 sm:grid-cols-2 lg:grid-cols-[1fr_1.5fr_8rem_auto] rtl:lg:grid-cols-[auto_1fr_1.5fr_8rem]"
+            className="grid gap-4 rounded-xl border p-4 sm:grid-cols-2 lg:grid-cols-[1fr_1.5fr_8rem_auto]"
             noValidate
         >
             <div className="flex flex-col gap-1.5">
@@ -154,7 +154,7 @@ export function SearchBar(props: SearchBarProps) {
                 </Select>
             </div>
 
-            <div className="flex items-end rtl:lg:order-first">
+            <div className="flex items-end">
                 <Button type="submit" className="w-full lg:w-auto lg:px-6">
                     <Search data-icon="inline-start" />
                     {t("submit")}
