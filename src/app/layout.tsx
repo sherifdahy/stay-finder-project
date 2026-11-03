@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import StoreProvider from "../store/store-provider";
+import { SiteHeader } from "../shared/ui/site-header";
 import { Toaster } from "../shared/ui/sonner";
 
 const geistSans = Geist({
@@ -14,6 +15,8 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const navLinks = [{ href: "/", label: "Search" }, { href: "/bookings", label: "My bookings" }];
 
 export const metadata: Metadata = {
   title: "StayFinder",
@@ -30,6 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* makeStore() uses Math.random, which Next 16 only allows inside Suspense. */}
         <Suspense fallback={null}>
           <StoreProvider>
+            <SiteHeader brand="StayFinder" links={navLinks} />
             {children}
             <Toaster />
           </StoreProvider>
