@@ -27,9 +27,23 @@ const ibmPlexArabic = IBM_Plex_Sans_Arabic({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
   const t = await getTranslations("Metadata");
+  const title = t("title");
+  const description = t("description");
 
-  return { title: t("title"), description: t("description") };
+  return {
+    title,
+    description,
+    openGraph: {
+      type: "website",
+      siteName: title,
+      title,
+      description,
+      locale: locale === "ar" ? "ar_SA" : "en_US",
+    },
+    twitter: { card: "summary", title, description },
+  };
 }
 
 // Cache Components needs at least one value for the root param.
