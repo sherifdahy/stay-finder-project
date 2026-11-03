@@ -48,7 +48,7 @@ export function HotelResults({
 
     if (hotels.length === 0) {
         return (
-            <div className="rounded-xl border p-6 text-center">
+            <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border p-6 text-center">
                 <p className="font-semibold">{t("noHotels")}</p>
                 <p className="mt-2 text-sm text-muted-foreground">
                     {t("noHotelsHint")}
