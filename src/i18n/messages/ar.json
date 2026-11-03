@@ -36,6 +36,7 @@
         "submit": "بحث",
         "loadError": "تعذّر تحميل الفنادق",
         "noHotels": "لم يتم العثور على فنادق.",
+        "resultsCount": "{count, plural, zero {لا فنادق} one {فندق واحد} two {فندقان} few {# فنادق} many {# فندقًا} other {# فندق}}",
         "noHotelsHint": "جرّب تغيير التواريخ أو عوامل التصفية."
     },
     "Filters": {

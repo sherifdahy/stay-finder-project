@@ -9,11 +9,15 @@ export function SearchPageSkeleton() {
                 <Skeleton className="h-5 w-80 max-w-full" />
             </header>
 
-            <Skeleton className="h-[270px] w-full rounded-xl sm:h-40 lg:h-[86px]" />
-
-            <section className="grid gap-6 md:grid-cols-[260px_1fr]">
-                <Skeleton className="h-60 w-full self-start rounded-xl" />
-                <HotelResultsSkeleton />
+            <section className="grid gap-x-6 gap-y-4 md:grid-cols-[280px_1fr] md:grid-rows-[auto_1fr]">
+                <div className="flex flex-col items-end gap-4 self-start md:col-start-1 md:row-span-2 md:row-start-1">
+                    <Skeleton className="h-8 w-20" />
+                    <Skeleton className="h-[372px] w-full rounded-xl" />
+                </div>
+                <Skeleton className="h-8 w-full md:col-start-2 md:row-start-1" />
+                <div className="min-w-0 md:col-start-2 md:row-start-2">
+                    <HotelResultsSkeleton />
+                </div>
             </section>
         </main>
     );

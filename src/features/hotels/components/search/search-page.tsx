@@ -2,8 +2,6 @@
 
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
-import { useDebouncedCallback } from "use-debounce";
 import { useRouter } from "@/src/i18n/navigation";
 import { isApiError } from "@/src/store/baseApi";
 import { useSearchHotelsQuery } from "../../hotel.api";
@@ -13,54 +11,31 @@ import {
     withDefaultStay,
     type HotelSearchParams,
 } from "../../search-params";
-import { HotelFilters, type HotelFiltersValue } from "./hotel-filters";
 import { HotelResults } from "./hotel-results";
-import { SearchBar } from "./search-bar";
-
-const FILTERS_DEBOUNCE_MS = 400;
+import { SearchForm } from "./search-form";
+import { SortBar } from "./sort-bar";
 
 export function SearchPage() {
     const t = useTranslations("Search");
     const router = useRouter();
     const urlSearchParams = useSearchParams();
-    const [, startTransition] = useTransition();
-
-    // Filters the user changed but that are not in the URL yet.
-    const [draftFilters, setDraftFilters] =
-        useState<HotelFiltersValue | null>(null);
 
     const search = withDefaultStay(
         parseSearchParams(new URLSearchParams(urlSearchParams.toString())),
     );
 
-    // currentData (not data), so results of an older filter never show.
+    // currentData (not data), so results of an older search never show.
     const { currentData, isFetching, error, refetch } =
         useSearchHotelsQuery(search);
 
-    // A new search is a new history entry; tweaking filters is not.
+    const isLoading = isFetching && !currentData;
+
+    // A new search is a new history entry; changing the sort is not.
     function updateUrl(next: HotelSearchParams, mode: "push" | "replace") {
         const url = `/?${serializeSearchParams(next).toString()}`;
 
         router[mode](url, { scroll: false });
     }
-
-    const commitFilters = useDebouncedCallback(
-        (filters: HotelFiltersValue) => {
-            // One transition, so the draft clears in the same commit the URL
-            // updates in: no flash of the old filter values or old results.
-            startTransition(() => {
-                updateUrl({ ...search, ...filters }, "replace");
-                setDraftFilters(null);
-            });
-        },
-        FILTERS_DEBOUNCE_MS,
-    );
-
-    const filters = draftFilters ?? {
-        maxPrice: search.maxPrice,
-        stars: search.stars,
-        sort: search.sort,
-    };
 
     return (
         <main className="container space-y-6 py-8">
@@ -71,39 +46,42 @@ export function SearchPage() {
                 </p>
             </header>
 
-            <SearchBar
-                key={urlSearchParams.toString()}
-                city={search.city}
-                checkIn={search.checkIn}
-                checkOut={search.checkOut}
-                adults={search.adults}
-                onSearch={(values) => {
-                    // A pending filter commit must not overwrite the new search.
-                    commitFilters.cancel();
-                    setDraftFilters(null);
-                    updateUrl({ ...search, ...values }, "push");
-                }}
-            />
-
-            <section className="grid gap-6 md:grid-cols-[260px_1fr]">
-                <HotelFilters
-                    {...filters}
-                    onChange={(next) => {
-                        setDraftFilters(next);
-                        commitFilters(next);
-                    }}
-                />
-
-                <HotelResults
-                    hotels={currentData?.hotels ?? []}
-                    stay={search}
-                    isLoading={
-                        draftFilters !== null ||
-                        (isFetching && !currentData)
+            {/* The search button and the sort share the first row, so the sidebar card
+                starts level with the results. The 1fr row keeps the form's height out of row one. */}
+            <section className="grid gap-x-6 gap-y-4 md:grid-cols-[280px_1fr] md:grid-rows-[auto_1fr]">
+                <SearchForm
+                    key={urlSearchParams.toString()}
+                    city={search.city}
+                    checkIn={search.checkIn}
+                    checkOut={search.checkOut}
+                    adults={search.adults}
+                    maxPrice={search.maxPrice}
+                    stars={search.stars}
+                    className="md:col-start-1 md:row-span-2 md:row-start-1"
+                    onSearch={(values) =>
+                        updateUrl({ ...search, ...values }, "push")
                     }
-                    error={isApiError(error) ? error : undefined}
-                    onRetry={refetch}
                 />
+
+                <SortBar
+                    // The empty state already says there are no hotels.
+                    count={isLoading || error || !currentData?.hotels.length ? undefined : currentData.hotels.length}
+                    sort={search.sort}
+                    className="md:col-start-2 md:row-start-1"
+                    onSortChange={(sort) =>
+                        updateUrl({ ...search, sort }, "replace")
+                    }
+                />
+
+                <div className="min-w-0 md:col-start-2 md:row-start-2">
+                    <HotelResults
+                        hotels={currentData?.hotels ?? []}
+                        stay={search}
+                        isLoading={isLoading}
+                        error={isApiError(error) ? error : undefined}
+                        onRetry={refetch}
+                    />
+                </div>
             </section>
         </main>
     );
