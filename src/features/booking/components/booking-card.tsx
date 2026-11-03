@@ -51,7 +51,7 @@ export function BookingCard({ booking, onCancel }: BookingCardProps) {
             </div>
 
             {isConfirmed && booking.refundable && (
-                <Button type="button" variant="outline" className="w-fit" onClick={onCancel}>
+                <Button type="button" variant="outline" className="self-end" onClick={onCancel}>
                     Cancel booking
                 </Button>
             )}
