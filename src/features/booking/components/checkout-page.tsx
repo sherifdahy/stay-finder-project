@@ -1,11 +1,11 @@
 "use client";
 
 import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { hotelHref } from "@/src/features/hotels";
+import { Link, useRouter } from "@/src/i18n/navigation";
 import { formatCountdown } from "../utils/format-countdown";
 import { formatMoney } from "@/src/shared/lib/format-money";
 import { Alert, AlertDescription } from "@/src/shared/ui/alert";

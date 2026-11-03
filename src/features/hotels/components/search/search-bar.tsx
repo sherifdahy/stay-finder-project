@@ -1,12 +1,12 @@
 "use client";
 
-import { CalendarDays, MapPin, Search, Users } from "lucide-react";
+import { MapPin, Search, Users } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { getDefaultStay } from "@/src/domain/dates/get-default-stay";
 import type { City } from "@/src/domain/types/city";
 import { hotelSearchSchema } from "@/src/domain/validations/hotel-search.schema";
+import StayDatePicker from "./stay-date-picker";
 import { Button } from "@/src/shared/ui/button";
-import { Input } from "@/src/shared/ui/input";
 import { Label } from "@/src/shared/ui/label";
 import {
     Select,
@@ -80,7 +80,7 @@ export function SearchBar(props: SearchBarProps) {
     return (
         <form
             onSubmit={handleSubmit}
-            className="grid gap-4 rounded-xl border p-4 sm:grid-cols-2 lg:grid-cols-5"
+            className="grid gap-4 rounded-xl border p-4 sm:grid-cols-2 lg:grid-cols-[1fr_1.5fr_8rem_auto]"
             noValidate
         >
             <div className="flex flex-col gap-1.5">
@@ -107,41 +107,19 @@ export function SearchBar(props: SearchBarProps) {
                 </Select>
             </div>
 
-            <div className="flex flex-col gap-1.5">
-                <Label htmlFor="checkIn">Check-in</Label>
-                <div className="relative">
-                    <CalendarDays className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                        id="checkIn"
-                        type="date"
-                        className="pl-8 [&::-webkit-calendar-picker-indicator]:hidden"
-                        onClick={(event) => event.currentTarget.showPicker?.()}
-                        value={checkIn}
-                        aria-invalid={Boolean(errors.checkIn)}
-                        onChange={(event) => setCheckIn(event.target.value)}
-                    />
-                </div>
-                {errors.checkIn && (
-                    <p className="text-sm text-destructive">{errors.checkIn}</p>
-                )}
-            </div>
-
-            <div className="flex flex-col gap-1.5">
-                <Label htmlFor="checkOut">Check-out</Label>
-                <div className="relative">
-                    <CalendarDays className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                        id="checkOut"
-                        type="date"
-                        className="pl-8 [&::-webkit-calendar-picker-indicator]:hidden"
-                        onClick={(event) => event.currentTarget.showPicker?.()}
-                        value={checkOut}
-                        aria-invalid={Boolean(errors.checkOut)}
-                        onChange={(event) => setCheckOut(event.target.value)}
-                    />
-                </div>
-                {errors.checkOut && (
-                    <p className="text-sm text-destructive">{errors.checkOut}</p>
+            <div className="flex flex-col gap-1.5 sm:col-span-2 lg:col-span-1">
+                <Label htmlFor="stay">Check-in – Check-out</Label>
+                <StayDatePicker
+                    checkIn={checkIn}
+                    checkOut={checkOut}
+                    invalid={Boolean(errors.checkIn || errors.checkOut)}
+                    onChange={(stay) => {
+                        setCheckIn(stay.checkIn);
+                        setCheckOut(stay.checkOut);
+                    }}
+                />
+                {(errors.checkIn || errors.checkOut) && (
+                    <p className="text-sm text-destructive">{errors.checkIn ?? errors.checkOut}</p>
                 )}
             </div>
 
@@ -170,7 +148,7 @@ export function SearchBar(props: SearchBarProps) {
             </div>
 
             <div className="flex items-end">
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full lg:w-auto lg:px-6">
                     <Search data-icon="inline-start" />
                     Search
                 </Button>

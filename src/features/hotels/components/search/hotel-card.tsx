@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { MapPin, Star } from "lucide-react";
-import Link from "next/link";
 import type { Hotel } from "@/src/domain/types/hotel";
+import { Link } from "@/src/i18n/navigation";
 import { formatMoney } from "@/src/shared/lib/format-money";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { Card } from "@/src/shared/ui/card";

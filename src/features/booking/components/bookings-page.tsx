@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { BookingView } from "@/src/domain/types/booking";
+import { Link } from "@/src/i18n/navigation";
 import { isApiError } from "@/src/store/baseApi";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { ErrorState } from "@/src/shared/ui/error-state";

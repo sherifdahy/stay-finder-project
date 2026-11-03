@@ -4,9 +4,9 @@ import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 /* eslint-disable @next/next/no-img-element */
 
 import { MapPin, Star } from "lucide-react";
-import Link from "next/link";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { skipToken } from "@reduxjs/toolkit/query";
+import { Link, useRouter } from "@/src/i18n/navigation";
 import { isApiError } from "@/src/store/baseApi";
 import { Alert, AlertDescription } from "@/src/shared/ui/alert";
 import { buttonVariants } from "@/src/shared/ui/button";

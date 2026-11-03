@@ -1,7 +1,8 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { skipToken } from "@reduxjs/toolkit/query";
+import { useRouter } from "@/src/i18n/navigation";
 import { isApiError } from "@/src/store/baseApi";
 import { useSearchHotelsQuery } from "../../hotel.api";
 import {
