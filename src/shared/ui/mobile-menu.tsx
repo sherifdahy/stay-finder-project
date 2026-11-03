@@ -35,14 +35,17 @@ export function MobileMenu({ brand, links, children }: MobileMenuProps) {
                 <DialogPrimitive.Popup className="fixed inset-0 z-50 flex flex-col bg-background outline-none duration-100 data-open:animate-in data-open:fade-in-0">
                     <DialogPrimitive.Title className="sr-only">{t("menu")}</DialogPrimitive.Title>
 
-                    <div className="container flex items-center justify-between gap-4 border-b py-2">
-                        <Link href="/" onClick={close} className="text-lg font-bold text-primary">
-                            {brand}
-                        </Link>
-                        <DialogPrimitive.Close render={<Button variant="ghost" size="icon" />}>
-                            <X />
-                            <span className="sr-only">{t("closeMenu")}</span>
-                        </DialogPrimitive.Close>
+                    {/* Same height and background as the site header, so opening the menu doesn't shift the bar. */}
+                    <div className="border-b bg-card">
+                        <div className="container flex items-center justify-between gap-4 py-4">
+                            <Link href="/" onClick={close} className="text-lg font-bold text-primary">
+                                {brand}
+                            </Link>
+                            <DialogPrimitive.Close render={<Button variant="ghost" size="icon" />}>
+                                <X />
+                                <span className="sr-only">{t("closeMenu")}</span>
+                            </DialogPrimitive.Close>
+                        </div>
                     </div>
 
                     <div className="container flex flex-1 flex-col overflow-y-auto py-2">

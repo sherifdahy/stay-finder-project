@@ -21,7 +21,7 @@ export function SiteHeader({ brand, links, actions, menuActions }: SiteHeaderPro
     return (
         // White (card) over the tinted page background, so the bar stands apart.
         <header className="sticky top-0 z-40 border-b bg-card sm:static">
-            <div className="container flex items-center justify-between gap-4 py-2 sm:py-3">
+            <div className="container flex items-center justify-between gap-4 py-4 sm:py-3">
                 <Link href="/" className="text-lg font-bold text-primary">
                     {brand}
                 </Link>
