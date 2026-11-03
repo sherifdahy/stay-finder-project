@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const navLinks = [{ href: "/", label: "Search" }, { href: "/bookings", label: "My bookings" }];
+const navLinks = [{ href: "/", label: "Hotels" }, { href: "/bookings", label: "My bookings" }];
 
 export const metadata: Metadata = {
   title: "StayFinder",
