@@ -1,3 +1,4 @@
+import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 
 import { guestSchema } from "@/src/domain/validations/guest.schema";
 import { errorResponse, toApiError } from "@/src/server/http/apiError";
@@ -14,7 +15,7 @@ export const POST = withChaos(
 
             if (!idempotencyKey) {
                 return errorResponse(
-                    "VALIDATION_ERROR",
+                    API_ERROR_CODE.VALIDATION_ERROR,
                     "Idempotency-Key header is required.",
                     422
                 );
@@ -26,7 +27,7 @@ export const POST = withChaos(
 
             if (!validation.success) {
                 return errorResponse(
-                    "VALIDATION_ERROR",
+                    API_ERROR_CODE.VALIDATION_ERROR,
                     "Invalid guest information.",
                     422,
                     validation.error.issues

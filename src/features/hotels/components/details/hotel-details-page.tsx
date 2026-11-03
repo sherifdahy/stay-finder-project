@@ -1,5 +1,6 @@
 "use client";
 
+import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 /* eslint-disable @next/next/no-img-element */
 
 import Link from "next/link";
@@ -53,7 +54,7 @@ export default function HotelDetailsPage() {
 
             router.push(`/checkout/${booking.id}`);
         } catch (error) {
-            if (isApiError(error) && error.code === "PRICE_CHANGED") {
+            if (isApiError(error) && error.code === API_ERROR_CODE.PRICE_CHANGED) {
                 const { newQuote } = error.details as { newQuote: Quote };
                 setPriceChange({ room, oldTotal: quotedTotal, newTotal: newQuote.total });
                 return;
@@ -95,7 +96,7 @@ export default function HotelDetailsPage() {
 
     // A failed background refetch keeps the old data; only show the error when there is nothing to show.
     if (error && !data) {
-        if (isApiError(error) && error.code === "NOT_FOUND") {
+        if (isApiError(error) && error.code === API_ERROR_CODE.NOT_FOUND) {
             return (
                 <main className="container flex flex-1 flex-col py-8 items-center justify-center gap-4 text-center">
                     <p>Hotel not found</p>

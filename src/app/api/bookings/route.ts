@@ -1,3 +1,4 @@
+import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 import { createHoldSchema } from "@/src/domain/validations/create-hold.Schema";
 import { errorResponse, toApiError } from "@/src/server/http/apiError";
 import { createHold, getAllBookings } from "@/src/server/services/bookings";
@@ -11,7 +12,7 @@ export const POST = withChaos(async (request: Request, _context: unknown, chaos)
 
         if (!validation.success) {
             return errorResponse(
-                "VALIDATION_ERROR",
+                API_ERROR_CODE.VALIDATION_ERROR,
                 "Invalid booking data.",
                 422,
                 validation.error.issues

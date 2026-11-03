@@ -1,5 +1,6 @@
 "use client";
 
+import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -52,7 +53,7 @@ export default function CheckoutPage() {
             toast.success("Your booking is confirmed!");
             router.replace("/bookings");
         } catch (error) {
-            if (isApiError(error) && error.code === "HOLD_EXPIRED") {
+            if (isApiError(error) && error.code === API_ERROR_CODE.HOLD_EXPIRED) {
                 setHoldExpired(true);
                 return;
             }
@@ -76,7 +77,7 @@ export default function CheckoutPage() {
 
     // A failed background refetch keeps the old data; only show the error when there is nothing to show.
     if (error && !data) {
-        if (isApiError(error) && error.code === "NOT_FOUND") {
+        if (isApiError(error) && error.code === API_ERROR_CODE.NOT_FOUND) {
             return (
                 <main className="container flex flex-1 flex-col py-8 items-center justify-center gap-4 text-center">
                     <p>Booking not found</p>

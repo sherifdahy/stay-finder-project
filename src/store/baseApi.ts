@@ -1,3 +1,4 @@
+import { API_ERROR_CODE, type ApiErrorCode } from "@/src/domain/constants/api-error-code";
 import {
     createApi,
     fetchBaseQuery,
@@ -6,15 +7,7 @@ import {
     type FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 
-export type ApiErrorCode =
-    | "VALIDATION_ERROR"
-    | "NOT_FOUND"
-    | "ROOM_UNAVAILABLE"
-    | "PRICE_CHANGED"
-    | "HOLD_EXPIRED"
-    | "NOT_REFUNDABLE"
-    | "INTERNAL_ERROR"
-    | "NETWORK_ERROR";
+export type { ApiErrorCode };
 
 // The single error shape every component receives from RTK Query.
 export interface ApiError {
@@ -40,7 +33,7 @@ function toApiError(error: FetchBaseQueryError): ApiError {
 
         return {
             status: error.status,
-            code: body?.code ?? "INTERNAL_ERROR",
+            code: body?.code ?? API_ERROR_CODE.INTERNAL_ERROR,
             message: body?.message ?? "Something went wrong.",
             details: body?.details ?? null,
         };
@@ -48,7 +41,7 @@ function toApiError(error: FetchBaseQueryError): ApiError {
 
     return {
         status: "FETCH_ERROR",
-        code: "NETWORK_ERROR",
+        code: API_ERROR_CODE.NETWORK_ERROR,
         message: "Network error. Please check your connection.",
         details: null,
     };

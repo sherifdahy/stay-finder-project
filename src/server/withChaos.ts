@@ -1,3 +1,4 @@
+import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 
 export interface ChaosControls {
     /** True when this request should see a higher room price. */
@@ -41,7 +42,7 @@ function serverError(): Response {
     return Response.json(
         {
             error: {
-                code: "INTERNAL_ERROR",
+                code: API_ERROR_CODE.INTERNAL_ERROR,
                 message: "An unexpected server error occurred.",
                 details: null,
             },

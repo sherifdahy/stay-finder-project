@@ -1,3 +1,4 @@
+import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 import { hotelDetailsSearchSchema } from "@/src/domain/validations/hotel-details-search.schema";
 import { errorResponse, toApiError } from "@/src/server/http/apiError";
 import { getHotelDetails } from "@/src/server/services/hotels";
@@ -15,7 +16,7 @@ export const GET = withChaos(
 
             if (!validation.success) {
                 return errorResponse(
-                    "VALIDATION_ERROR",
+                    API_ERROR_CODE.VALIDATION_ERROR,
                     "Invalid hotel details parameters.",
                     400,
                     validation.error.issues
@@ -31,7 +32,7 @@ export const GET = withChaos(
 
             if (!details) {
                 return errorResponse(
-                    "NOT_FOUND",
+                    API_ERROR_CODE.NOT_FOUND,
                     "Hotel was not found.",
                     404
                 );
