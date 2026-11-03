@@ -70,7 +70,8 @@ export default function CheckoutPage() {
         );
     }
 
-    if (error) {
+    // A failed background refetch keeps the old data; only show the error when there is nothing to show.
+    if (error && !data) {
         if (isApiError(error) && error.code === "NOT_FOUND") {
             return (
                 <main className="container flex flex-1 flex-col py-8 items-center justify-center gap-4 text-center">
