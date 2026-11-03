@@ -12,6 +12,7 @@ import {
     type HotelSearchParams,
 } from "../../search-params";
 import { HotelResults } from "./hotel-results";
+import { MobileSearchSheet } from "./mobile-search-sheet";
 import { SearchForm } from "./search-form";
 import { SortBar } from "./sort-bar";
 
@@ -30,6 +31,15 @@ export function SearchPage() {
 
     const isLoading = isFetching && !currentData;
 
+    const formValues = {
+        city: search.city,
+        checkIn: search.checkIn,
+        checkOut: search.checkOut,
+        adults: search.adults,
+        maxPrice: search.maxPrice,
+        stars: search.stars,
+    };
+
     // A new search is a new history entry; changing the sort is not.
     function updateUrl(next: HotelSearchParams, mode: "push" | "replace") {
         const url = `/?${serializeSearchParams(next).toString()}`;
@@ -38,7 +48,8 @@ export function SearchPage() {
     }
 
     return (
-        <main className="container space-y-6 py-8">
+        // Extra bottom space on phones, so the floating search button never covers the last card.
+        <main className="container space-y-6 py-8 max-md:pb-24">
             <header>
                 <h1 className="text-3xl font-bold">{t("title")}</h1>
                 <p className="mt-2 text-muted-foreground">
@@ -51,13 +62,16 @@ export function SearchPage() {
             <section className="grid gap-x-6 gap-y-4 md:grid-cols-[280px_1fr] md:grid-rows-[auto_1fr]">
                 <SearchForm
                     key={urlSearchParams.toString()}
-                    city={search.city}
-                    checkIn={search.checkIn}
-                    checkOut={search.checkOut}
-                    adults={search.adults}
-                    maxPrice={search.maxPrice}
-                    stars={search.stars}
-                    className="md:col-start-1 md:row-span-2 md:row-start-1"
+                    {...formValues}
+                    className="hidden md:col-start-1 md:row-span-2 md:row-start-1 md:flex"
+                    onSearch={(values) =>
+                        updateUrl({ ...search, ...values }, "push")
+                    }
+                />
+
+                <MobileSearchSheet
+                    {...formValues}
+                    className="md:hidden"
                     onSearch={(values) =>
                         updateUrl({ ...search, ...values }, "push")
                     }

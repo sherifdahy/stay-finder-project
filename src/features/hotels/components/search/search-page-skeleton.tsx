@@ -3,14 +3,14 @@ import { Skeleton } from "@/src/shared/ui/skeleton";
 // Same blocks and heights as SearchPage, so nothing jumps when it renders.
 export function SearchPageSkeleton() {
     return (
-        <main className="container space-y-6 py-8" aria-busy="true">
+        <main className="container space-y-6 py-8 max-md:pb-24" aria-busy="true">
             <header className="space-y-2">
                 <Skeleton className="h-9 w-64 max-w-full" />
                 <Skeleton className="h-5 w-80 max-w-full" />
             </header>
 
             <section className="grid gap-x-6 gap-y-4 md:grid-cols-[280px_1fr] md:grid-rows-[auto_1fr]">
-                <div className="flex flex-col items-end gap-4 self-start md:col-start-1 md:row-span-2 md:row-start-1">
+                <div className="hidden flex-col items-end gap-4 self-start md:col-start-1 md:row-span-2 md:row-start-1 md:flex">
                     <Skeleton className="h-8 w-20" />
                     <Skeleton className="h-[372px] w-full rounded-xl" />
                 </div>

@@ -3,7 +3,7 @@
 import { MapPin, Search, Users } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { cn } from "cn";
-import { Fragment, useState, type FormEvent } from "react";
+import { Fragment, useId, useState, type FormEvent } from "react";
 import { z } from "zod";
 import { useGetCitiesQuery } from "../../hotel.api";
 import { hotelSearchSchema } from "@/src/domain/validations/hotel-search.schema";
@@ -37,6 +37,8 @@ import {
 export type SearchFormValues = Omit<HotelSearchParams, "sort">;
 
 interface SearchFormProps extends SearchFormValues {
+    // "sidebar" for wide screens, "page" for the full-screen form on phones.
+    layout?: "sidebar" | "page";
     className?: string;
     onSearch: (values: SearchFormValues) => void;
 }
@@ -56,6 +58,7 @@ export function SearchForm(props: SearchFormProps) {
     const locale = useLocale();
     const { data: citiesData } = useGetCitiesQuery();
     const starsAnchor = useComboboxAnchor();
+    const id = useId();
 
     const [city, setCity] = useState<string>(props.city);
     // Until the names load, the select shows the code of the city in the URL.
@@ -113,6 +116,145 @@ export function SearchForm(props: SearchFormProps) {
         });
     }
 
+    const fields = (
+        <Fragment>
+            <div className="flex flex-col gap-1.5">
+                <Label htmlFor={`${id}-city`}>{t("city")}</Label>
+                <Select
+                    modal={false}
+                    items={cities}
+                    value={city}
+                    onValueChange={(value) => value && setCity(value)}
+                >
+                    <SelectTrigger id={`${id}-city`} className="w-full">
+                        <span className="flex items-center gap-2">
+                            <MapPin className="text-muted-foreground" />
+                            <SelectValue />
+                        </span>
+                    </SelectTrigger>
+                    <SelectContent>
+                        {cities.map((item) => (
+                            <SelectItem key={item.value} value={item.value}>
+                                {item.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+                <Label htmlFor={`${id}-stay`}>{t("dates")}</Label>
+                <StayDatePicker
+                    id={`${id}-stay`}
+                    checkIn={checkIn}
+                    checkOut={checkOut}
+                    invalid={Boolean(errors.checkIn || errors.checkOut)}
+                    onChange={(stay) => {
+                        setCheckIn(stay.checkIn);
+                        setCheckOut(stay.checkOut);
+                        // A date error is about the old dates; the next search checks the new ones.
+                        setErrors((current) => ({ ...current, checkIn: "", checkOut: "" }));
+                    }}
+                />
+                {(errors.checkIn || errors.checkOut) && (
+                    <p className="text-sm text-destructive">{errors.checkIn || errors.checkOut}</p>
+                )}
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+                <Label htmlFor={`${id}-adults`}>{t("adults")}</Label>
+                <Select
+                    modal={false}
+                    items={ADULTS}
+                    value={adults}
+                    onValueChange={(value) => value && setAdults(value)}
+                >
+                    <SelectTrigger id={`${id}-adults`} className="w-full">
+                        <span className="flex items-center gap-2">
+                            <Users className="text-muted-foreground" />
+                            <SelectValue />
+                        </span>
+                    </SelectTrigger>
+                    <SelectContent>
+                        {ADULTS.map((item) => (
+                            <SelectItem key={item.value} value={item.value}>
+                                {item.label}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+                <Label htmlFor={`${id}-maxPrice`}>{tFilters("maxPrice")}</Label>
+                <Input
+                    id={`${id}-maxPrice`}
+                    type="number"
+                    min={0}
+                    placeholder={tFilters("anyPrice")}
+                    value={maxPrice}
+                    aria-invalid={Boolean(errors.maxPrice)}
+                    onChange={(event) => setMaxPrice(event.target.value)}
+                />
+                {errors.maxPrice && (
+                    <p className="text-sm text-destructive">{errors.maxPrice}</p>
+                )}
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+                <Label htmlFor={`${id}-stars`}>{tFilters("stars")}</Label>
+                <Combobox
+                    multiple
+                    openOnInputClick
+                    items={STAR_OPTIONS}
+                    value={stars}
+                    onValueChange={setStars}
+                >
+                    <ComboboxChips ref={starsAnchor}>
+                        <ComboboxValue>
+                            {(values: string[]) => (
+                                <Fragment>
+                                    {values.map((value) => (
+                                        <ComboboxChip key={value}>{tCommon("stars", { count: Number(value) })}</ComboboxChip>
+                                    ))}
+                                    <ComboboxChipsInput
+                                        id={`${id}-stars`}
+                                        placeholder={values.length === 0 ? tFilters("anyRating") : ""}
+                                    />
+                                </Fragment>
+                            )}
+                        </ComboboxValue>
+                    </ComboboxChips>
+                    <ComboboxContent anchor={starsAnchor}>
+                        <ComboboxEmpty>{tFilters("noRatings")}</ComboboxEmpty>
+                        <ComboboxList>
+                            {(item: string) => (
+                                <ComboboxItem key={item} value={item}>
+                                    {tCommon("stars", { count: Number(item) })}
+                                </ComboboxItem>
+                            )}
+                        </ComboboxList>
+                    </ComboboxContent>
+                </Combobox>
+            </div>
+        </Fragment>
+    );
+
+    if (props.layout === "page") {
+        return (
+            <form onSubmit={handleSubmit} className={cn("flex min-h-0 flex-1 flex-col", props.className)} noValidate>
+                <div className="container flex flex-1 flex-col gap-5 overflow-y-auto py-4">{fields}</div>
+
+                <div className="container border-t py-3">
+                    <Button type="submit" className="w-full">
+                        <Search data-icon="inline-start" />
+                        {t("submit")}
+                    </Button>
+                </div>
+            </form>
+        );
+    }
+
     return (
         <form
             onSubmit={handleSubmit}
@@ -128,126 +270,7 @@ export function SearchForm(props: SearchFormProps) {
             </div>
 
             <Card>
-                <CardContent className="flex flex-col gap-5">
-                    <div className="flex flex-col gap-1.5">
-                        <Label htmlFor="city">{t("city")}</Label>
-                        <Select
-                            modal={false}
-                            items={cities}
-                            value={city}
-                            onValueChange={(value) => value && setCity(value)}
-                        >
-                            <SelectTrigger id="city" className="w-full">
-                                <span className="flex items-center gap-2">
-                                    <MapPin className="text-muted-foreground" />
-                                    <SelectValue />
-                                </span>
-                            </SelectTrigger>
-                            <SelectContent>
-                                {cities.map((item) => (
-                                    <SelectItem key={item.value} value={item.value}>
-                                        {item.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                        <Label htmlFor="stay">{t("dates")}</Label>
-                        <StayDatePicker
-                            checkIn={checkIn}
-                            checkOut={checkOut}
-                            invalid={Boolean(errors.checkIn || errors.checkOut)}
-                            onChange={(stay) => {
-                                setCheckIn(stay.checkIn);
-                                setCheckOut(stay.checkOut);
-                                // A date error is about the old dates; the next search checks the new ones.
-                                setErrors((current) => ({ ...current, checkIn: "", checkOut: "" }));
-                            }}
-                        />
-                        {(errors.checkIn || errors.checkOut) && (
-                            <p className="text-sm text-destructive">{errors.checkIn || errors.checkOut}</p>
-                        )}
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                        <Label htmlFor="adults">{t("adults")}</Label>
-                        <Select
-                            modal={false}
-                            items={ADULTS}
-                            value={adults}
-                            onValueChange={(value) => value && setAdults(value)}
-                        >
-                            <SelectTrigger id="adults" className="w-full">
-                                <span className="flex items-center gap-2">
-                                    <Users className="text-muted-foreground" />
-                                    <SelectValue />
-                                </span>
-                            </SelectTrigger>
-                            <SelectContent>
-                                {ADULTS.map((item) => (
-                                    <SelectItem key={item.value} value={item.value}>
-                                        {item.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                        <Label htmlFor="maxPrice">{tFilters("maxPrice")}</Label>
-                        <Input
-                            id="maxPrice"
-                            type="number"
-                            min={0}
-                            placeholder={tFilters("anyPrice")}
-                            value={maxPrice}
-                            aria-invalid={Boolean(errors.maxPrice)}
-                            onChange={(event) => setMaxPrice(event.target.value)}
-                        />
-                        {errors.maxPrice && (
-                            <p className="text-sm text-destructive">{errors.maxPrice}</p>
-                        )}
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                        <Label htmlFor="stars">{tFilters("stars")}</Label>
-                        <Combobox
-                            multiple
-                            openOnInputClick
-                            items={STAR_OPTIONS}
-                            value={stars}
-                            onValueChange={setStars}
-                        >
-                            <ComboboxChips ref={starsAnchor}>
-                                <ComboboxValue>
-                                    {(values: string[]) => (
-                                        <Fragment>
-                                            {values.map((value) => (
-                                                <ComboboxChip key={value}>{tCommon("stars", { count: Number(value) })}</ComboboxChip>
-                                            ))}
-                                            <ComboboxChipsInput
-                                                id="stars"
-                                                placeholder={values.length === 0 ? tFilters("anyRating") : ""}
-                                            />
-                                        </Fragment>
-                                    )}
-                                </ComboboxValue>
-                            </ComboboxChips>
-                            <ComboboxContent anchor={starsAnchor}>
-                                <ComboboxEmpty>{tFilters("noRatings")}</ComboboxEmpty>
-                                <ComboboxList>
-                                    {(item: string) => (
-                                        <ComboboxItem key={item} value={item}>
-                                            {tCommon("stars", { count: Number(item) })}
-                                        </ComboboxItem>
-                                    )}
-                                </ComboboxList>
-                            </ComboboxContent>
-                        </Combobox>
-                    </div>
-                </CardContent>
+                <CardContent className="flex flex-col gap-5">{fields}</CardContent>
             </Card>
         </form>
     );

@@ -34,6 +34,8 @@
         "checkOut": "Check-out",
         "adults": "Adults",
         "submit": "Search",
+        "editSearch": "Edit search",
+        "closeSearch": "Close search",
         "loadError": "Could not load hotels",
         "noHotels": "No hotels found.",
         "resultsCount": "{count, plural, one {# hotel} other {# hotels}}",

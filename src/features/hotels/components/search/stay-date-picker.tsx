@@ -13,6 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/src/shared/ui/popover
 import { cn } from "cn";
 
 interface StayDatePickerProps {
+    id?: string;
     checkIn: string;
     checkOut: string;
     onChange: (stay: { checkIn: string; checkOut: string }) => void;
@@ -30,7 +31,7 @@ function toDate(value: string): Date | undefined {
 
 const CALENDAR_LOCALES = { en: enUS, ar };
 
-export default function StayDatePicker({ checkIn, checkOut, onChange, invalid }: StayDatePickerProps) {
+export default function StayDatePicker({ id = "stay", checkIn, checkOut, onChange, invalid }: StayDatePickerProps) {
     const t = useTranslations("Search");
     const locale = useLocale();
     const formatDay = new Intl.DateTimeFormat(locale, {
@@ -69,7 +70,7 @@ export default function StayDatePicker({ checkIn, checkOut, onChange, invalid }:
             }}
         >
             <PopoverTrigger
-                id="stay"
+                id={id}
                 aria-invalid={invalid}
                 className={cn(
                     "flex h-8 w-full items-center gap-2 rounded-lg border border-input bg-transparent px-2.5 text-start text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20",
