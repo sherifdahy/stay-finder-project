@@ -82,7 +82,7 @@ export function SearchBar(props: SearchBarProps) {
             className="grid gap-4 rounded-xl border p-4 sm:grid-cols-2 lg:grid-cols-5"
             noValidate
         >
-            <div className="space-y-1.5">
+            <div className="flex flex-col gap-1.5">
                 <Label htmlFor="city">City</Label>
                 <Select
                     items={CITIES}
@@ -102,7 +102,7 @@ export function SearchBar(props: SearchBarProps) {
                 </Select>
             </div>
 
-            <div className="space-y-1.5">
+            <div className="flex flex-col gap-1.5">
                 <Label htmlFor="checkIn">Check-in</Label>
                 <Input
                     id="checkIn"
@@ -116,7 +116,7 @@ export function SearchBar(props: SearchBarProps) {
                 )}
             </div>
 
-            <div className="space-y-1.5">
+            <div className="flex flex-col gap-1.5">
                 <Label htmlFor="checkOut">Check-out</Label>
                 <Input
                     id="checkOut"
@@ -130,7 +130,7 @@ export function SearchBar(props: SearchBarProps) {
                 )}
             </div>
 
-            <div className="space-y-1.5">
+            <div className="flex flex-col gap-1.5">
                 <Label htmlFor="adults">Adults</Label>
                 <Select
                     items={ADULTS}
