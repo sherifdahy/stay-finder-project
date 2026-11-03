@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { hotelHref } from "@/src/features/hotels/search-params";
+import { formatCountdown } from "../utils/format-countdown";
 import { formatMoney } from "@/src/shared/lib/format-money";
 import { Alert, AlertDescription } from "@/src/shared/ui/alert";
 import { buttonVariants } from "@/src/shared/ui/button";
@@ -12,15 +13,6 @@ import { Skeleton } from "@/src/shared/ui/skeleton";
 import { isApiError } from "@/src/store/baseApi";
 import { useGetBookingByIdQuery } from "../booking.api";
 import { useHoldCountdown } from "../hooks/use-hold-countdown";
-
-function formatCountdown(seconds: number | null): string {
-    if (seconds === null) return "--:--";
-
-    const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
-    const ss = String(seconds % 60).padStart(2, "0");
-
-    return `${mm}:${ss}`;
-}
 
 export default function CheckoutPage() {
     const { bookingId } = useParams<{ bookingId: string }>();
