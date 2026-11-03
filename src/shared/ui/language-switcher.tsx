@@ -68,7 +68,7 @@ export function LanguageList() {
 
     return (
         <Collapsible>
-            <CollapsibleTrigger className="group flex w-full items-center justify-between gap-3 border-b py-4 text-lg font-medium">
+            <CollapsibleTrigger className="group flex w-full items-center justify-between gap-3 border-b py-4 text-base font-medium">
                 <span className="flex items-center gap-3">
                     <Languages className="size-5 text-muted-foreground" />
                     <span lang={locale}>{LOCALE_NAMES[locale]}</span>

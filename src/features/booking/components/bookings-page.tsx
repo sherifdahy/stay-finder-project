@@ -37,7 +37,7 @@ export default function BookingsPage() {
     if (error && !data) {
         return (
             <main className="container space-y-6 py-8">
-                <h1 className="text-2xl font-bold">{t("Nav.bookings")}</h1>
+                <h1 className="text-page-title">{t("Nav.bookings")}</h1>
                 <ErrorState
                     title={t("Bookings.loadError")}
                     message={errorMessage(error)}
@@ -50,7 +50,7 @@ export default function BookingsPage() {
     if (!data) {
         return (
             <main className="container space-y-6 py-8">
-                <h1 className="text-2xl font-bold">{t("Nav.bookings")}</h1>
+                <h1 className="text-page-title">{t("Nav.bookings")}</h1>
                 {[1, 2, 3].map((item) => (
                     <Skeleton key={item} className="h-36 w-full" />
                 ))}
@@ -77,7 +77,7 @@ export default function BookingsPage() {
 
     return (
         <main className="container space-y-6 py-8">
-            <h1 className="text-2xl font-bold">{t("Nav.bookings")}</h1>
+            <h1 className="text-page-title">{t("Nav.bookings")}</h1>
 
             <section className="space-y-4">
                 {bookings.map((booking) => (

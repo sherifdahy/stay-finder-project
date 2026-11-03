@@ -51,8 +51,8 @@ export function SearchPage() {
         // Extra bottom space on phones, so the floating search button never covers the last card.
         <main className="container space-y-6 py-8 max-md:pb-24">
             <header>
-                <h1 className="text-3xl font-bold">{t("title")}</h1>
-                <p className="mt-2 text-muted-foreground">
+                <h1 className="text-page-title">{t("title")}</h1>
+                <p className="mt-2 text-sm text-muted-foreground md:text-base">
                     {t("subtitle")}
                 </p>
             </header>

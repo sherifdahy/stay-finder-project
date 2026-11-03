@@ -143,7 +143,7 @@ export default function CheckoutPage() {
 
     return (
         <main className="container space-y-6 py-8">
-            <h1 className="text-xl font-bold">{t("Checkout.title")}</h1>
+            <h1 className="text-page-title">{t("Checkout.title")}</h1>
 
             {(isExpired || holdExpired) && (
                 <Alert variant="destructive">
@@ -173,7 +173,7 @@ export default function CheckoutPage() {
                     <Card className="gap-1 p-4">
                         <p className="text-xs text-muted-foreground">{t("Checkout.timeLeft")}</p>
                         <p
-                            className={`text-3xl font-bold tabular-nums ${isExpired || holdExpired ? "text-destructive" : ""}`}
+                            className={`text-2xl font-bold tabular-nums md:text-3xl ${isExpired || holdExpired ? "text-destructive" : ""}`}
                         >
                             {formatCountdown(isExpired || holdExpired ? 0 : secondsLeft)}
                         </p>

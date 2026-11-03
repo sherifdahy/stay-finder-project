@@ -33,7 +33,7 @@ export function RoomCard({
         <Card className="gap-4 p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="space-y-1">
-                    <h3 className="flex items-center gap-2 text-lg font-semibold">
+                    <h3 className="flex items-center gap-2 text-card-title">
                         <BedDouble className="size-5 text-muted-foreground" aria-hidden />
                         {room.name}
                     </h3>
@@ -62,7 +62,7 @@ export function RoomCard({
 
                 <div className="text-end">
                     <p className="text-xs text-muted-foreground">{t("Hotel.totalForStay")}</p>
-                    <p className="text-xl font-bold">{formatMoney(room.quote.total)}</p>
+                    <p className="text-price">{formatMoney(room.quote.total)}</p>
                 </div>
             </div>
 

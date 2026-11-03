@@ -7,7 +7,7 @@ export default async function NotFound() {
 
     return (
         <main className="container space-y-4 py-8">
-            <h1 className="text-2xl font-semibold">{t("NotFound.title")}</h1>
+            <h1 className="text-page-title">{t("NotFound.title")}</h1>
             <p className="text-muted-foreground">{t("NotFound.text")}</p>
             <Link href="/" className={buttonVariants()}>
                 {t("Common.backToSearch")}

@@ -5,7 +5,7 @@ export function SearchPageSkeleton() {
     return (
         <main className="container space-y-6 py-8 max-md:pb-24" aria-busy="true">
             <header className="space-y-2">
-                <Skeleton className="h-9 w-64 max-w-full" />
+                <Skeleton className="h-7 w-64 max-w-full sm:h-8 md:h-9" />
                 <Skeleton className="h-5 w-80 max-w-full" />
             </header>
 

@@ -26,7 +26,7 @@ export function BookingCard({ booking, onCancel }: BookingCardProps) {
         <Card className="gap-3 p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="space-y-1">
-                    <h2 className="text-lg font-semibold">{booking.hotelName}</h2>
+                    <h2 className="text-card-title">{booking.hotelName}</h2>
                     <p className="text-sm text-muted-foreground">{booking.roomName}</p>
                     <p className="text-sm text-muted-foreground">
                         {booking.checkIn} → {booking.checkOut} · {t("Common.adults", { count: booking.adults })}
@@ -42,7 +42,7 @@ export function BookingCard({ booking, onCancel }: BookingCardProps) {
                 </div>
 
                 <div className="flex flex-col items-end justify-between gap-3 self-stretch">
-                    <p className="text-xl font-bold">{formatMoney(booking.quote.total)}</p>
+                    <p className="text-price">{formatMoney(booking.quote.total)}</p>
 
                     {isConfirmed && booking.refundable && (
                         <Button type="button" variant="destructive" onClick={onCancel}>

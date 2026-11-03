@@ -128,7 +128,7 @@ export default function HotelDetailsPage() {
 
             <section className="space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h1 className="text-2xl font-bold">{hotel.name}</h1>
+                    <h1 className="text-page-title">{hotel.name}</h1>
                     <span aria-label={t("Common.stars", { count: hotel.stars })}>
                         {"★".repeat(hotel.stars)}
                     </span>

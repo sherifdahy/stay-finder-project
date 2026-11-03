@@ -132,6 +132,19 @@
   }
 }
 
+/* One type scale for every page: smaller on phones, full size from md up. */
+@utility text-page-title {
+  @apply text-xl font-bold sm:text-2xl md:text-3xl;
+}
+
+@utility text-card-title {
+  @apply text-base font-semibold md:text-lg;
+}
+
+@utility text-price {
+  @apply text-lg font-bold md:text-xl;
+}
+
 @utility container {
   margin-inline: auto;
   padding-inline: 1rem;

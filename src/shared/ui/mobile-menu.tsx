@@ -52,7 +52,7 @@ export function MobileMenu({ brand, links, children }: MobileMenuProps) {
                                     key={link.href}
                                     href={link.href}
                                     onClick={close}
-                                    className="flex items-center justify-between gap-3 border-b py-4 text-lg font-medium"
+                                    className="flex items-center justify-between gap-3 border-b py-4 text-base font-medium"
                                 >
                                     {link.label}
                                     <ChevronRight className="size-5 text-muted-foreground rtl:rotate-180" />

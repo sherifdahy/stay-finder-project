@@ -29,7 +29,7 @@ export function HotelCard({ hotel, stay }: HotelCardProps) {
             <div className="flex flex-1 flex-col justify-between gap-4 p-4">
                 <div className="space-y-2">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                        <h2 className="text-lg font-semibold">{hotel.name}</h2>
+                        <h2 className="text-card-title">{hotel.name}</h2>
                         <span aria-label={t("Common.stars", { count: hotel.stars })}>
                             {"★".repeat(hotel.stars)}
                         </span>
@@ -58,7 +58,7 @@ export function HotelCard({ hotel, stay }: HotelCardProps) {
                         <p className="text-xs text-muted-foreground">
                             {t("Hotel.totalForStay")}
                         </p>
-                        <p className="text-xl font-bold">
+                        <p className="text-price">
                             {formatMoney(hotel.fromTotal)}
                         </p>
                     </div>

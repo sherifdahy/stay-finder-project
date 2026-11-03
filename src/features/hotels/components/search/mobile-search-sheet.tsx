@@ -36,7 +36,7 @@ export function MobileSearchSheet({ className, onSearch, ...values }: MobileSear
             <DialogPrimitive.Portal>
                 <DialogPrimitive.Popup className="fixed inset-0 z-50 flex flex-col bg-background outline-none duration-100 data-open:animate-in data-open:fade-in-0">
                     <div className="container flex items-center justify-between gap-4 border-b py-2">
-                        <DialogPrimitive.Title className="text-lg font-semibold">
+                        <DialogPrimitive.Title className="text-base font-semibold">
                             {t("editSearch")}
                         </DialogPrimitive.Title>
                         <DialogPrimitive.Close render={<Button variant="ghost" size="icon" />}>
