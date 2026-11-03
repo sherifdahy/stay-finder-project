@@ -3,16 +3,22 @@
 /* eslint-disable @next/next/no-img-element */
 
 import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { isApiError } from "@/src/store/baseApi";
+import { Alert, AlertDescription } from "@/src/shared/ui/alert";
 import { Badge } from "@/src/shared/ui/badge";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { ErrorState } from "@/src/shared/ui/error-state";
 import { Skeleton } from "@/src/shared/ui/skeleton";
 import { useGetHotelDetailsQuery } from "../../hotel.api";
 import { parseSearchParams } from "../../search-params";
+import { PriceChangedDialog } from "./price-changed-dialog";
 import { RoomCard } from "./room-card";
+import { HotelRoom } from "../../dtos/details/hotel-room.dto";
+import { useCreateHoldMutation } from "@/src/features/booking/booking.api";
+import { useState } from "react";
+import { Quote } from "@/src/domain/types/quote";
 
 export default function HotelDetailsPage() {
 
@@ -20,6 +26,45 @@ export default function HotelDetailsPage() {
     const searchParams = useSearchParams();
     const stay = parseSearchParams(new URLSearchParams(searchParams.toString()));
     const hasDates = Boolean(stay.checkIn && stay.checkOut);
+
+    const router = useRouter();
+    const [createHold, { isLoading: isReserving }] = useCreateHoldMutation();
+    const [reservingRoomId, setReservingRoomId] = useState<string | null>(null);
+    const [message, setMessage] = useState<string | null>(null);
+    const [priceChange, setPriceChange] = useState<{
+        room: HotelRoom;
+        oldTotal: number;
+        newTotal: number;
+    } | null>(null);
+
+    async function reserve(room: HotelRoom, quotedTotal: number) {
+        setMessage(null);
+        setReservingRoomId(room.id);
+
+        try {
+            const { booking } = await createHold({
+                hotelId,
+                roomId: room.id,
+                checkIn: stay.checkIn,
+                checkOut: stay.checkOut,
+                adults: stay.adults,
+                quotedTotal,
+            }).unwrap();
+
+            router.push(`/checkout/${booking.id}`);
+        } catch (error) {
+            if (isApiError(error) && error.code === "PRICE_CHANGED") {
+                const { newQuote } = error.details as { newQuote: Quote };
+                setPriceChange({ room, oldTotal: quotedTotal, newTotal: newQuote.total });
+                return;
+            }
+
+            setPriceChange(null);
+            setMessage(isApiError(error) ? error.message : "Something went wrong.");
+        } finally {
+            setReservingRoomId(null);
+        }
+    }
 
     const { data, error, isLoading, refetch } = useGetHotelDetailsQuery(
         hasDates
@@ -103,18 +148,33 @@ export default function HotelDetailsPage() {
                 </div>
             </section>
 
+            {message && (
+                <Alert variant="destructive">
+                    <AlertDescription>{message}</AlertDescription>
+                </Alert>
+            )}
+
             <section className="space-y-4">
                 {rooms.map((room) => (
                     <RoomCard
                         key={room.id}
                         room={room}
                         adults={stay.adults}
-                        isReserving={false}
-                        disabled={false}
-                        onReserve={() => {}}
+                        isReserving={reservingRoomId === room.id}
+                        disabled={isReserving}
+                        onReserve={() => reserve(room, room.quote.total)}
                     />
                 ))}
             </section>
+
+            <PriceChangedDialog
+                open={priceChange !== null}
+                oldTotal={priceChange?.oldTotal ?? 0}
+                newTotal={priceChange?.newTotal ?? 0}
+                isSubmitting={isReserving}
+                onAccept={() => priceChange && reserve(priceChange.room, priceChange.newTotal)}
+                onCancel={() => setPriceChange(null)}
+            />
         </main>
     );
 }
