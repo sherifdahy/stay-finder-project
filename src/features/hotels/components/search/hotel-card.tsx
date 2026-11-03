@@ -15,11 +15,11 @@ interface HotelCardProps {
 
 export function HotelCard({ hotel, stay }: HotelCardProps) {
     return (
-        <Card className="overflow-hidden sm:flex-row">
+        <Card className="gap-0 py-0 sm:flex-row">
             <img
                 src={hotel.image}
                 alt={hotel.name}
-                className="h-48 w-full object-cover sm:h-auto sm:w-60"
+                className="h-48 w-full object-cover sm:h-auto sm:w-60 sm:rounded-none!"
             />
 
             <div className="flex flex-1 flex-col justify-between gap-4 p-4">
