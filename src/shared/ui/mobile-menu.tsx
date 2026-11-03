@@ -36,7 +36,7 @@ export function MobileMenu({ brand, links, children }: MobileMenuProps) {
                     <DialogPrimitive.Title className="sr-only">{t("menu")}</DialogPrimitive.Title>
 
                     <div className="container flex items-center justify-between gap-4 border-b py-2">
-                        <Link href="/" onClick={close} className="text-lg font-semibold">
+                        <Link href="/" onClick={close} className="text-lg font-bold text-primary">
                             {brand}
                         </Link>
                         <DialogPrimitive.Close render={<Button variant="ghost" size="icon" />}>

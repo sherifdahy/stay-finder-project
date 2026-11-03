@@ -19,9 +19,10 @@ export function SiteHeader({ brand, links, actions, menuActions }: SiteHeaderPro
     const t = useTranslations("Nav");
 
     return (
-        <header className="sticky top-0 z-40 border-b bg-background sm:static">
+        // White (card) over the tinted page background, so the bar stands apart.
+        <header className="sticky top-0 z-40 border-b bg-card sm:static">
             <div className="container flex items-center justify-between gap-4 py-2 sm:py-3">
-                <Link href="/" className="text-lg font-semibold">
+                <Link href="/" className="text-lg font-bold text-primary">
                     {brand}
                 </Link>
 
