@@ -37,7 +37,7 @@ export function refineStay<T extends { checkIn: string; checkOut: string }>(
         ctx.addIssue({
             code: "custom",
             path: ["checkOut"],
-            message: "Stay must be 1–14 nights.",
+            message: `Stay must be ${MIN_STAY_NIGHTS}–${MAX_STAY_NIGHTS} nights.`,
         });
     }
 }
