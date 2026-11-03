@@ -45,6 +45,7 @@ Reviewer settings: `CHAOS_MAX_LATENCY_MS=3000 CHAOS_ERROR_RATE=0.3 CHAOS_PRICE_C
 | State | Where it lives | Why |
 |---|---|---|
 | Search criteria, filters, sort | URL | Refresh, Back/Forward and shared links show the same results |
+| Filter edits not yet in the URL | Component state (`SearchPage`) | Keeps typing fast for the 400 ms debounce; the query always reads the URL |
 | Hotels and rooms | RTK Query cache | Server data; tags keep it fresh |
 | The active hold (idempotency key) | Redux slice (`bookingSlice`) | Client-only; every confirm retry must reuse the same key |
 | Countdown seconds left | Component state | Derived from `holdExpiresAt` and `serverTime`, no reason to be global |
@@ -57,6 +58,7 @@ Reviewer settings: `CHAOS_MAX_LATENCY_MS=3000 CHAOS_ERROR_RATE=0.3 CHAOS_PRICE_C
 - **Confirm retries reuse one Idempotency-Key.** A 500 on confirm may mean the booking went through and only the reply was lost, so pressing Confirm again sends the same key and the server returns the same booking. After a page refresh the key is new, but the server also returns a booking that is already confirmed.
 - **Back goes search by search.** Changing a filter uses `replace` and a new search uses `push`, so the Back button returns to the previous search, not the previous filter.
 - **A lost confirm reply still ends well.** If confirm fails but the booking went through, the checkout page redirects to `/bookings` with a success message as soon as the booking shows as `confirmed`.
+- **Filters are debounced, the URL stays the source.** Each change updates the filter inputs at once and shows the skeleton, but the URL (and so the request) changes only after 400 ms without edits. Typing a price sends one request instead of one per digit, which means fewer out-of-order responses under chaos.
 - **Stars accept a list** (`stars=4,5`), so a guest can pick several star ratings.
 - **"Today" is computed in UTC**, so near midnight in other time zones a check-in date can be off by one day (known limitation).
 - **One schema for the form and the API.** `hotelSearchSchema` validates the search form in the browser and the query string on the server; the stay rules (not in the past, 1–14 nights) live in one refine.

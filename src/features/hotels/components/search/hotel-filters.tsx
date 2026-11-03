@@ -25,15 +25,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/src/shared/ui/select";
+import type { HotelSearchParams } from "../../search-params";
 
-interface Filters {
-    maxPrice?: number;
-    stars: number[];
-    sort: HotelSort;
-}
+export type HotelFiltersValue = Pick<
+    HotelSearchParams,
+    "maxPrice" | "stars" | "sort"
+>;
 
-interface HotelFiltersProps extends Filters {
-    onChange: (filters: Filters) => void;
+interface HotelFiltersProps extends HotelFiltersValue {
+    onChange: (filters: HotelFiltersValue) => void;
 }
 
 const STAR_OPTIONS = ["5", "4", "3", "2", "1"];
