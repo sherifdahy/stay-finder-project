@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { BookingView } from "@/src/domain/types/booking";
 import {
     AlertDialog,
@@ -17,6 +18,8 @@ interface CancelBookingDialogProps {
 }
 
 export function CancelBookingDialog({ booking, onConfirm, onClose }: CancelBookingDialogProps) {
+    const t = useTranslations("Bookings");
+
     return (
         <AlertDialog
             open={booking !== null}
@@ -26,7 +29,7 @@ export function CancelBookingDialog({ booking, onConfirm, onClose }: CancelBooki
         >
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Cancel this booking?</AlertDialogTitle>
+                    <AlertDialogTitle>{t("cancelTitle")}</AlertDialogTitle>
                     <AlertDialogDescription>
                         {booking &&
                             `${booking.hotelName} · ${booking.roomName} · ${booking.checkIn} → ${booking.checkOut}`}
@@ -34,12 +37,12 @@ export function CancelBookingDialog({ booking, onConfirm, onClose }: CancelBooki
                 </AlertDialogHeader>
 
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Keep booking</AlertDialogCancel>
+                    <AlertDialogCancel>{t("keep")}</AlertDialogCancel>
                     <AlertDialogAction
                         variant="destructive"
                         onClick={() => booking && onConfirm(booking)}
                     >
-                        Cancel booking
+                        {t("cancel")}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

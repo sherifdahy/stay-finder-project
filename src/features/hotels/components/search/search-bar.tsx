@@ -1,9 +1,12 @@
 "use client";
 
 import { MapPin, Search, Users } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
+import { z } from "zod";
 import { getDefaultStay } from "@/src/domain/dates/get-default-stay";
 import type { City } from "@/src/domain/types/city";
+import { useGetCitiesQuery } from "../../hotel.api";
 import { hotelSearchSchema } from "@/src/domain/validations/hotel-search.schema";
 import StayDatePicker from "./stay-date-picker";
 import { Button } from "@/src/shared/ui/button";
@@ -27,19 +30,22 @@ interface SearchBarProps extends SearchValues {
     onSearch: (values: SearchValues) => void;
 }
 
-const CITIES = [
-    { value: "riyadh", label: "Riyadh" },
-    { value: "jeddah", label: "Jeddah" },
-    { value: "dubai", label: "Dubai" },
-];
-
 const ADULTS = [1, 2, 3, 4].map((count) => ({
     value: String(count),
     label: String(count),
 }));
 
 export function SearchBar(props: SearchBarProps) {
+    const t = useTranslations("Search");
+    const tValidation = useTranslations("Validation");
+    const locale = useLocale();
+    const { data: citiesData } = useGetCitiesQuery();
+
     const [city, setCity] = useState<string>(props.city);
+    // Until the names load, the select shows the code of the city in the URL.
+    const cities = citiesData?.cities.map((item) => ({ value: item.code, label: item.name })) ?? [
+        { value: city, label: city },
+    ];
     // No dates in the URL yet: start from today and the longest stay.
     const [checkIn, setCheckIn] = useState(() => props.checkIn || getDefaultStay().checkIn);
     const [checkOut, setCheckOut] = useState(() => props.checkOut || getDefaultStay().checkOut);
@@ -50,18 +56,19 @@ export function SearchBar(props: SearchBarProps) {
         event.preventDefault();
 
         // Same schema the API uses.
-        const result = hotelSearchSchema.safeParse({
-            city,
-            checkIn,
-            checkOut,
-            adults,
-        });
+        const result = hotelSearchSchema.safeParse(
+            { city, checkIn, checkOut, adults },
+            { error: z.locales[locale]().localeError },
+        );
 
         if (!result.success) {
             const next: Record<string, string> = {};
 
             for (const issue of result.error.issues) {
-                next[String(issue.path[0])] ??= issue.message;
+                // Our own messages are keys; the zod defaults are already in the page language.
+                next[String(issue.path[0])] ??= tValidation.has(issue.message as never)
+                    ? tValidation(issue.message as never, (issue as { params?: unknown }).params as never)
+                    : issue.message;
             }
 
             setErrors(next);
@@ -84,10 +91,10 @@ export function SearchBar(props: SearchBarProps) {
             noValidate
         >
             <div className="flex flex-col gap-1.5">
-                <Label htmlFor="city">City</Label>
+                <Label htmlFor="city">{t("city")}</Label>
                 <Select
                     modal={false}
-                    items={CITIES}
+                    items={cities}
                     value={city}
                     onValueChange={(value) => value && setCity(value)}
                 >
@@ -98,7 +105,7 @@ export function SearchBar(props: SearchBarProps) {
                         </span>
                     </SelectTrigger>
                     <SelectContent>
-                        {CITIES.map((item) => (
+                        {cities.map((item) => (
                             <SelectItem key={item.value} value={item.value}>
                                 {item.label}
                             </SelectItem>
@@ -108,7 +115,7 @@ export function SearchBar(props: SearchBarProps) {
             </div>
 
             <div className="flex flex-col gap-1.5 sm:col-span-2 lg:col-span-1">
-                <Label htmlFor="stay">Check-in – Check-out</Label>
+                <Label htmlFor="stay">{t("dates")}</Label>
                 <StayDatePicker
                     checkIn={checkIn}
                     checkOut={checkOut}
@@ -124,7 +131,7 @@ export function SearchBar(props: SearchBarProps) {
             </div>
 
             <div className="flex flex-col gap-1.5">
-                <Label htmlFor="adults">Adults</Label>
+                <Label htmlFor="adults">{t("adults")}</Label>
                 <Select
                     modal={false}
                     items={ADULTS}
@@ -150,7 +157,7 @@ export function SearchBar(props: SearchBarProps) {
             <div className="flex items-end">
                 <Button type="submit" className="w-full lg:w-auto lg:px-6">
                     <Search data-icon="inline-start" />
-                    Search
+                    {t("submit")}
                 </Button>
             </div>
         </form>

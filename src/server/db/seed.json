@@ -1,8 +1,92 @@
 {
+    "cities": [
+        {
+            "code": "riyadh",
+            "name": {
+                "en": "Riyadh",
+                "ar": "الرياض"
+            }
+        },
+        {
+            "code": "jeddah",
+            "name": {
+                "en": "Jeddah",
+                "ar": "جدة"
+            }
+        },
+        {
+            "code": "dubai",
+            "name": {
+                "en": "Dubai",
+                "ar": "دبي"
+            }
+        }
+    ],
+    "amenities": [
+        {
+            "code": "wifi",
+            "name": {
+                "en": "Wi-Fi",
+                "ar": "واي فاي"
+            }
+        },
+        {
+            "code": "pool",
+            "name": {
+                "en": "Pool",
+                "ar": "مسبح"
+            }
+        },
+        {
+            "code": "gym",
+            "name": {
+                "en": "Gym",
+                "ar": "نادٍ رياضي"
+            }
+        },
+        {
+            "code": "parking",
+            "name": {
+                "en": "Parking",
+                "ar": "موقف سيارات"
+            }
+        },
+        {
+            "code": "restaurant",
+            "name": {
+                "en": "Restaurant",
+                "ar": "مطعم"
+            }
+        },
+        {
+            "code": "spa",
+            "name": {
+                "en": "Spa",
+                "ar": "سبا"
+            }
+        },
+        {
+            "code": "beach",
+            "name": {
+                "en": "Beach",
+                "ar": "شاطئ"
+            }
+        },
+        {
+            "code": "garden",
+            "name": {
+                "en": "Garden",
+                "ar": "حديقة"
+            }
+        }
+    ],
     "hotels": [
         {
             "id": "hotel-001",
-            "name": "Riyadh Grand Hotel",
+            "name": {
+                "en": "Riyadh Grand Hotel",
+                "ar": "فندق الرياض جراند"
+            },
             "city": "riyadh",
             "stars": 5,
             "rating": 9.2,
@@ -16,7 +100,10 @@
         },
         {
             "id": "hotel-002",
-            "name": "Olaya Business Hotel",
+            "name": {
+                "en": "Olaya Business Hotel",
+                "ar": "فندق العليا للأعمال"
+            },
             "city": "riyadh",
             "stars": 4,
             "rating": 8.7,
@@ -29,7 +116,10 @@
         },
         {
             "id": "hotel-003",
-            "name": "Kingdom View Hotel",
+            "name": {
+                "en": "Kingdom View Hotel",
+                "ar": "فندق إطلالة المملكة"
+            },
             "city": "riyadh",
             "stars": 5,
             "rating": 9.0,
@@ -42,7 +132,10 @@
         },
         {
             "id": "hotel-004",
-            "name": "Riyadh Comfort Inn",
+            "name": {
+                "en": "Riyadh Comfort Inn",
+                "ar": "نزل الرياض كومفورت"
+            },
             "city": "riyadh",
             "stars": 3,
             "rating": 8.1,
@@ -54,7 +147,10 @@
         },
         {
             "id": "hotel-005",
-            "name": "Jeddah Sea View",
+            "name": {
+                "en": "Jeddah Sea View",
+                "ar": "جدة سي فيو"
+            },
             "city": "jeddah",
             "stars": 5,
             "rating": 9.4,
@@ -68,7 +164,10 @@
         },
         {
             "id": "hotel-006",
-            "name": "Jeddah Plaza",
+            "name": {
+                "en": "Jeddah Plaza",
+                "ar": "جدة بلازا"
+            },
             "city": "jeddah",
             "stars": 4,
             "rating": 8.8,
@@ -81,7 +180,10 @@
         },
         {
             "id": "hotel-007",
-            "name": "Corniche Residence",
+            "name": {
+                "en": "Corniche Residence",
+                "ar": "إقامة الكورنيش"
+            },
             "city": "jeddah",
             "stars": 5,
             "rating": 9.1,
@@ -94,7 +196,10 @@
         },
         {
             "id": "hotel-008",
-            "name": "Jeddah City Hotel",
+            "name": {
+                "en": "Jeddah City Hotel",
+                "ar": "فندق مدينة جدة"
+            },
             "city": "jeddah",
             "stars": 3,
             "rating": 7.9,
@@ -106,7 +211,10 @@
         },
         {
             "id": "hotel-009",
-            "name": "Dubai Marina Luxury",
+            "name": {
+                "en": "Dubai Marina Luxury",
+                "ar": "دبي مارينا الفاخر"
+            },
             "city": "dubai",
             "stars": 5,
             "rating": 9.5,
@@ -120,7 +228,10 @@
         },
         {
             "id": "hotel-010",
-            "name": "Downtown Dubai Hotel",
+            "name": {
+                "en": "Downtown Dubai Hotel",
+                "ar": "فندق وسط مدينة دبي"
+            },
             "city": "dubai",
             "stars": 5,
             "rating": 9.3,
@@ -133,7 +244,10 @@
         },
         {
             "id": "hotel-011",
-            "name": "Dubai Business Suites",
+            "name": {
+                "en": "Dubai Business Suites",
+                "ar": "أجنحة دبي للأعمال"
+            },
             "city": "dubai",
             "stars": 4,
             "rating": 8.6,
@@ -146,7 +260,10 @@
         },
         {
             "id": "hotel-012",
-            "name": "Palm Garden Hotel",
+            "name": {
+                "en": "Palm Garden Hotel",
+                "ar": "فندق حدائق النخيل"
+            },
             "city": "dubai",
             "stars": 3,
             "rating": 8.0,
@@ -162,7 +279,10 @@
         {
             "id": "room-001",
             "hotelId": "hotel-001",
-            "name": "Standard Room",
+            "name": {
+                "en": "Standard Room",
+                "ar": "غرفة قياسية"
+            },
             "maxGuests": 2,
             "baseRate": 45000,
             "refundable": true,
@@ -171,7 +291,10 @@
         {
             "id": "room-002",
             "hotelId": "hotel-001",
-            "name": "Deluxe Suite",
+            "name": {
+                "en": "Deluxe Suite",
+                "ar": "جناح ديلوكس"
+            },
             "maxGuests": 4,
             "baseRate": 85000,
             "refundable": true,
@@ -180,7 +303,10 @@
         {
             "id": "room-003",
             "hotelId": "hotel-002",
-            "name": "Standard Room",
+            "name": {
+                "en": "Standard Room",
+                "ar": "غرفة قياسية"
+            },
             "maxGuests": 2,
             "baseRate": 35000,
             "refundable": false,
@@ -189,7 +315,10 @@
         {
             "id": "room-004",
             "hotelId": "hotel-002",
-            "name": "Executive Room",
+            "name": {
+                "en": "Executive Room",
+                "ar": "غرفة تنفيذية"
+            },
             "maxGuests": 3,
             "baseRate": 55000,
             "refundable": true,
@@ -198,7 +327,10 @@
         {
             "id": "room-005",
             "hotelId": "hotel-003",
-            "name": "Classic Room",
+            "name": {
+                "en": "Classic Room",
+                "ar": "غرفة كلاسيكية"
+            },
             "maxGuests": 2,
             "baseRate": 40000,
             "refundable": true,
@@ -207,7 +339,10 @@
         {
             "id": "room-006",
             "hotelId": "hotel-003",
-            "name": "Royal Suite",
+            "name": {
+                "en": "Royal Suite",
+                "ar": "جناح ملكي"
+            },
             "maxGuests": 4,
             "baseRate": 95000,
             "refundable": true,
@@ -216,7 +351,10 @@
         {
             "id": "room-007",
             "hotelId": "hotel-004",
-            "name": "Economy Room",
+            "name": {
+                "en": "Economy Room",
+                "ar": "غرفة اقتصادية"
+            },
             "maxGuests": 2,
             "baseRate": 22000,
             "refundable": false,
@@ -225,7 +363,10 @@
         {
             "id": "room-008",
             "hotelId": "hotel-004",
-            "name": "Family Room",
+            "name": {
+                "en": "Family Room",
+                "ar": "غرفة عائلية"
+            },
             "maxGuests": 4,
             "baseRate": 40000,
             "refundable": true,
@@ -234,7 +375,10 @@
         {
             "id": "room-009",
             "hotelId": "hotel-005",
-            "name": "Sea View Room",
+            "name": {
+                "en": "Sea View Room",
+                "ar": "غرفة بإطلالة بحرية"
+            },
             "maxGuests": 2,
             "baseRate": 80000,
             "refundable": true,
@@ -243,7 +387,10 @@
         {
             "id": "room-010",
             "hotelId": "hotel-005",
-            "name": "Ocean Suite",
+            "name": {
+                "en": "Ocean Suite",
+                "ar": "جناح المحيط"
+            },
             "maxGuests": 4,
             "baseRate": 140000,
             "refundable": true,
@@ -252,7 +399,10 @@
         {
             "id": "room-011",
             "hotelId": "hotel-006",
-            "name": "Standard Room",
+            "name": {
+                "en": "Standard Room",
+                "ar": "غرفة قياسية"
+            },
             "maxGuests": 2,
             "baseRate": 45000,
             "refundable": false,
@@ -261,7 +411,10 @@
         {
             "id": "room-012",
             "hotelId": "hotel-006",
-            "name": "Premium Room",
+            "name": {
+                "en": "Premium Room",
+                "ar": "غرفة مميزة"
+            },
             "maxGuests": 3,
             "baseRate": 65000,
             "refundable": true,
@@ -270,7 +423,10 @@
         {
             "id": "room-013",
             "hotelId": "hotel-007",
-            "name": "Corniche Room",
+            "name": {
+                "en": "Corniche Room",
+                "ar": "غرفة الكورنيش"
+            },
             "maxGuests": 2,
             "baseRate": 70000,
             "refundable": true,
@@ -279,7 +435,10 @@
         {
             "id": "room-014",
             "hotelId": "hotel-007",
-            "name": "Family Suite",
+            "name": {
+                "en": "Family Suite",
+                "ar": "جناح عائلي"
+            },
             "maxGuests": 4,
             "baseRate": 120000,
             "refundable": true,
@@ -288,7 +447,10 @@
         {
             "id": "room-015",
             "hotelId": "hotel-008",
-            "name": "Standard Room",
+            "name": {
+                "en": "Standard Room",
+                "ar": "غرفة قياسية"
+            },
             "maxGuests": 2,
             "baseRate": 30000,
             "refundable": false,
@@ -297,7 +459,10 @@
         {
             "id": "room-016",
             "hotelId": "hotel-008",
-            "name": "Deluxe Room",
+            "name": {
+                "en": "Deluxe Room",
+                "ar": "غرفة ديلوكس"
+            },
             "maxGuests": 3,
             "baseRate": 45000,
             "refundable": true,
@@ -306,7 +471,10 @@
         {
             "id": "room-017",
             "hotelId": "hotel-009",
-            "name": "Marina Room",
+            "name": {
+                "en": "Marina Room",
+                "ar": "غرفة المارينا"
+            },
             "maxGuests": 2,
             "baseRate": 110000,
             "refundable": true,
@@ -315,7 +483,10 @@
         {
             "id": "room-018",
             "hotelId": "hotel-009",
-            "name": "Luxury Suite",
+            "name": {
+                "en": "Luxury Suite",
+                "ar": "جناح فاخر"
+            },
             "maxGuests": 4,
             "baseRate": 190000,
             "refundable": true,
@@ -324,7 +495,10 @@
         {
             "id": "room-019",
             "hotelId": "hotel-010",
-            "name": "Downtown Room",
+            "name": {
+                "en": "Downtown Room",
+                "ar": "غرفة وسط المدينة"
+            },
             "maxGuests": 2,
             "baseRate": 95000,
             "refundable": true,
@@ -333,7 +507,10 @@
         {
             "id": "room-020",
             "hotelId": "hotel-010",
-            "name": "Premium Suite",
+            "name": {
+                "en": "Premium Suite",
+                "ar": "جناح مميز"
+            },
             "maxGuests": 4,
             "baseRate": 160000,
             "refundable": false,
@@ -342,7 +519,10 @@
         {
             "id": "room-021",
             "hotelId": "hotel-011",
-            "name": "Business Room",
+            "name": {
+                "en": "Business Room",
+                "ar": "غرفة أعمال"
+            },
             "maxGuests": 2,
             "baseRate": 65000,
             "refundable": false,
@@ -351,7 +531,10 @@
         {
             "id": "room-022",
             "hotelId": "hotel-011",
-            "name": "Executive Suite",
+            "name": {
+                "en": "Executive Suite",
+                "ar": "جناح تنفيذي"
+            },
             "maxGuests": 3,
             "baseRate": 90000,
             "refundable": true,
@@ -360,7 +543,10 @@
         {
             "id": "room-023",
             "hotelId": "hotel-012",
-            "name": "Garden Room",
+            "name": {
+                "en": "Garden Room",
+                "ar": "غرفة الحديقة"
+            },
             "maxGuests": 2,
             "baseRate": 38000,
             "refundable": true,
@@ -369,7 +555,10 @@
         {
             "id": "room-024",
             "hotelId": "hotel-012",
-            "name": "Family Room",
+            "name": {
+                "en": "Family Room",
+                "ar": "غرفة عائلية"
+            },
             "maxGuests": 4,
             "baseRate": 60000,
             "refundable": true,

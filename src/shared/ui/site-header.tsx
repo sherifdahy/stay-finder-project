@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { Link } from "@/src/i18n/navigation";
 import { MobileMenu } from "./mobile-menu";
@@ -15,6 +16,8 @@ interface SiteHeaderProps {
 }
 
 export function SiteHeader({ brand, links, actions, menuActions }: SiteHeaderProps) {
+    const t = useTranslations("Nav");
+
     return (
         <header className="sticky top-0 z-40 border-b bg-background sm:static">
             <div className="container flex items-center justify-between gap-4 py-2 sm:py-3">
@@ -22,7 +25,7 @@ export function SiteHeader({ brand, links, actions, menuActions }: SiteHeaderPro
                     {brand}
                 </Link>
 
-                <nav aria-label="Main" className="hidden items-center gap-4 text-sm sm:ms-auto sm:flex">
+                <nav aria-label={t("main")} className="hidden items-center gap-4 text-sm sm:ms-auto sm:flex">
                     {links.map((link) => (
                         <Link
                             key={link.href}

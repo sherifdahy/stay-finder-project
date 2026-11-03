@@ -1,4 +1,5 @@
 import { BedDouble, ShieldCheck, ShieldX, Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { formatMoney } from "@/src/shared/lib/format-money";
 import { Badge } from "@/src/shared/ui/badge";
 import { Button } from "@/src/shared/ui/button";
@@ -25,6 +26,7 @@ export function RoomCard({
     disabled,
     onReserve,
 }: RoomCardProps) {
+    const t = useTranslations();
     const soldOut = room.unitsLeft === 0;
 
     return (
@@ -38,7 +40,7 @@ export function RoomCard({
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
                         <p className="flex items-center gap-1">
                             <Users className="size-4" aria-hidden />
-                            Up to {room.maxGuests} guests
+                            {t("Hotel.upToGuests", { count: room.maxGuests })}
                         </p>
                         <p className="flex items-center gap-1">
                             {room.refundable ? (
@@ -46,48 +48,48 @@ export function RoomCard({
                             ) : (
                                 <ShieldX className="size-4" aria-hidden />
                             )}
-                            {room.refundable ? "Refundable" : "Non-refundable"}
+                            {room.refundable ? t("Common.refundable") : t("Common.nonRefundable")}
                         </p>
                     </div>
                     <p className="text-sm">
                         {soldOut ? (
-                            <span className="font-medium text-destructive">Sold out</span>
+                            <span className="font-medium text-destructive">{t("Hotel.soldOut")}</span>
                         ) : (
-                            `${room.unitsLeft} left`
+                            t("Hotel.unitsLeft", { count: room.unitsLeft })
                         )}
                     </p>
                 </div>
 
-                <div className="text-right">
-                    <p className="text-xs text-muted-foreground">Total for your stay</p>
+                <div className="text-end">
+                    <p className="text-xs text-muted-foreground">{t("Hotel.totalForStay")}</p>
                     <p className="text-xl font-bold">{formatMoney(room.quote.total)}</p>
                 </div>
             </div>
 
             <Collapsible>
                 <CollapsibleTrigger className="text-sm font-medium underline underline-offset-4">
-                    Price per night
+                    {t("Hotel.pricePerNight")}
                 </CollapsibleTrigger>
                 <CollapsibleContent className="mt-2 space-y-1 text-sm">
                     {room.quote.nights.map((night) => (
                         <div key={night.date} className="flex items-center justify-between">
                             <span className="flex items-center gap-2">
                                 {night.date}
-                                {night.isWeekend && <Badge variant="secondary">Weekend</Badge>}
+                                {night.isWeekend && <Badge variant="secondary">{t("Hotel.weekend")}</Badge>}
                             </span>
                             <span>{formatMoney(night.rate)}</span>
                         </div>
                     ))}
                     <div className="flex justify-between border-t pt-1">
-                        <span>Subtotal</span>
+                        <span>{t("Hotel.subtotal")}</span>
                         <span>{formatMoney(room.quote.subtotal)}</span>
                     </div>
                     <div className="flex justify-between">
-                        <span>VAT 15%</span>
+                        <span>{t("Hotel.vat")}</span>
                         <span>{formatMoney(room.quote.vat)}</span>
                     </div>
                     <div className="flex justify-between font-semibold">
-                        <span>Total</span>
+                        <span>{t("Common.total")}</span>
                         <span>{formatMoney(room.quote.total)}</span>
                     </div>
                 </CollapsibleContent>
@@ -99,11 +101,11 @@ export function RoomCard({
                     disabled={!room.canAccommodate || soldOut || disabled}
                     onClick={onReserve}
                 >
-                    {isReserving ? "Reserving…" : "Reserve"}
+                    {isReserving ? t("Common.reserving") : t("Hotel.reserve")}
                 </Button>
                 {!room.canAccommodate && (
                     <p className="text-sm text-muted-foreground">
-                        Too small for {adults} guests
+                        {t("Hotel.tooSmall", { count: adults })}
                     </p>
                 )}
             </div>

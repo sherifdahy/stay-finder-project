@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { MapPin, Star } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { Hotel } from "@/src/domain/types/hotel";
 import { Link } from "@/src/i18n/navigation";
 import { formatMoney } from "@/src/shared/lib/format-money";
@@ -15,6 +16,8 @@ interface HotelCardProps {
 }
 
 export function HotelCard({ hotel, stay }: HotelCardProps) {
+    const t = useTranslations();
+
     return (
         <Card className="gap-0 py-0 sm:flex-row">
             <img
@@ -27,7 +30,7 @@ export function HotelCard({ hotel, stay }: HotelCardProps) {
                 <div className="space-y-2">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                         <h2 className="text-lg font-semibold">{hotel.name}</h2>
-                        <span aria-label={`${hotel.stars} stars`}>
+                        <span aria-label={t("Common.stars", { count: hotel.stars })}>
                             {"★".repeat(hotel.stars)}
                         </span>
                     </div>
@@ -35,17 +38,17 @@ export function HotelCard({ hotel, stay }: HotelCardProps) {
                     <p className="flex items-center gap-1 text-sm font-medium">
                         <Star className="size-4 fill-amber-400 text-amber-400" aria-hidden />
                         {hotel.rating}
-                        <span className="sr-only">rating</span>
+                        <span className="sr-only">{t("Common.rating")}</span>
                     </p>
 
-                    <p className="flex items-center gap-1 text-sm capitalize text-muted-foreground">
+                    <p className="flex items-center gap-1 text-sm text-muted-foreground">
                         <MapPin className="size-4" aria-hidden />
-                        {hotel.city}
+                        {hotel.cityName}
                     </p>
 
                     <div className="flex flex-wrap gap-2 pt-1">
                         {hotel.amenities.map((amenity) => (
-                            <AmenityIcon key={amenity} amenity={amenity} />
+                            <AmenityIcon key={amenity.code} amenity={amenity} />
                         ))}
                     </div>
                 </div>
@@ -53,7 +56,7 @@ export function HotelCard({ hotel, stay }: HotelCardProps) {
                 <div className="flex flex-wrap items-end justify-between gap-3 border-t pt-4">
                     <div>
                         <p className="text-xs text-muted-foreground">
-                            Total for your stay
+                            {t("Hotel.totalForStay")}
                         </p>
                         <p className="text-xl font-bold">
                             {formatMoney(hotel.fromTotal)}
@@ -64,7 +67,7 @@ export function HotelCard({ hotel, stay }: HotelCardProps) {
                         href={hotelHref(hotel.id, stay)}
                         className={buttonVariants()}
                     >
-                        View hotel
+                        {t("Hotel.viewHotel")}
                     </Link>
                 </div>
             </div>

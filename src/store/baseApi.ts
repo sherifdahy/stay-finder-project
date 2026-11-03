@@ -1,4 +1,5 @@
 import { API_ERROR_CODE, type ApiErrorCode } from "@/src/domain/constants/api-error-code";
+import { DEFAULT_LOCALE, isLocale } from "@/src/domain/constants/locale";
 import {
     createApi,
     fetchBaseQuery,
@@ -10,6 +11,7 @@ import {
 export type { ApiErrorCode };
 
 // The single error shape every component receives from RTK Query.
+// `message` is empty when the client made the error; useErrorMessage words it.
 export interface ApiError {
     status: number | "FETCH_ERROR";
     code: ApiErrorCode;
@@ -34,7 +36,7 @@ function toApiError(error: FetchBaseQueryError): ApiError {
         return {
             status: error.status,
             code: body?.code ?? API_ERROR_CODE.INTERNAL_ERROR,
-            message: body?.message ?? "Something went wrong.",
+            message: body?.message ?? "",
             details: body?.details ?? null,
         };
     }
@@ -42,12 +44,23 @@ function toApiError(error: FetchBaseQueryError): ApiError {
     return {
         status: "FETCH_ERROR",
         code: API_ERROR_CODE.NETWORK_ERROR,
-        message: "Network error. Please check your connection.",
+        message: "",
         details: null,
     };
 }
 
-const rawBaseQuery = fetchBaseQuery({ baseUrl: "/api" });
+// The URL is the only source of the language. A language switch rebuilds the store, so no cache
+// from the other language survives it.
+const rawBaseQuery = fetchBaseQuery({
+    baseUrl: "/api",
+    prepareHeaders: (headers) => {
+        const segment = window.location.pathname.split("/")[1];
+
+        headers.set("Accept-Language", isLocale(segment) ? segment : DEFAULT_LOCALE);
+
+        return headers;
+    },
+});
 
 const baseQuery: BaseQueryFn<string | FetchArgs, unknown, ApiError> = async (
     args,

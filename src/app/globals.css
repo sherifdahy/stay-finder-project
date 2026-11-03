@@ -127,6 +127,9 @@
   html {
     @apply font-sans;
   }
+  html[dir="rtl"] {
+    font-family: var(--font-arabic), var(--font-geist-sans);
+  }
 }
 
 @utility container {

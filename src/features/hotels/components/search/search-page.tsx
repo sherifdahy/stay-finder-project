@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useRouter } from "@/src/i18n/navigation";
@@ -15,6 +16,7 @@ import { HotelResults } from "./hotel-results";
 import { SearchBar } from "./search-bar";
 
 export function SearchPage() {
+    const t = useTranslations("Search");
     const router = useRouter();
     const urlSearchParams = useSearchParams();
 
@@ -39,9 +41,9 @@ export function SearchPage() {
     return (
         <main className="container space-y-6 py-8">
             <header>
-                <h1 className="text-3xl font-bold">Find your next stay</h1>
+                <h1 className="text-3xl font-bold">{t("title")}</h1>
                 <p className="mt-2 text-muted-foreground">
-                    Search and compare available hotels.
+                    {t("subtitle")}
                 </p>
             </header>
 
@@ -56,7 +58,7 @@ export function SearchPage() {
 
             {!hasDates ? (
                 <div className="rounded-xl border p-6 text-center">
-                    Select your check-in and check-out dates to search for hotels.
+                    {t("selectDates")}
                 </div>
             ) : (
                 <section className="grid gap-6 md:grid-cols-[260px_1fr]">

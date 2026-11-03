@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Fragment } from "react";
 import type { HotelSort } from "@/src/domain/validations/sort.schema";
 import { Card, CardContent } from "@/src/shared/ui/card";
@@ -37,18 +38,19 @@ interface HotelFiltersProps extends Filters {
 
 const STAR_OPTIONS = ["5", "4", "3", "2", "1"];
 
-const SORT_OPTIONS = [
-    { value: "price", label: "Price" },
-    { value: "rating", label: "Rating" },
-];
-
 export function HotelFilters({
     maxPrice,
     stars,
     sort,
     onChange,
 }: HotelFiltersProps) {
+    const t = useTranslations("Filters");
+    const tStars = useTranslations("Common");
     const starsAnchor = useComboboxAnchor();
+    const sortOptions = (["price", "rating"] as const).map((value) => ({
+        value,
+        label: t(`sort.${value}`),
+    }));
 
     function changeStars(values: string[]) {
         onChange({ maxPrice, stars: values.map(Number).sort(), sort });
@@ -58,12 +60,12 @@ export function HotelFilters({
         <Card className="self-start md:sticky md:top-4">
             <CardContent className="space-y-6">
                 <div className="space-y-1.5">
-                    <Label htmlFor="maxPrice">Max total price (SAR)</Label>
+                    <Label htmlFor="maxPrice">{t("maxPrice")}</Label>
                     <Input
                         id="maxPrice"
                         type="number"
                         min={0}
-                        placeholder="Any price"
+                        placeholder={t("anyPrice")}
                         value={maxPrice === undefined ? "" : maxPrice / 100}
                         onChange={(event) => {
                             const value = event.target.value;
@@ -81,7 +83,7 @@ export function HotelFilters({
                 </div>
 
                 <div className="space-y-1.5">
-                    <Label htmlFor="stars">Stars</Label>
+                    <Label htmlFor="stars">{t("stars")}</Label>
                     <Combobox
                         multiple
                         openOnInputClick
@@ -94,22 +96,22 @@ export function HotelFilters({
                                 {(values: string[]) => (
                                     <Fragment>
                                         {values.map((value) => (
-                                            <ComboboxChip key={value}>{value} stars</ComboboxChip>
+                                            <ComboboxChip key={value}>{tStars("stars", { count: Number(value) })}</ComboboxChip>
                                         ))}
                                         <ComboboxChipsInput
                                             id="stars"
-                                            placeholder={values.length === 0 ? "Any rating" : ""}
+                                            placeholder={values.length === 0 ? t("anyRating") : ""}
                                         />
                                     </Fragment>
                                 )}
                             </ComboboxValue>
                         </ComboboxChips>
                         <ComboboxContent anchor={starsAnchor}>
-                            <ComboboxEmpty>No ratings found.</ComboboxEmpty>
+                            <ComboboxEmpty>{t("noRatings")}</ComboboxEmpty>
                             <ComboboxList>
                                 {(item: string) => (
                                     <ComboboxItem key={item} value={item}>
-                                        {item} stars
+                                        {tStars("stars", { count: Number(item) })}
                                     </ComboboxItem>
                                 )}
                             </ComboboxList>
@@ -118,10 +120,10 @@ export function HotelFilters({
                 </div>
 
                 <div className="space-y-1.5">
-                    <Label htmlFor="sort">Sort by</Label>
+                    <Label htmlFor="sort">{t("sortBy")}</Label>
                     <Select
                         modal={false}
-                        items={SORT_OPTIONS}
+                        items={sortOptions}
                         value={sort}
                         onValueChange={(value) =>
                             value &&
@@ -136,7 +138,7 @@ export function HotelFilters({
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                            {SORT_OPTIONS.map((item) => (
+                            {sortOptions.map((item) => (
                                 <SelectItem key={item.value} value={item.value}>
                                     {item.label}
                                 </SelectItem>

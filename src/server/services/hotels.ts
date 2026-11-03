@@ -1,4 +1,5 @@
 import { buildQuote } from "@/src/domain/pricing";
+import type { Locale } from "@/src/domain/constants/locale";
 import { Hotel } from "@/src/domain/types/hotel";
 import { Room } from "@/src/domain/types/room";
 import { getHotels } from "../db/memory-db/hotels/get-hotels";
@@ -7,6 +8,7 @@ import { getUnitsLeft } from "../db/memory-db/units/get-units-left";
 import type { HotelSearchInput } from "@/src/domain/validations/hotel-search.schema";
 import { getEffectiveBaseRate } from "../db/memory-db/rooms/get-effective-base-rate";
 import { getHotelById } from "../db/memory-db/hotels/get-hotel-by-id";
+import { toHotel, toRoom } from "./mappers";
 
 
 
@@ -27,6 +29,7 @@ export interface HotelDetailsResult {
 
 export function searchHotels(
     params: HotelSearchInput,
+    locale: Locale,
 ): HotelSearchResult[] {
     const {
         city,
@@ -92,7 +95,7 @@ export function searchHotels(
         }
 
         results.push({
-            ...hotel,
+            ...toHotel(hotel, locale),
             fromTotal,
         });
     }
@@ -111,6 +114,7 @@ export function getHotelDetails(
     checkIn: string,
     checkOut: string,
     adults: number,
+    locale: Locale,
 ): HotelDetailsResult | null {
     const hotel = getHotelById(hotelId);
 
@@ -121,14 +125,14 @@ export function getHotelDetails(
     const rooms = getRoomsByHotelId(hotelId);
 
     const roomResults: HotelRoomResult[] = rooms.map((room) => ({
-        ...room,
+        ...toRoom(room, locale),
         quote: buildQuote(getEffectiveBaseRate(room), checkIn, checkOut),
         unitsLeft: getUnitsLeft(room, checkIn, checkOut),
         canAccommodate: adults <= room.maxGuests,
     }));
 
     return {
-        hotel,
+        hotel: toHotel(hotel, locale),
         rooms: roomResults,
     };
 }

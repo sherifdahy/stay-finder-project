@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { formatMoney } from "@/src/shared/lib/format-money";
 import {
     AlertDialog,
@@ -27,6 +28,8 @@ export function PriceChangedDialog({
     onAccept,
     onCancel,
 }: PriceChangedDialogProps) {
+    const t = useTranslations();
+
     return (
         <AlertDialog
             open={open}
@@ -36,7 +39,7 @@ export function PriceChangedDialog({
         >
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>The price has changed</AlertDialogTitle>
+                    <AlertDialogTitle>{t("Hotel.priceChanged")}</AlertDialogTitle>
                     <AlertDialogDescription>
                         <span className="text-muted-foreground line-through">
                             {formatMoney(oldTotal)}
@@ -48,9 +51,9 @@ export function PriceChangedDialog({
                 </AlertDialogHeader>
 
                 <AlertDialogFooter>
-                    <AlertDialogCancel disabled={isSubmitting}>Go back</AlertDialogCancel>
+                    <AlertDialogCancel disabled={isSubmitting}>{t("Hotel.goBack")}</AlertDialogCancel>
                     <AlertDialogAction disabled={isSubmitting} onClick={onAccept}>
-                        {isSubmitting ? "Reserving…" : "Accept new price"}
+                        {isSubmitting ? t("Common.reserving") : t("Hotel.acceptNewPrice")}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

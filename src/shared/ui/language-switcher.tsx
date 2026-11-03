@@ -1,12 +1,10 @@
 "use client";
 
 import { Check, ChevronDown, Languages } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { LOCALES, type Locale } from "@/src/domain/constants/locale";
-import { usePathname, useRouter } from "@/src/i18n/navigation";
 import { cn } from "cn";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/src/shared/ui/collapsible";
-import { useCloseMobileMenu } from "@/src/shared/ui/mobile-menu";
 import {
     Select,
     SelectContent,
@@ -21,19 +19,21 @@ const LOCALE_NAMES: Record<Locale, string> = { en: "English", ar: "العربي�
 const ITEMS = LOCALES.map((value) => ({ value, label: LOCALE_NAMES[value] }));
 
 function useSwitchLocale() {
-    const pathname = usePathname();
-    const router = useRouter();
-    const closeMenu = useCloseMobileMenu();
-
     return function switchTo(next: Locale) {
-        closeMenu();
-        // Read the query at click time: useSearchParams would force a Suspense boundary around the header.
-        router.replace(`${pathname}${window.location.search}`, { locale: next });
+        // The path and query are read at click time: usePathname and useSearchParams in the header
+        // would need a Suspense boundary around it. A full page load, because a client-side switch
+        // leaves the previous language's layout in the DOM.
+        const { pathname, search } = window.location;
+        const rest = pathname.split("/").slice(2).join("/");
+
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+        window.location.assign(`/${next}${rest && `/${rest}`}${search}`);
     };
 }
 
 // Dropdown for the desktop header.
 export function LanguageSwitcher() {
+    const t = useTranslations("Nav");
     const locale = useLocale();
     const switchTo = useSwitchLocale();
 
@@ -44,7 +44,7 @@ export function LanguageSwitcher() {
             value={locale}
             onValueChange={(value) => value && switchTo(value as Locale)}
         >
-            <SelectTrigger size="sm" aria-label="Language" className="w-32">
+            <SelectTrigger size="sm" aria-label={t("language")} className="w-32">
                 <span className="flex items-center gap-2">
                     <Languages className="text-muted-foreground" />
                     <SelectValue />

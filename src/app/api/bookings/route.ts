@@ -1,43 +1,19 @@
-import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 import { createHoldSchema } from "@/src/domain/validations/create-hold.Schema";
-import { errorResponse, toApiError } from "@/src/server/http/apiError";
+import { parseInput } from "@/src/server/http/parse-input";
+import { withApi } from "@/src/server/http/with-api";
 import { createHold, getAllBookings } from "@/src/server/services/bookings";
-import { withChaos } from "@/src/server/withChaos";
 
-export const POST = withChaos(async (request: Request, _context: unknown, chaos) => {
-    try {
-        const body: unknown = await request.json();
+export const POST = withApi(async (request: Request, _context: unknown, { chaos }) => {
+    const input = parseInput(createHoldSchema, await request.json(), 422);
 
-        const validation = createHoldSchema.safeParse(body);
+    const result = createHold(input, { changePrice: chaos.shouldChangePrice() });
 
-        if (!validation.success) {
-            return errorResponse(
-                API_ERROR_CODE.VALIDATION_ERROR,
-                "Invalid booking data.",
-                422,
-                validation.error.issues
-            );
-        }
-
-        const result = createHold(validation.data, {
-            changePrice: chaos.shouldChangePrice(),
-        });
-
-        return Response.json(result, { status: 201 });
-    } catch (error) {
-        return toApiError(error);
-    }
+    return Response.json(result, { status: 201 });
 });
 
-export const GET = withChaos(async () => {
-    try {
-        const bookings = getAllBookings();
-
-        return Response.json({
-            bookings,
-            serverTime: new Date().toISOString(),
-        });
-    } catch (error) {
-        return toApiError(error);
-    }
+export const GET = withApi(async (_request: Request, _context: unknown, { locale }) => {
+    return Response.json({
+        bookings: getAllBookings(locale),
+        serverTime: new Date().toISOString(),
+    });
 });

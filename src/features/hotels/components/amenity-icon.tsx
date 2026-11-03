@@ -10,6 +10,7 @@ import {
     Wifi,
     type LucideIcon,
 } from "lucide-react";
+import type { HotelAmenity } from "@/src/domain/types/hotel";
 
 const AMENITY_ICONS: Record<string, LucideIcon> = {
     beach: Umbrella,
@@ -23,16 +24,16 @@ const AMENITY_ICONS: Record<string, LucideIcon> = {
 };
 
 // An amenity we have no icon for still shows up, with a check mark.
-export function AmenityIcon({ amenity }: { amenity: string }) {
-    const Icon = AMENITY_ICONS[amenity] ?? Check;
+export function AmenityIcon({ amenity }: { amenity: HotelAmenity }) {
+    const Icon = AMENITY_ICONS[amenity.code] ?? Check;
 
     return (
         <span
-            title={amenity}
+            title={amenity.label}
             className="inline-flex size-8 items-center justify-center rounded-lg bg-muted text-muted-foreground"
         >
             <Icon className="size-4" aria-hidden />
-            <span className="sr-only capitalize">{amenity}</span>
+            <span className="sr-only">{amenity.label}</span>
         </span>
     );
 }

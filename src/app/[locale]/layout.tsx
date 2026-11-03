@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import "../globals.css";
 import { getDirection, LOCALES } from "@/src/domain/constants/locale";
@@ -20,12 +20,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const navLinks = [{ href: "/", label: "Hotels" }, { href: "/bookings", label: "My bookings" }];
+const ibmPlexArabic = IBM_Plex_Sans_Arabic({
+  variable: "--font-arabic",
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+});
 
-export const metadata: Metadata = {
-  title: "StayFinder",
-  description: "Find and book hotels in Riyadh, Jeddah and Dubai.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Metadata");
+
+  return { title: t("title"), description: t("description") };
+}
 
 // Cache Components needs at least one value for the root param.
 export function generateStaticParams() {
@@ -34,16 +39,21 @@ export function generateStaticParams() {
 
 export default async function Layout({ children }: LayoutProps<"/[locale]">) {
   const locale = await getLocale();
+  const t = await getTranslations("Nav");
+  const navLinks = [
+    { href: "/", label: t("hotels") },
+    { href: "/bookings", label: t("bookings") },
+  ];
 
   return (
     <html
       lang={locale}
       dir={getDirection(locale)}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${ibmPlexArabic.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col overflow-x-clip">
         <NextIntlClientProvider>
-          <SiteHeader brand="StayFinder" links={navLinks} actions={<LanguageSwitcher />} menuActions={<LanguageList />} />
+          <SiteHeader brand={t("brand")} links={navLinks} actions={<LanguageSwitcher />} menuActions={<LanguageList />} />
           {/* makeStore() uses Math.random (RTK Query's nanoid), which Next 16 only allows inside Suspense. */}
           <Suspense fallback={null}>
             <StoreProvider>

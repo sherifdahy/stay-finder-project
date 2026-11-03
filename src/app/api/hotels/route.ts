@@ -1,30 +1,12 @@
-import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 import { hotelSearchSchema } from "@/src/domain/validations/hotel-search.schema";
-import { errorResponse, toApiError } from "@/src/server/http/apiError";
+import { parseInput } from "@/src/server/http/parse-input";
+import { withApi } from "@/src/server/http/with-api";
 import { searchHotels } from "@/src/server/services/hotels";
-import { withChaos } from "@/src/server/withChaos";
 
-export const GET = withChaos(async (request: Request) => {
-    try {
-        const { searchParams } = new URL(request.url);
+export const GET = withApi(async (request: Request, _context: unknown, { locale }) => {
+    const { searchParams } = new URL(request.url);
 
-        const validation = hotelSearchSchema.safeParse(
-            Object.fromEntries(searchParams)
-        );
+    const params = parseInput(hotelSearchSchema, Object.fromEntries(searchParams), 400);
 
-        if (!validation.success) {
-            return errorResponse(
-                API_ERROR_CODE.VALIDATION_ERROR,
-                "Invalid hotel search parameters.",
-                400,
-                validation.error.issues
-            );
-        }
-
-        const hotels = searchHotels(validation.data);
-
-        return Response.json({ hotels });
-    } catch (error) {
-        return toApiError(error);
-    }
+    return Response.json({ hotels: searchHotels(params, locale) });
 });

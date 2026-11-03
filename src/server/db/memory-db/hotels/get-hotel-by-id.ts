@@ -1,8 +1,8 @@
-import { Hotel } from "@/src/domain/types/hotel";
+import type { HotelRecord } from "../../records";
 import { hotels } from "../memoryDb";
 
 export function getHotelById(
     hotelId: string
-): Hotel | undefined {
+): HotelRecord | undefined {
     return hotels.find((hotel) => hotel.id === hotelId);
 }

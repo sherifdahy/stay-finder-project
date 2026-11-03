@@ -1,10 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { BookingView } from "@/src/domain/types/booking";
 import { Link } from "@/src/i18n/navigation";
-import { isApiError } from "@/src/store/baseApi";
+import { useErrorMessage } from "@/src/shared/hooks/use-error-message";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { ErrorState } from "@/src/shared/ui/error-state";
 import { Skeleton } from "@/src/shared/ui/skeleton";
@@ -13,6 +14,8 @@ import { BookingCard } from "./booking-card";
 import { CancelBookingDialog } from "./cancel-booking-dialog";
 
 export default function BookingsPage() {
+    const t = useTranslations();
+    const errorMessage = useErrorMessage();
     const { data, error, refetch } = useGetBookingsQuery();
     const [cancelBooking] = useCancelBookingMutation();
     const [bookingToCancel, setBookingToCancel] = useState<BookingView | null>(null);
@@ -23,11 +26,10 @@ export default function BookingsPage() {
 
         try {
             await cancelBooking(booking.id).unwrap();
-            toast.success("Your booking was cancelled.");
+            toast.success(t("Bookings.cancelled"));
         } catch (error) {
             // cancelBooking already rolled the card back; tell the guest why.
-            const reason = isApiError(error) ? error.message : "Something went wrong.";
-            toast.error(`Could not cancel the booking. ${reason}`);
+            toast.error(t("Bookings.cancelFailed", { reason: errorMessage(error) }));
         }
     }
 
@@ -35,10 +37,10 @@ export default function BookingsPage() {
     if (error && !data) {
         return (
             <main className="container space-y-6 py-8">
-                <h1 className="text-2xl font-bold">My bookings</h1>
+                <h1 className="text-2xl font-bold">{t("Nav.bookings")}</h1>
                 <ErrorState
-                    title="Could not load your bookings"
-                    message={isApiError(error) ? error.message : "Something went wrong."}
+                    title={t("Bookings.loadError")}
+                    message={errorMessage(error)}
                     onRetry={refetch}
                 />
             </main>
@@ -48,7 +50,7 @@ export default function BookingsPage() {
     if (!data) {
         return (
             <main className="container space-y-6 py-8">
-                <h1 className="text-2xl font-bold">My bookings</h1>
+                <h1 className="text-2xl font-bold">{t("Nav.bookings")}</h1>
                 {[1, 2, 3].map((item) => (
                     <Skeleton key={item} className="h-36 w-full" />
                 ))}
@@ -59,12 +61,12 @@ export default function BookingsPage() {
     if (data.length === 0) {
         return (
             <main className="container flex flex-1 flex-col items-center justify-center gap-4 py-8 text-center">
-                <p className="font-semibold">No bookings yet</p>
+                <p className="font-semibold">{t("Bookings.empty")}</p>
                 <p className="text-sm text-muted-foreground">
-                    Find a hotel and book your first stay.
+                    {t("Bookings.emptyHint")}
                 </p>
                 <Link href="/" className={buttonVariants()}>
-                    Search hotels
+                    {t("Bookings.searchHotels")}
                 </Link>
             </main>
         );
@@ -75,7 +77,7 @@ export default function BookingsPage() {
 
     return (
         <main className="container space-y-6 py-8">
-            <h1 className="text-2xl font-bold">My bookings</h1>
+            <h1 className="text-2xl font-bold">{t("Nav.bookings")}</h1>
 
             <section className="space-y-4">
                 {bookings.map((booking) => (

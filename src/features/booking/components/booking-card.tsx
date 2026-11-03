@@ -1,16 +1,10 @@
+import { useTranslations } from "next-intl";
 import type { BookingView } from "@/src/domain/types/booking";
 import type { BookingStatus } from "@/src/domain/constants/booking-status";
 import { formatMoney } from "@/src/shared/lib/format-money";
 import { Badge } from "@/src/shared/ui/badge";
 import { Button } from "@/src/shared/ui/button";
 import { Card } from "@/src/shared/ui/card";
-
-const STATUS_LABELS: Record<BookingStatus, string> = {
-    held: "Awaiting confirmation",
-    confirmed: "Confirmed",
-    cancelled: "Cancelled",
-    expired: "Expired",
-};
 
 const STATUS_VARIANTS: Record<BookingStatus, "default" | "secondary" | "outline" | "destructive"> = {
     held: "outline",
@@ -25,6 +19,7 @@ interface BookingCardProps {
 }
 
 export function BookingCard({ booking, onCancel }: BookingCardProps) {
+    const t = useTranslations();
     const isConfirmed = booking.status === "confirmed";
 
     return (
@@ -34,15 +29,14 @@ export function BookingCard({ booking, onCancel }: BookingCardProps) {
                     <h2 className="text-lg font-semibold">{booking.hotelName}</h2>
                     <p className="text-sm text-muted-foreground">{booking.roomName}</p>
                     <p className="text-sm text-muted-foreground">
-                        {booking.checkIn} → {booking.checkOut} · {booking.adults}{" "}
-                        {booking.adults === 1 ? "adult" : "adults"}
+                        {booking.checkIn} → {booking.checkOut} · {t("Common.adults", { count: booking.adults })}
                     </p>
                     <div className="flex flex-wrap gap-2 pt-1">
                         <Badge variant={STATUS_VARIANTS[booking.status]}>
-                            {STATUS_LABELS[booking.status]}
+                            {t(`Bookings.status.${booking.status}`)}
                         </Badge>
                         <Badge variant="outline">
-                            {booking.refundable ? "Refundable" : "Non-refundable"}
+                            {booking.refundable ? t("Common.refundable") : t("Common.nonRefundable")}
                         </Badge>
                     </div>
                 </div>
@@ -52,7 +46,7 @@ export function BookingCard({ booking, onCancel }: BookingCardProps) {
 
                     {isConfirmed && booking.refundable && (
                         <Button type="button" variant="destructive" onClick={onCancel}>
-                            Cancel booking
+                            {t("Bookings.cancel")}
                         </Button>
                     )}
                 </div>
@@ -60,7 +54,7 @@ export function BookingCard({ booking, onCancel }: BookingCardProps) {
 
             {isConfirmed && !booking.refundable && (
                 <p className="text-sm text-muted-foreground">
-                    This booking is non-refundable, so it can&apos;t be cancelled.
+                    {t("Bookings.nonRefundableNote")}
                 </p>
             )}
         </Card>

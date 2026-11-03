@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Alert, AlertDescription, AlertTitle } from "./alert";
 import { Button } from "./button";
 
@@ -7,14 +10,12 @@ interface ErrorStateProps {
     onRetry?: () => void;
 }
 
-export function ErrorState({
-    title = "Something went wrong",
-    message,
-    onRetry,
-}: ErrorStateProps) {
+export function ErrorState({ title, message, onRetry }: ErrorStateProps) {
+    const t = useTranslations();
+
     return (
         <Alert variant="destructive">
-            <AlertTitle>{title}</AlertTitle>
+            <AlertTitle>{title ?? t("ClientErrors.unknown")}</AlertTitle>
             <AlertDescription>
                 <p>{message}</p>
 
@@ -25,7 +26,7 @@ export function ErrorState({
                         className="mt-3"
                         onClick={onRetry}
                     >
-                        Try again
+                        {t("Common.tryAgain")}
                     </Button>
                 )}
             </AlertDescription>

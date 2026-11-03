@@ -1,0 +1,145 @@
+{
+    "Metadata": {
+        "title": "StayFinder",
+        "description": "Find and book hotels in Riyadh, Jeddah and Dubai."
+    },
+    "Nav": {
+        "brand": "StayFinder",
+        "hotels": "Hotels",
+        "bookings": "My bookings",
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu",
+        "menu": "Menu",
+        "main": "Main",
+        "language": "Language"
+    },
+    "Common": {
+        "backToSearch": "Back to search",
+        "tryAgain": "Try again",
+        "total": "Total",
+        "stars": "{count, plural, one {# star} other {# stars}}",
+        "rating": "rating",
+        "refundable": "Refundable",
+        "nonRefundable": "Non-refundable",
+        "adults": "{count, plural, one {# adult} other {# adults}}",
+        "guests": "{count, plural, one {# guest} other {# guests}}",
+        "reserving": "Reserving…",
+        "loading": "Loading…"
+    },
+    "Search": {
+        "title": "Find your next stay",
+        "subtitle": "Search and compare available hotels.",
+        "city": "City",
+        "dates": "Check-in – Check-out",
+        "checkIn": "Check-in",
+        "checkOut": "Check-out",
+        "adults": "Adults",
+        "submit": "Search",
+        "selectDates": "Select your check-in and check-out dates to search for hotels.",
+        "loadError": "Could not load hotels",
+        "noHotels": "No hotels found.",
+        "noHotelsHint": "Try changing your dates or filters."
+    },
+    "Filters": {
+        "maxPrice": "Max total price (SAR)",
+        "anyPrice": "Any price",
+        "stars": "Stars",
+        "anyRating": "Any rating",
+        "noRatings": "No ratings found.",
+        "sortBy": "Sort by",
+        "sort": {
+            "price": "Price",
+            "rating": "Rating"
+        }
+    },
+    "Hotel": {
+        "totalForStay": "Total for your stay",
+        "viewHotel": "View hotel",
+        "selectDatesFirst": "Select your dates first",
+        "notFound": "Hotel not found",
+        "upToGuests": "Up to {count, plural, one {# guest} other {# guests}}",
+        "soldOut": "Sold out",
+        "unitsLeft": "{count} left",
+        "pricePerNight": "Price per night",
+        "weekend": "Weekend",
+        "subtotal": "Subtotal",
+        "vat": "VAT 15%",
+        "reserve": "Reserve",
+        "tooSmall": "Too small for {count, plural, one {# guest} other {# guests}}",
+        "priceChanged": "The price has changed",
+        "goBack": "Go back",
+        "acceptNewPrice": "Accept new price"
+    },
+    "Bookings": {
+        "loadError": "Could not load your bookings",
+        "empty": "No bookings yet",
+        "emptyHint": "Find a hotel and book your first stay.",
+        "searchHotels": "Search hotels",
+        "status": {
+            "held": "Awaiting confirmation",
+            "confirmed": "Confirmed",
+            "cancelled": "Cancelled",
+            "expired": "Expired"
+        },
+        "cancel": "Cancel booking",
+        "keep": "Keep booking",
+        "cancelTitle": "Cancel this booking?",
+        "nonRefundableNote": "This booking is non-refundable, so it can't be cancelled.",
+        "cancelled": "Your booking was cancelled.",
+        "cancelFailed": "Could not cancel the booking. {reason}"
+    },
+    "Checkout": {
+        "title": "Complete your booking",
+        "confirmed": "Your booking is confirmed!",
+        "notFound": "Booking not found",
+        "alreadyConfirmed": "This booking is already confirmed",
+        "wasCancelled": "This booking was cancelled",
+        "findInBookings": "You can find it in your bookings.",
+        "goToBookings": "Go to my bookings",
+        "holdExpired": "Your hold has expired. The room was released.",
+        "backToHotel": "Back to hotel",
+        "guestDetails": "Guest details",
+        "timeLeft": "Time left",
+        "yourStay": "Your stay",
+        "retryMessage": "{message} Please try again."
+    },
+    "GuestForm": {
+        "fullName": "Full name",
+        "email": "Email",
+        "phone": "Phone",
+        "confirm": "Confirm booking",
+        "confirming": "Confirming…"
+    },
+    "Validation": {
+        "checkInInPast": "Check-in can't be in the past.",
+        "stayLength": "Stay must be {min}–{max} nights."
+    },
+    "ClientErrors": {
+        "network": "Network error. Please check your connection.",
+        "unknown": "Something went wrong.",
+        "pageFailed": "This page failed to load."
+    },
+    "NotFound": {
+        "title": "Page not found",
+        "text": "The page you are looking for does not exist."
+    },
+    "ApiErrors": {
+        "validation": "The provided data is invalid.",
+        "invalidJson": "Invalid JSON request body.",
+        "internal": "An unexpected error occurred.",
+        "hotelNotFound": "Hotel was not found.",
+        "bookingNotFound": "Booking was not found.",
+        "roomNotFound": "Room was not found.",
+        "roomNotFoundForHotel": "Room was not found for this hotel.",
+        "adultsRange": "Adults must be between 1 and 4.",
+        "invalidQuotedTotal": "Quoted total must be a non-negative integer.",
+        "roomCannotAccommodate": "The selected room cannot accommodate this number of adults.",
+        "roomUnavailable": "This room is no longer available.",
+        "priceChanged": "The price has changed. Please review the new quote.",
+        "idempotencyKeyRequired": "Idempotency-Key header is required.",
+        "holdExpired": "The temporary hold has expired.",
+        "onlyHeldCanBeConfirmed": "Only active held bookings can be confirmed.",
+        "onlyConfirmedCanBeCancelled": "Only confirmed bookings can be cancelled.",
+        "notRefundable": "This booking is not refundable."
+    }
+}

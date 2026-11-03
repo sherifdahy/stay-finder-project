@@ -1,6 +1,7 @@
 "use client";
 
 import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
+import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -14,6 +15,7 @@ import { Card } from "@/src/shared/ui/card";
 import { ErrorState } from "@/src/shared/ui/error-state";
 import { Skeleton } from "@/src/shared/ui/skeleton";
 import type { Guest } from "@/src/domain/validations/guest.schema";
+import { useErrorMessage } from "@/src/shared/hooks/use-error-message";
 import { isApiError } from "@/src/store/baseApi";
 import { useAppDispatch, useAppSelector } from "@/src/store/hooks";
 import { useConfirmBookingMutation, useGetBookingByIdQuery } from "../booking.api";
@@ -22,6 +24,8 @@ import { useHoldCountdown } from "../hooks/use-hold-countdown";
 import { GuestForm } from "./guest-form";
 
 export default function CheckoutPage() {
+    const t = useTranslations();
+    const errorMessage = useErrorMessage();
     const { bookingId } = useParams<{ bookingId: string }>();
     const { data, error, isLoading, refetch, fulfilledTimeStamp } = useGetBookingByIdQuery(bookingId);
     const booking = data?.booking;
@@ -46,9 +50,9 @@ export default function CheckoutPage() {
         if (redirected.current) return;
         redirected.current = true;
 
-        toast.success("Your booking is confirmed!");
+        toast.success(t("Checkout.confirmed"));
         router.replace("/bookings");
-    }, [router]);
+    }, [router, t]);
 
     // A 500 on confirm can mean the booking went through and only the reply was lost.
     useEffect(() => {
@@ -78,9 +82,7 @@ export default function CheckoutPage() {
 
             // The booking may have been confirmed and only the reply lost.
             // Trying again sends the same key, so no second booking is created.
-            setConfirmError(
-                `${isApiError(error) ? error.message : "Something went wrong."} Please try again.`,
-            );
+            setConfirmError(t("Checkout.retryMessage", { message: errorMessage(error) }));
         }
     }
 
@@ -98,9 +100,9 @@ export default function CheckoutPage() {
         if (isApiError(error) && error.code === API_ERROR_CODE.NOT_FOUND) {
             return (
                 <main className="container flex flex-1 flex-col py-8 items-center justify-center gap-4 text-center">
-                    <p>Booking not found</p>
+                    <p>{t("Checkout.notFound")}</p>
                     <Link href="/" className={buttonVariants()}>
-                        Back to search
+                        {t("Common.backToSearch")}
                     </Link>
                 </main>
             );
@@ -109,7 +111,7 @@ export default function CheckoutPage() {
         return (
             <main className="container space-y-6 py-8">
                 <ErrorState
-                    message={isApiError(error) ? error.message : "Something went wrong."}
+                    message={errorMessage(error)}
                     onRetry={refetch}
                 />
             </main>
@@ -121,12 +123,12 @@ export default function CheckoutPage() {
     if (booking.status === "confirmed") {
         return (
             <main className="container flex flex-1 flex-col py-8 items-center justify-center gap-4 text-center">
-                <p className="font-semibold">This booking is already confirmed</p>
+                <p className="font-semibold">{t("Checkout.alreadyConfirmed")}</p>
                 <p className="text-sm text-muted-foreground">
-                    You can find it in your bookings.
+                    {t("Checkout.findInBookings")}
                 </p>
                 <Link href="/bookings" className={buttonVariants()}>
-                    Go to my bookings
+                    {t("Checkout.goToBookings")}
                 </Link>
             </main>
         );
@@ -135,12 +137,12 @@ export default function CheckoutPage() {
     if (booking.status === "cancelled") {
         return (
             <main className="container flex flex-1 flex-col py-8 items-center justify-center gap-4 text-center">
-                <p className="font-semibold">This booking was cancelled</p>
+                <p className="font-semibold">{t("Checkout.wasCancelled")}</p>
                 <p className="text-sm text-muted-foreground">
-                    You can find it in your bookings.
+                    {t("Checkout.findInBookings")}
                 </p>
                 <Link href="/bookings" className={buttonVariants()}>
-                    Go to my bookings
+                    {t("Checkout.goToBookings")}
                 </Link>
             </main>
         );
@@ -148,17 +150,17 @@ export default function CheckoutPage() {
 
     return (
         <main className="container space-y-6 py-8">
-            <h1 className="text-xl font-bold">Complete your booking</h1>
+            <h1 className="text-xl font-bold">{t("Checkout.title")}</h1>
 
             {(isExpired || holdExpired) && (
                 <Alert variant="destructive">
                     <AlertDescription className="flex flex-wrap items-center justify-between gap-3">
-                        <span>Your hold has expired. The room was released.</span>
+                        <span>{t("Checkout.holdExpired")}</span>
                         <Link
                             href={hotelHref(booking.hotelId, booking)}
                             className={buttonVariants({ variant: "outline" })}
                         >
-                            Back to hotel
+                            {t("Checkout.backToHotel")}
                         </Link>
                     </AlertDescription>
                 </Alert>
@@ -166,7 +168,7 @@ export default function CheckoutPage() {
 
             <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_280px]">
                 <Card className="p-4">
-                    <h2 className="mb-4 font-semibold">Guest details</h2>
+                    <h2 className="mb-4 font-semibold">{t("Checkout.guestDetails")}</h2>
                     <GuestForm
                         disabled={isExpired || holdExpired}
                         isSubmitting={isConfirming}
@@ -177,7 +179,7 @@ export default function CheckoutPage() {
 
                 <div className="order-first flex flex-col gap-4 md:order-none">
                     <Card className="gap-1 p-4">
-                        <p className="text-xs text-muted-foreground">Time left</p>
+                        <p className="text-xs text-muted-foreground">{t("Checkout.timeLeft")}</p>
                         <p
                             className={`text-3xl font-bold tabular-nums ${isExpired || holdExpired ? "text-destructive" : ""}`}
                         >
@@ -186,15 +188,15 @@ export default function CheckoutPage() {
                     </Card>
 
                     <Card className="gap-2 p-4">
-                        <h2 className="font-semibold">Your stay</h2>
+                        <h2 className="font-semibold">{t("Checkout.yourStay")}</h2>
                         <p className="text-sm text-muted-foreground">
                             {booking.checkIn} → {booking.checkOut}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                            {booking.adults} {booking.adults === 1 ? "adult" : "adults"}
+                            {t("Common.adults", { count: booking.adults })}
                         </p>
                         <div className="flex justify-between font-semibold">
-                            <span>Total</span>
+                            <span>{t("Common.total")}</span>
                             <span>{formatMoney(booking.quote.total)}</span>
                         </div>
                     </Card>

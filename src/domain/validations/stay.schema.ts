@@ -29,7 +29,7 @@ export function refineStay<T extends { checkIn: string; checkOut: string }>(
         ctx.addIssue({
             code: "custom",
             path: ["checkIn"],
-            message: "Check-in can't be in the past.",
+            message: "checkInInPast",
         });
     }
 
@@ -37,7 +37,8 @@ export function refineStay<T extends { checkIn: string; checkOut: string }>(
         ctx.addIssue({
             code: "custom",
             path: ["checkOut"],
-            message: `Stay must be ${MIN_STAY_NIGHTS}–${MAX_STAY_NIGHTS} nights.`,
+            message: "stayLength",
+            params: { min: MIN_STAY_NIGHTS, max: MAX_STAY_NIGHTS },
         });
     }
 }

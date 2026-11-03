@@ -1,4 +1,5 @@
 import { baseApi } from "@/src/store/baseApi";
+import type { CitiesResponse } from "./dtos/cities-response.dto";
 import type { HotelDetailsParams } from "./dtos/details/hotel-details-params.dto";
 import type { HotelDetailsResponse } from "./dtos/details/hotel-details-response.dto";
 import type { SearchHotelsParams } from "./dtos/search/search-hotels-params.dto";
@@ -20,6 +21,10 @@ export const hotelsApi = baseApi.injectEndpoints({
             providesTags: ["Hotel"],
         }),
 
+        getCities: builder.query<CitiesResponse, void>({
+            query: () => "/cities",
+        }),
+
         getHotelDetails: builder.query<
             HotelDetailsResponse,
             HotelDetailsParams
@@ -34,6 +39,7 @@ export const hotelsApi = baseApi.injectEndpoints({
 });
 
 export const {
+    useGetCitiesQuery,
     useSearchHotelsQuery,
     useGetHotelDetailsQuery,
 } = hotelsApi;

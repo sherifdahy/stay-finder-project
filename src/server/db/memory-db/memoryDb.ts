@@ -1,13 +1,13 @@
-
 import "server-only";
 
 import seed from "../seed.json";
-import { Hotel } from "@/src/domain/types/hotel";
-import { Room } from "@/src/domain/types/room";
 import { Booking } from "@/src/domain/types/booking";
+import type { AmenityRecord, CityRecord, HotelRecord, RoomRecord } from "../records";
 
-export const hotels: Hotel[] = seed.hotels as Hotel[];
-export const rooms: Room[] = seed.rooms as Room[];
+export const cities: CityRecord[] = seed.cities as CityRecord[];
+export const amenities: AmenityRecord[] = seed.amenities as AmenityRecord[];
+export const hotels: HotelRecord[] = seed.hotels as HotelRecord[];
+export const rooms: RoomRecord[] = seed.rooms as RoomRecord[];
 
 export const bookings = new Map<string, Booking>();
 

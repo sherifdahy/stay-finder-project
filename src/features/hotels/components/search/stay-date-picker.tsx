@@ -1,8 +1,11 @@
 "use client";
 
 import { CalendarDays } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import type { DateRange } from "react-day-picker";
+import { ar, enUS } from "react-day-picker/locale";
+import { getDirection } from "@/src/domain/constants/locale";
 import { getDefaultStay } from "@/src/domain/dates/get-default-stay";
 import { parseISODate } from "@/src/domain/utils/parse-iso-date";
 import { Calendar } from "@/src/shared/ui/calendar";
@@ -25,9 +28,17 @@ function toDate(value: string): Date | undefined {
     }
 }
 
-const formatDay = new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "short", day: "numeric", year: "numeric" });
+const CALENDAR_LOCALES = { en: enUS, ar };
 
 export default function StayDatePicker({ checkIn, checkOut, onChange, invalid }: StayDatePickerProps) {
+    const t = useTranslations("Search");
+    const locale = useLocale();
+    const formatDay = new Intl.DateTimeFormat(locale, {
+        timeZone: "UTC",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
     const [open, setOpen] = useState(false);
     const [picking, setPicking] = useState(false);
     const from = toDate(checkIn);
@@ -61,20 +72,22 @@ export default function StayDatePicker({ checkIn, checkOut, onChange, invalid }:
                 id="stay"
                 aria-invalid={invalid}
                 className={cn(
-                    "flex h-8 w-full items-center gap-2 rounded-lg border border-input bg-transparent px-2.5 text-left text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20",
+                    "flex h-8 w-full items-center gap-2 rounded-lg border border-input bg-transparent px-2.5 text-start text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20",
                     !from && "text-muted-foreground",
                 )}
             >
                 <CalendarDays className="size-4 shrink-0 text-muted-foreground" />
                 <span className="truncate">
-                    {from ? formatDay.format(from) : "Check-in"}
+                    {from ? formatDay.format(from) : t("checkIn")}
                     {" – "}
-                    {to ? formatDay.format(to) : "Check-out"}
+                    {to ? formatDay.format(to) : t("checkOut")}
                 </span>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-auto p-0">
                 <Calendar
                     mode="range"
+                    locale={CALENDAR_LOCALES[locale]}
+                    dir={getDirection(locale)}
                     timeZone="UTC"
                     defaultMonth={from}
                     selected={{ from, to }}

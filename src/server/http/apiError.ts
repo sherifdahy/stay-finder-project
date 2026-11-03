@@ -1,6 +1,7 @@
 import { API_ERROR_CODE, type ApiErrorCode } from "@/src/domain/constants/api-error-code";
 import { ZodError } from "zod";
 import { ServiceError } from "../errors/service-error";
+import type { ApiTranslator } from "../i18n/get-translator";
 
 export function errorResponse(
     code: ApiErrorCode,
@@ -14,11 +15,15 @@ export function errorResponse(
     );
 }
 
-export function toApiError(error: unknown): Response {
+export function internalErrorResponse(t: ApiTranslator): Response {
+    return errorResponse(API_ERROR_CODE.INTERNAL_ERROR, t("internal"), 500);
+}
+
+export function toApiError(error: unknown, t: ApiTranslator): Response {
     if (error instanceof ServiceError) {
         return errorResponse(
             error.code,
-            error.message,
+            t(error.messageKey),
             error.statusCode,
             error.details ?? null,
         );
@@ -27,7 +32,7 @@ export function toApiError(error: unknown): Response {
     if (error instanceof ZodError) {
         return errorResponse(
             API_ERROR_CODE.VALIDATION_ERROR,
-            "The provided data is invalid.",
+            t("validation"),
             400,
             error.issues,
         );
@@ -36,16 +41,12 @@ export function toApiError(error: unknown): Response {
     if (error instanceof SyntaxError) {
         return errorResponse(
             API_ERROR_CODE.VALIDATION_ERROR,
-            "Invalid JSON request body.",
+            t("invalidJson"),
             422,
         );
     }
 
     console.error("Unhandled API error:", error);
 
-    return errorResponse(
-        API_ERROR_CODE.INTERNAL_ERROR,
-        "An unexpected error occurred.",
-        500,
-    );
+    return internalErrorResponse(t);
 }

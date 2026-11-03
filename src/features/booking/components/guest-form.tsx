@@ -1,6 +1,8 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
+import { z } from "zod";
 import { guestSchema, type Guest } from "@/src/domain/validations/guest.schema";
 import { Alert, AlertDescription } from "@/src/shared/ui/alert";
 import { Button } from "@/src/shared/ui/button";
@@ -20,6 +22,8 @@ export function GuestForm({
     error,
     onSubmit,
 }: GuestFormProps) {
+    const t = useTranslations("GuestForm");
+    const locale = useLocale();
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -29,7 +33,10 @@ export function GuestForm({
         event.preventDefault();
 
         // Same schema the API uses.
-        const result = guestSchema.safeParse({ fullName, email, phone });
+        const result = guestSchema.safeParse(
+            { fullName, email, phone },
+            { error: z.locales[locale]().localeError },
+        );
 
         if (!result.success) {
             const next: Record<string, string> = {};
@@ -50,7 +57,7 @@ export function GuestForm({
         <form onSubmit={handleSubmit} noValidate>
             <fieldset disabled={disabled || isSubmitting} className="space-y-4">
                 <div className="space-y-1.5">
-                    <Label htmlFor="fullName">Full name</Label>
+                    <Label htmlFor="fullName">{t("fullName")}</Label>
                     <Input
                         id="fullName"
                         value={fullName}
@@ -63,7 +70,7 @@ export function GuestForm({
                 </div>
 
                 <div className="space-y-1.5">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t("email")}</Label>
                     <Input
                         id="email"
                         type="email"
@@ -77,7 +84,7 @@ export function GuestForm({
                 </div>
 
                 <div className="space-y-1.5">
-                    <Label htmlFor="phone">Phone</Label>
+                    <Label htmlFor="phone">{t("phone")}</Label>
                     <Input
                         id="phone"
                         type="tel"
@@ -97,7 +104,7 @@ export function GuestForm({
                 )}
 
                 <Button type="submit" className="w-full">
-                    {isSubmitting ? "Confirming…" : "Confirm booking"}
+                    {isSubmitting ? t("confirming") : t("confirm")}
                 </Button>
             </fieldset>
         </form>

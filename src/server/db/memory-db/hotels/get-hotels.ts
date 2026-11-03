@@ -1,6 +1,6 @@
-import { Hotel } from "@/src/domain/types/hotel";
+import type { HotelRecord } from "../../records";
 import { hotels } from "../memoryDb";
 
-export function getHotels(): Hotel[] {
+export function getHotels(): HotelRecord[] {
     return [...hotels];
 }

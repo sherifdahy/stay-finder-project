@@ -1,5 +1,3 @@
-import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
-
 export interface ChaosControls {
     /** True when this request should see a higher room price. */
     shouldChangePrice: () => boolean;
@@ -11,9 +9,11 @@ type RouteHandler<TContext = unknown> = (
     chaos: ChaosControls
 ) => Promise<Response>;
 
-interface ChaosOptions {
+export interface ChaosOptions {
     /** "before": fail without running the handler. "after": run it, then lose the response. */
     errorTiming?: "before" | "after";
+    /** Builds the 500 response, so the caller words it in the right language. */
+    onServerError: () => Response;
 }
 
 function getNumberEnv(name: string, fallback: number): number {
@@ -38,22 +38,9 @@ function sleep(milliseconds: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
-function serverError(): Response {
-    return Response.json(
-        {
-            error: {
-                code: API_ERROR_CODE.INTERNAL_ERROR,
-                message: "An unexpected server error occurred.",
-                details: null,
-            },
-        },
-        { status: 500 }
-    );
-}
-
 export function withChaos<TContext = unknown>(
     handler: RouteHandler<TContext>,
-    options: ChaosOptions = {}
+    options: ChaosOptions
 ): (request: Request, context: TContext) => Promise<Response> {
     const errorTiming = options.errorTiming ?? "before";
 
@@ -77,7 +64,7 @@ export function withChaos<TContext = unknown>(
 
         // 2. Random server error before the handler runs.
         if (shouldFail && errorTiming === "before") {
-            return serverError();
+            return options.onServerError();
         }
 
         // 3. Run the handler.
@@ -88,7 +75,7 @@ export function withChaos<TContext = unknown>(
 
         // 4. Random error after the handler ran (the work is already done).
         if (shouldFail && errorTiming === "after") {
-            return serverError();
+            return options.onServerError();
         }
 
         return response;

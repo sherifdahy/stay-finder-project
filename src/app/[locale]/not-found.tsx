@@ -1,13 +1,16 @@
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/src/i18n/navigation";
 import { buttonVariants } from "@/src/shared/ui/button";
 
-export default function NotFound() {
+export default async function NotFound() {
+    const t = await getTranslations();
+
     return (
         <main className="container space-y-4 py-8">
-            <h1 className="text-2xl font-semibold">Page not found</h1>
-            <p className="text-muted-foreground">The page you are looking for does not exist.</p>
+            <h1 className="text-2xl font-semibold">{t("NotFound.title")}</h1>
+            <p className="text-muted-foreground">{t("NotFound.text")}</p>
             <Link href="/" className={buttonVariants()}>
-                Back to search
+                {t("Common.backToSearch")}
             </Link>
         </main>
     );

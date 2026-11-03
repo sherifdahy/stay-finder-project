@@ -1,4 +1,5 @@
 import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
+import type { Locale } from "@/src/domain/constants/locale";
 import { randomUUID } from "node:crypto";
 
 import { Booking, BookingGuest, BookingView } from "@/src/domain/types/booking";
@@ -14,6 +15,7 @@ import { saveBooking } from "../db/memory-db/bookings/save-booking";
 import { updateBooking } from "../db/memory-db/bookings/update-booking";
 import { getBookings } from "../db/memory-db/bookings/get-bookings";
 import { ServiceError } from "../errors/service-error";
+import { localize } from "../i18n/localize";
 
 const DEFAULT_HOLD_TTL_SECONDS = 300;
 
@@ -66,7 +68,7 @@ function getBookingOrThrow(bookingId: string): Booking {
     if (!booking) {
         throw new ServiceError(
             API_ERROR_CODE.NOT_FOUND,
-            "Booking was not found.",
+            "bookingNotFound",
             404,
         );
     }
@@ -87,7 +89,7 @@ export function createHold(
     ) {
         throw new ServiceError(
             API_ERROR_CODE.VALIDATION_ERROR,
-            "Adults must be between 1 and 4.",
+            "adultsRange",
             422,
         );
     }
@@ -98,7 +100,7 @@ export function createHold(
     ) {
         throw new ServiceError(
             API_ERROR_CODE.VALIDATION_ERROR,
-            "Quoted total must be a non-negative integer.",
+            "invalidQuotedTotal",
             422,
         );
     }
@@ -108,7 +110,7 @@ export function createHold(
     if (!room || room.hotelId !== input.hotelId) {
         throw new ServiceError(
             API_ERROR_CODE.NOT_FOUND,
-            "Room was not found for this hotel.",
+            "roomNotFoundForHotel",
             404,
         );
     }
@@ -116,7 +118,7 @@ export function createHold(
     if (input.adults > room.maxGuests) {
         throw new ServiceError(
             API_ERROR_CODE.VALIDATION_ERROR,
-            "The selected room cannot accommodate this number of adults.",
+            "roomCannotAccommodate",
             422,
         );
     }
@@ -130,7 +132,7 @@ export function createHold(
     if (unitsLeft <= 0) {
         throw new ServiceError(
             API_ERROR_CODE.ROOM_UNAVAILABLE,
-            "This room is no longer available.",
+            "roomUnavailable",
             409,
         );
     }
@@ -155,7 +157,7 @@ export function createHold(
     if (currentQuote.total !== input.quotedTotal) {
         throw new ServiceError(
             API_ERROR_CODE.PRICE_CHANGED,
-            "The price has changed. Please review the new quote.",
+            "priceChanged",
             409,
             {
                 newQuote: currentQuote,
@@ -199,7 +201,7 @@ export function confirmBooking(
     if (!idempotencyKey.trim()) {
         throw new ServiceError(
             API_ERROR_CODE.VALIDATION_ERROR,
-            "Idempotency-Key header is required.",
+            "idempotencyKeyRequired",
             422,
         );
     }
@@ -221,7 +223,7 @@ export function confirmBooking(
     if (booking.status === "expired") {
         throw new ServiceError(
             API_ERROR_CODE.HOLD_EXPIRED,
-            "The temporary hold has expired.",
+            "holdExpired",
             410,
         );
     }
@@ -237,7 +239,7 @@ export function confirmBooking(
 
         throw new ServiceError(
             API_ERROR_CODE.HOLD_EXPIRED,
-            "The temporary hold has expired.",
+            "holdExpired",
             410,
         );
     }
@@ -255,7 +257,7 @@ export function confirmBooking(
     if (booking.status !== "held") {
         throw new ServiceError(
             API_ERROR_CODE.VALIDATION_ERROR,
-            "Only active held bookings can be confirmed.",
+            "onlyHeldCanBeConfirmed",
             422,
         );
     }
@@ -269,7 +271,7 @@ export function confirmBooking(
     if (!confirmedBooking) {
         throw new ServiceError(
             API_ERROR_CODE.NOT_FOUND,
-            "Booking was not found.",
+            "bookingNotFound",
             404,
         );
     }
@@ -290,7 +292,7 @@ export function cancelBooking(bookingId: string): Booking {
     if (booking.status !== "confirmed") {
         throw new ServiceError(
             API_ERROR_CODE.VALIDATION_ERROR,
-            "Only confirmed bookings can be cancelled.",
+            "onlyConfirmedCanBeCancelled",
             422,
         );
     }
@@ -300,7 +302,7 @@ export function cancelBooking(bookingId: string): Booking {
     if (!room) {
         throw new ServiceError(
             API_ERROR_CODE.NOT_FOUND,
-            "Room was not found.",
+            "roomNotFound",
             404,
         );
     }
@@ -308,7 +310,7 @@ export function cancelBooking(bookingId: string): Booking {
     if (!room.refundable) {
         throw new ServiceError(
             API_ERROR_CODE.NOT_REFUNDABLE,
-            "This booking is not refundable.",
+            "notRefundable",
             409,
         );
     }
@@ -320,7 +322,7 @@ export function cancelBooking(bookingId: string): Booking {
     if (!cancelledBooking) {
         throw new ServiceError(
             API_ERROR_CODE.NOT_FOUND,
-            "Booking was not found.",
+            "bookingNotFound",
             404,
         );
     }
@@ -330,15 +332,15 @@ export function cancelBooking(bookingId: string): Booking {
 
 // Get all bookings.
 
-export function getAllBookings(): BookingView[] {
+export function getAllBookings(locale: Locale): BookingView[] {
     return getBookings().map((booking) => {
         const room = getRoomById(booking.roomId);
         const hotel = getHotelById(booking.hotelId);
 
         return {
             ...booking,
-            hotelName: hotel?.name ?? "",
-            roomName: room?.name ?? "",
+            hotelName: hotel ? localize(hotel.name, locale) : "",
+            roomName: room ? localize(room.name, locale) : "",
             refundable: room?.refundable ?? false,
         };
     });

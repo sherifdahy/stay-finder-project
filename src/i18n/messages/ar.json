@@ -1,0 +1,145 @@
+{
+    "Metadata": {
+        "title": "StayFinder",
+        "description": "ابحث عن فنادق في الرياض وجدة ودبي واحجزها."
+    },
+    "Nav": {
+        "brand": "StayFinder",
+        "hotels": "الفنادق",
+        "bookings": "حجوزاتي",
+        "openMenu": "فتح القائمة",
+        "closeMenu": "إغلاق القائمة",
+        "menu": "القائمة",
+        "main": "الرئيسية",
+        "language": "اللغة"
+    },
+    "Common": {
+        "backToSearch": "العودة إلى البحث",
+        "tryAgain": "حاول مرة أخرى",
+        "total": "الإجمالي",
+        "stars": "{count, plural, one {نجمة} two {نجمتان} few {# نجوم} many {# نجمة} other {# نجمة}}",
+        "rating": "التقييم",
+        "refundable": "قابل للاسترداد",
+        "nonRefundable": "غير قابل للاسترداد",
+        "adults": "{count, plural, one {بالغ} two {بالغان} few {# بالغين} many {# بالغًا} other {# بالغ}}",
+        "guests": "{count, plural, one {ضيف} two {ضيفان} few {# ضيوف} many {# ضيفًا} other {# ضيف}}",
+        "reserving": "جارٍ الحجز…",
+        "loading": "جارٍ التحميل…"
+    },
+    "Search": {
+        "title": "ابحث عن إقامتك القادمة",
+        "subtitle": "ابحث عن الفنادق المتاحة وقارن بينها.",
+        "city": "المدينة",
+        "dates": "تسجيل الوصول – تسجيل المغادرة",
+        "checkIn": "تسجيل الوصول",
+        "checkOut": "تسجيل المغادرة",
+        "adults": "البالغون",
+        "submit": "بحث",
+        "selectDates": "اختر تاريخ الوصول والمغادرة للبحث عن الفنادق.",
+        "loadError": "تعذّر تحميل الفنادق",
+        "noHotels": "لم يتم العثور على فنادق.",
+        "noHotelsHint": "جرّب تغيير التواريخ أو عوامل التصفية."
+    },
+    "Filters": {
+        "maxPrice": "أقصى سعر إجمالي (ريال)",
+        "anyPrice": "أي سعر",
+        "stars": "النجوم",
+        "anyRating": "أي تصنيف",
+        "noRatings": "لا توجد تصنيفات.",
+        "sortBy": "ترتيب حسب",
+        "sort": {
+            "price": "السعر",
+            "rating": "التقييم"
+        }
+    },
+    "Hotel": {
+        "totalForStay": "إجمالي إقامتك",
+        "viewHotel": "عرض الفندق",
+        "selectDatesFirst": "اختر التواريخ أولًا",
+        "notFound": "الفندق غير موجود",
+        "upToGuests": "حتى {count, plural, one {ضيف} two {ضيفين} few {# ضيوف} many {# ضيفًا} other {# ضيف}}",
+        "soldOut": "نفدت الغرف",
+        "unitsLeft": "متبقي {count}",
+        "pricePerNight": "السعر لكل ليلة",
+        "weekend": "عطلة نهاية الأسبوع",
+        "subtotal": "المجموع الفرعي",
+        "vat": "ضريبة القيمة المضافة 15%",
+        "reserve": "احجز",
+        "tooSmall": "الغرفة صغيرة لـ {count, plural, one {ضيف} two {ضيفين} few {# ضيوف} many {# ضيفًا} other {# ضيف}}",
+        "priceChanged": "تغيّر السعر",
+        "goBack": "رجوع",
+        "acceptNewPrice": "قبول السعر الجديد"
+    },
+    "Bookings": {
+        "loadError": "تعذّر تحميل حجوزاتك",
+        "empty": "لا توجد حجوزات بعد",
+        "emptyHint": "ابحث عن فندق واحجز إقامتك الأولى.",
+        "searchHotels": "ابحث عن فنادق",
+        "status": {
+            "held": "بانتظار التأكيد",
+            "confirmed": "مؤكد",
+            "cancelled": "ملغي",
+            "expired": "منتهي"
+        },
+        "cancel": "إلغاء الحجز",
+        "keep": "الإبقاء على الحجز",
+        "cancelTitle": "هل تريد إلغاء هذا الحجز؟",
+        "nonRefundableNote": "هذا الحجز غير قابل للاسترداد، لذلك لا يمكن إلغاؤه.",
+        "cancelled": "تم إلغاء حجزك.",
+        "cancelFailed": "تعذّر إلغاء الحجز. {reason}"
+    },
+    "Checkout": {
+        "title": "أكمل حجزك",
+        "confirmed": "تم تأكيد حجزك!",
+        "notFound": "الحجز غير موجود",
+        "alreadyConfirmed": "هذا الحجز مؤكد بالفعل",
+        "wasCancelled": "تم إلغاء هذا الحجز",
+        "findInBookings": "يمكنك العثور عليه في حجوزاتك.",
+        "goToBookings": "الذهاب إلى حجوزاتي",
+        "holdExpired": "انتهت مهلة الحجز المؤقت وتم تحرير الغرفة.",
+        "backToHotel": "العودة إلى الفندق",
+        "guestDetails": "بيانات الضيف",
+        "timeLeft": "الوقت المتبقي",
+        "yourStay": "إقامتك",
+        "retryMessage": "{message} يرجى المحاولة مرة أخرى."
+    },
+    "GuestForm": {
+        "fullName": "الاسم الكامل",
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الهاتف",
+        "confirm": "تأكيد الحجز",
+        "confirming": "جارٍ التأكيد…"
+    },
+    "Validation": {
+        "checkInInPast": "لا يمكن أن يكون تاريخ الوصول في الماضي.",
+        "stayLength": "يجب أن تكون مدة الإقامة بين {min} و{max} ليلة."
+    },
+    "ClientErrors": {
+        "network": "خطأ في الشبكة. يرجى التحقق من اتصالك.",
+        "unknown": "حدث خطأ ما.",
+        "pageFailed": "تعذّر تحميل هذه الصفحة."
+    },
+    "NotFound": {
+        "title": "الصفحة غير موجودة",
+        "text": "الصفحة التي تبحث عنها غير موجودة."
+    },
+    "ApiErrors": {
+        "validation": "البيانات المُدخلة غير صالحة.",
+        "invalidJson": "محتوى الطلب (JSON) غير صالح.",
+        "internal": "حدث خطأ غير متوقع.",
+        "hotelNotFound": "الفندق غير موجود.",
+        "bookingNotFound": "الحجز غير موجود.",
+        "roomNotFound": "الغرفة غير موجودة.",
+        "roomNotFoundForHotel": "الغرفة غير موجودة في هذا الفندق.",
+        "adultsRange": "يجب أن يكون عدد البالغين بين 1 و4.",
+        "invalidQuotedTotal": "يجب أن يكون الإجمالي المعروض عددًا صحيحًا غير سالب.",
+        "roomCannotAccommodate": "الغرفة المختارة لا تتسع لهذا العدد من البالغين.",
+        "roomUnavailable": "هذه الغرفة لم تعد متاحة.",
+        "priceChanged": "تغيّر السعر. يرجى مراجعة العرض الجديد.",
+        "idempotencyKeyRequired": "رأس Idempotency-Key مطلوب.",
+        "holdExpired": "انتهت مهلة الحجز المؤقت.",
+        "onlyHeldCanBeConfirmed": "لا يمكن تأكيد إلا الحجوزات المؤقتة النشطة.",
+        "onlyConfirmedCanBeCancelled": "لا يمكن إلغاء إلا الحجوزات المؤكدة.",
+        "notRefundable": "هذا الحجز غير قابل للاسترداد."
+    }
+}

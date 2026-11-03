@@ -2,18 +2,10 @@
 
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { ChevronRight, Menu, X } from "lucide-react";
-import { useLocale } from "next-intl";
-import { createContext, useContext, useState, type ReactNode } from "react";
-import { Link, usePathname } from "@/src/i18n/navigation";
+import { useTranslations } from "next-intl";
+import { useState, type ReactNode } from "react";
+import { Link } from "@/src/i18n/navigation";
 import { Button } from "@/src/shared/ui/button";
-
-const CloseMenuContext = createContext<() => void>(() => {});
-
-// Lets content inside the menu (the language switcher) close it before a navigation that
-// replaces the whole document, which would otherwise leave the menu overlay behind.
-export function useCloseMobileMenu() {
-    return useContext(CloseMenuContext);
-}
 
 interface MobileMenuProps {
     brand: string;
@@ -23,33 +15,25 @@ interface MobileMenuProps {
 
 // Full-page navigation for phones. Hidden from `sm` up, where the header shows the links itself.
 export function MobileMenu({ brand, links, children }: MobileMenuProps) {
-    const locale = useLocale();
-    const pathname = usePathname();
-
-    // The menu is open only for the page and language it was opened on, so navigating or
-    // switching language closes it without an effect.
-    const pageKey = `${locale}${pathname}`;
-    const [openKey, setOpenKey] = useState<string | null>(null);
+    const t = useTranslations("Nav");
+    const [open, setOpen] = useState(false);
 
     function close() {
-        setOpenKey(null);
+        setOpen(false);
     }
 
     return (
-        <DialogPrimitive.Root
-            open={openKey === pageKey}
-            onOpenChange={(open) => setOpenKey(open ? pageKey : null)}
-        >
+        <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
             <DialogPrimitive.Trigger
                 render={<Button variant="ghost" size="icon" className="sm:hidden" />}
             >
                 <Menu />
-                <span className="sr-only">Open menu</span>
+                <span className="sr-only">{t("openMenu")}</span>
             </DialogPrimitive.Trigger>
 
             <DialogPrimitive.Portal>
                 <DialogPrimitive.Popup className="fixed inset-0 z-50 flex flex-col bg-background outline-none duration-100 data-open:animate-in data-open:fade-in-0">
-                    <DialogPrimitive.Title className="sr-only">Menu</DialogPrimitive.Title>
+                    <DialogPrimitive.Title className="sr-only">{t("menu")}</DialogPrimitive.Title>
 
                     <div className="container flex items-center justify-between gap-4 border-b py-2">
                         <Link href="/" onClick={close} className="text-lg font-semibold">
@@ -57,12 +41,12 @@ export function MobileMenu({ brand, links, children }: MobileMenuProps) {
                         </Link>
                         <DialogPrimitive.Close render={<Button variant="ghost" size="icon" />}>
                             <X />
-                            <span className="sr-only">Close menu</span>
+                            <span className="sr-only">{t("closeMenu")}</span>
                         </DialogPrimitive.Close>
                     </div>
 
                     <div className="container flex flex-1 flex-col overflow-y-auto py-2">
-                        <nav aria-label="Main" className="flex flex-col">
+                        <nav aria-label={t("main")} className="flex flex-col">
                             {links.map((link) => (
                                 <Link
                                     key={link.href}
@@ -76,7 +60,7 @@ export function MobileMenu({ brand, links, children }: MobileMenuProps) {
                             ))}
                         </nav>
 
-                        <CloseMenuContext.Provider value={close}>{children}</CloseMenuContext.Provider>
+                        {children}
                     </div>
                 </DialogPrimitive.Popup>
             </DialogPrimitive.Portal>

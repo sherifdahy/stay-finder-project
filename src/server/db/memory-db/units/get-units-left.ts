@@ -1,10 +1,10 @@
 import type { ISODate } from "@/src/domain/types/primitives";
-import { Room } from "@/src/domain/types/room";
+import type { RoomRecord } from "../../records";
 import { bookings } from "../memoryDb";
 import { expireOldHolds } from "../bookings/expire-old-holds";
 
 export function getUnitsLeft(
-    room: Room,
+    room: RoomRecord,
     checkIn: ISODate,
     checkOut: ISODate
 ): number {
