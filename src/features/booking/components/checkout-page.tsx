@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { hotelHref } from "@/src/features/hotels/search-params";
+import { hotelHref } from "@/src/features/hotels";
 import { formatCountdown } from "../utils/format-countdown";
 import { formatMoney } from "@/src/shared/lib/format-money";
 import { Alert, AlertDescription } from "@/src/shared/ui/alert";

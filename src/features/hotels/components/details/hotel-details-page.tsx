@@ -17,7 +17,7 @@ import { parseSearchParams } from "../../search-params";
 import { PriceChangedDialog } from "./price-changed-dialog";
 import { RoomCard } from "./room-card";
 import { HotelRoom } from "../../dtos/details/hotel-room.dto";
-import { useCreateHoldMutation } from "@/src/features/booking/booking.api";
+import { useCreateHoldMutation } from "@/src/features/booking";
 import { useState } from "react";
 import { Quote } from "@/src/domain/types/quote";
 
