@@ -1,5 +1,6 @@
 "use client";
 
+import { CalendarDays, MapPin, Search, Users } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { getDefaultStay } from "@/src/domain/dates/get-default-stay";
 import type { City } from "@/src/domain/types/city";
@@ -91,7 +92,10 @@ export function SearchBar(props: SearchBarProps) {
                     onValueChange={(value) => value && setCity(value)}
                 >
                     <SelectTrigger id="city" className="w-full">
-                        <SelectValue />
+                        <span className="flex items-center gap-2">
+                            <MapPin className="text-muted-foreground" />
+                            <SelectValue />
+                        </span>
                     </SelectTrigger>
                     <SelectContent>
                         {CITIES.map((item) => (
@@ -105,13 +109,18 @@ export function SearchBar(props: SearchBarProps) {
 
             <div className="flex flex-col gap-1.5">
                 <Label htmlFor="checkIn">Check-in</Label>
-                <Input
-                    id="checkIn"
-                    type="date"
-                    value={checkIn}
-                    aria-invalid={Boolean(errors.checkIn)}
-                    onChange={(event) => setCheckIn(event.target.value)}
-                />
+                <div className="relative">
+                    <CalendarDays className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                        id="checkIn"
+                        type="date"
+                        className="pl-8 [&::-webkit-calendar-picker-indicator]:hidden"
+                        onClick={(event) => event.currentTarget.showPicker?.()}
+                        value={checkIn}
+                        aria-invalid={Boolean(errors.checkIn)}
+                        onChange={(event) => setCheckIn(event.target.value)}
+                    />
+                </div>
                 {errors.checkIn && (
                     <p className="text-sm text-destructive">{errors.checkIn}</p>
                 )}
@@ -119,13 +128,18 @@ export function SearchBar(props: SearchBarProps) {
 
             <div className="flex flex-col gap-1.5">
                 <Label htmlFor="checkOut">Check-out</Label>
-                <Input
-                    id="checkOut"
-                    type="date"
-                    value={checkOut}
-                    aria-invalid={Boolean(errors.checkOut)}
-                    onChange={(event) => setCheckOut(event.target.value)}
-                />
+                <div className="relative">
+                    <CalendarDays className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                        id="checkOut"
+                        type="date"
+                        className="pl-8 [&::-webkit-calendar-picker-indicator]:hidden"
+                        onClick={(event) => event.currentTarget.showPicker?.()}
+                        value={checkOut}
+                        aria-invalid={Boolean(errors.checkOut)}
+                        onChange={(event) => setCheckOut(event.target.value)}
+                    />
+                </div>
                 {errors.checkOut && (
                     <p className="text-sm text-destructive">{errors.checkOut}</p>
                 )}
@@ -140,7 +154,10 @@ export function SearchBar(props: SearchBarProps) {
                     onValueChange={(value) => value && setAdults(value)}
                 >
                     <SelectTrigger id="adults" className="w-full">
-                        <SelectValue />
+                        <span className="flex items-center gap-2">
+                            <Users className="text-muted-foreground" />
+                            <SelectValue />
+                        </span>
                     </SelectTrigger>
                     <SelectContent>
                         {ADULTS.map((item) => (
@@ -154,6 +171,7 @@ export function SearchBar(props: SearchBarProps) {
 
             <div className="flex items-end">
                 <Button type="submit" className="w-full">
+                    <Search data-icon="inline-start" />
                     Search
                 </Button>
             </div>
