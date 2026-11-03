@@ -22,9 +22,13 @@ import { GuestForm } from "./guest-form";
 
 export default function CheckoutPage() {
     const { bookingId } = useParams<{ bookingId: string }>();
-    const { data, error, isLoading, refetch } = useGetBookingByIdQuery(bookingId);
+    const { data, error, isLoading, refetch, fulfilledTimeStamp } = useGetBookingByIdQuery(bookingId);
     const booking = data?.booking;
-    const secondsLeft = useHoldCountdown(booking?.holdExpiresAt ?? null);
+    const secondsLeft = useHoldCountdown(
+        booking?.holdExpiresAt ?? null,
+        data?.serverTime,
+        fulfilledTimeStamp,
+    );
     const isExpired = booking?.status === "expired" || secondsLeft === 0;
 
     const dispatch = useAppDispatch();
