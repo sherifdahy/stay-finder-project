@@ -1,11 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 
+import { MapPin, Star } from "lucide-react";
 import Link from "next/link";
 import type { Hotel } from "@/src/domain/types/hotel";
 import { formatMoney } from "@/src/shared/lib/format-money";
-import { Badge } from "@/src/shared/ui/badge";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { Card } from "@/src/shared/ui/card";
+import { AmenityIcon } from "../amenity-icon";
 import { hotelHref, type HotelSearchParams } from "../../search-params";
 
 interface HotelCardProps {
@@ -31,15 +32,20 @@ export function HotelCard({ hotel, stay }: HotelCardProps) {
                         </span>
                     </div>
 
-                    <p className="text-sm capitalize text-muted-foreground">
-                        {hotel.city} · Rating {hotel.rating}
+                    <p className="flex items-center gap-1 text-sm font-medium">
+                        <Star className="size-4 fill-amber-400 text-amber-400" aria-hidden />
+                        {hotel.rating}
+                        <span className="sr-only">rating</span>
                     </p>
 
-                    <div className="flex flex-wrap gap-2">
+                    <p className="flex items-center gap-1 text-sm capitalize text-muted-foreground">
+                        <MapPin className="size-4" aria-hidden />
+                        {hotel.city}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 pt-1">
                         {hotel.amenities.map((amenity) => (
-                            <Badge key={amenity} variant="secondary">
-                                {amenity}
-                            </Badge>
+                            <AmenityIcon key={amenity} amenity={amenity} />
                         ))}
                     </div>
                 </div>
