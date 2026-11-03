@@ -3,17 +3,18 @@
 import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 /* eslint-disable @next/next/no-img-element */
 
+import { MapPin, Star } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { isApiError } from "@/src/store/baseApi";
 import { Alert, AlertDescription } from "@/src/shared/ui/alert";
-import { Badge } from "@/src/shared/ui/badge";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { ErrorState } from "@/src/shared/ui/error-state";
 import { Skeleton } from "@/src/shared/ui/skeleton";
 import { useGetHotelDetailsQuery } from "../../hotel.api";
 import { parseSearchParams } from "../../search-params";
+import { AmenityIcon } from "../amenity-icon";
 import { PriceChangedDialog } from "./price-changed-dialog";
 import { RoomCard } from "./room-card";
 import { HotelRoom } from "../../dtos/details/hotel-room.dto";
@@ -137,15 +138,22 @@ export default function HotelDetailsPage() {
                     </span>
                 </div>
 
-                <p className="text-sm capitalize text-muted-foreground">
-                    {hotel.city} · Rating {hotel.rating}
-                </p>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                    <p className="flex items-center gap-1 font-medium">
+                        <Star className="size-4 fill-amber-400 text-amber-400" aria-hidden />
+                        {hotel.rating}
+                        <span className="sr-only">rating</span>
+                    </p>
 
-                <div className="flex flex-wrap gap-2">
+                    <p className="flex items-center gap-1 capitalize text-muted-foreground">
+                        <MapPin className="size-4" aria-hidden />
+                        {hotel.city}
+                    </p>
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-1">
                     {hotel.amenities.map((amenity) => (
-                        <Badge key={amenity} variant="secondary">
-                            {amenity}
-                        </Badge>
+                        <AmenityIcon key={amenity} amenity={amenity} />
                     ))}
                 </div>
             </section>

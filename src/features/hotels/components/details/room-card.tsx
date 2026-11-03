@@ -1,3 +1,4 @@
+import { BedDouble, ShieldCheck, ShieldX, Users } from "lucide-react";
 import { formatMoney } from "@/src/shared/lib/format-money";
 import { Badge } from "@/src/shared/ui/badge";
 import { Button } from "@/src/shared/ui/button";
@@ -30,11 +31,24 @@ export function RoomCard({
         <Card className="gap-4 p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="space-y-1">
-                    <h3 className="text-lg font-semibold">{room.name}</h3>
-                    <p className="text-sm text-muted-foreground">
-                        Up to {room.maxGuests} guests ·{" "}
-                        {room.refundable ? "Refundable" : "Non-refundable"}
-                    </p>
+                    <h3 className="flex items-center gap-2 text-lg font-semibold">
+                        <BedDouble className="size-5 text-muted-foreground" aria-hidden />
+                        {room.name}
+                    </h3>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                        <p className="flex items-center gap-1">
+                            <Users className="size-4" aria-hidden />
+                            Up to {room.maxGuests} guests
+                        </p>
+                        <p className="flex items-center gap-1">
+                            {room.refundable ? (
+                                <ShieldCheck className="size-4 text-emerald-600" aria-hidden />
+                            ) : (
+                                <ShieldX className="size-4" aria-hidden />
+                            )}
+                            {room.refundable ? "Refundable" : "Non-refundable"}
+                        </p>
+                    </div>
                     <p className="text-sm">
                         {soldOut ? (
                             <span className="font-medium text-destructive">Sold out</span>
