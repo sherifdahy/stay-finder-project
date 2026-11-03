@@ -55,7 +55,7 @@ export function HotelFilters({
     }
 
     return (
-        <Card>
+        <Card className="self-start md:sticky md:top-4">
             <CardContent className="space-y-6">
                 <div className="space-y-1.5">
                     <Label htmlFor="maxPrice">Max total price (SAR)</Label>
@@ -120,6 +120,7 @@ export function HotelFilters({
                 <div className="space-y-1.5">
                     <Label htmlFor="sort">Sort by</Label>
                     <Select
+                        modal={false}
                         items={SORT_OPTIONS}
                         value={sort}
                         onValueChange={(value) =>
