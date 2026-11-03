@@ -85,6 +85,7 @@ export function SearchBar(props: SearchBarProps) {
             <div className="flex flex-col gap-1.5">
                 <Label htmlFor="city">City</Label>
                 <Select
+                    modal={false}
                     items={CITIES}
                     value={city}
                     onValueChange={(value) => value && setCity(value)}
@@ -133,6 +134,7 @@ export function SearchBar(props: SearchBarProps) {
             <div className="flex flex-col gap-1.5">
                 <Label htmlFor="adults">Adults</Label>
                 <Select
+                    modal={false}
                     items={ADULTS}
                     value={adults}
                     onValueChange={(value) => value && setAdults(value)}
