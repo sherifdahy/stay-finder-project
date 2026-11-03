@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import StoreProvider from "../store/store-provider";
+import { Toaster } from "../shared/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         {/* makeStore() uses Math.random, which Next 16 only allows inside Suspense. */}
         <Suspense fallback={null}>
-          <StoreProvider>{children}</StoreProvider>
+          <StoreProvider>
+            {children}
+            <Toaster />
+          </StoreProvider>
         </Suspense>
       </body>
     </html>
