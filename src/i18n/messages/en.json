@@ -35,7 +35,6 @@
         "checkOut": "Check-out",
         "adults": "Adults",
         "submit": "Search",
-        "selectDates": "Select your check-in and check-out dates to search for hotels.",
         "loadError": "Could not load hotels",
         "noHotels": "No hotels found.",
         "noHotelsHint": "Try changing your dates or filters."

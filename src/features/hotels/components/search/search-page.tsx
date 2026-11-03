@@ -2,7 +2,6 @@
 
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { skipToken } from "@reduxjs/toolkit/query";
 import { useState, useTransition } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter } from "@/src/i18n/navigation";
@@ -11,6 +10,7 @@ import { useSearchHotelsQuery } from "../../hotel.api";
 import {
     parseSearchParams,
     serializeSearchParams,
+    withDefaultStay,
     type HotelSearchParams,
 } from "../../search-params";
 import { HotelFilters, type HotelFiltersValue } from "./hotel-filters";
@@ -29,16 +29,13 @@ export function SearchPage() {
     const [draftFilters, setDraftFilters] =
         useState<HotelFiltersValue | null>(null);
 
-    const search = parseSearchParams(
-        new URLSearchParams(urlSearchParams.toString()),
+    const search = withDefaultStay(
+        parseSearchParams(new URLSearchParams(urlSearchParams.toString())),
     );
-
-    const hasDates = Boolean(search.checkIn && search.checkOut);
 
     // currentData (not data), so results of an older filter never show.
-    const { currentData, isFetching, error, refetch } = useSearchHotelsQuery(
-        hasDates ? search : skipToken,
-    );
+    const { currentData, isFetching, error, refetch } =
+        useSearchHotelsQuery(search);
 
     // A new search is a new history entry; tweaking filters is not.
     function updateUrl(next: HotelSearchParams, mode: "push" | "replace") {
@@ -88,32 +85,26 @@ export function SearchPage() {
                 }}
             />
 
-            {!hasDates ? (
-                <div className="rounded-xl border p-6 text-center">
-                    {t("selectDates")}
-                </div>
-            ) : (
-                <section className="grid gap-6 md:grid-cols-[260px_1fr]">
-                    <HotelFilters
-                        {...filters}
-                        onChange={(next) => {
-                            setDraftFilters(next);
-                            commitFilters(next);
-                        }}
-                    />
+            <section className="grid gap-6 md:grid-cols-[260px_1fr]">
+                <HotelFilters
+                    {...filters}
+                    onChange={(next) => {
+                        setDraftFilters(next);
+                        commitFilters(next);
+                    }}
+                />
 
-                    <HotelResults
-                        hotels={currentData?.hotels ?? []}
-                        stay={search}
-                        isLoading={
-                            draftFilters !== null ||
-                            (isFetching && !currentData)
-                        }
-                        error={isApiError(error) ? error : undefined}
-                        onRetry={refetch}
-                    />
-                </section>
-            )}
+                <HotelResults
+                    hotels={currentData?.hotels ?? []}
+                    stay={search}
+                    isLoading={
+                        draftFilters !== null ||
+                        (isFetching && !currentData)
+                    }
+                    error={isApiError(error) ? error : undefined}
+                    onRetry={refetch}
+                />
+            </section>
         </main>
     );
 }

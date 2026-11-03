@@ -1,3 +1,4 @@
+import { getDefaultStay } from "@/src/domain/dates/get-default-stay";
 import type { City } from "@/src/domain/types/city";
 import { citySchema } from "@/src/domain/validations/city.schema";
 import { isoDateSchema } from "@/src/domain/validations/iso-date.schema";
@@ -44,6 +45,17 @@ export function parseSearchParams(
         stars,
         sort: hotelSortSchema.catch("price").parse(params.get("sort")),
     };
+}
+
+// The search page shows results on the first visit, so missing dates fall
+// back to the default stay. Not used by the hotel page: it must never book
+// dates the user did not pick.
+export function withDefaultStay(search: HotelSearchParams): HotelSearchParams {
+    if (search.checkIn && search.checkOut) {
+        return search;
+    }
+
+    return { ...search, ...getDefaultStay() };
 }
 
 export function serializeSearchParams(

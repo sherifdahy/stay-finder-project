@@ -4,7 +4,6 @@ import { MapPin, Search, Users } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { z } from "zod";
-import { getDefaultStay } from "@/src/domain/dates/get-default-stay";
 import type { City } from "@/src/domain/types/city";
 import { useGetCitiesQuery } from "../../hotel.api";
 import { hotelSearchSchema } from "@/src/domain/validations/hotel-search.schema";
@@ -46,9 +45,8 @@ export function SearchBar(props: SearchBarProps) {
     const cities = citiesData?.cities.map((item) => ({ value: item.code, label: item.name })) ?? [
         { value: city, label: city },
     ];
-    // No dates in the URL yet: start from today and the longest stay.
-    const [checkIn, setCheckIn] = useState(() => props.checkIn || getDefaultStay().checkIn);
-    const [checkOut, setCheckOut] = useState(() => props.checkOut || getDefaultStay().checkOut);
+    const [checkIn, setCheckIn] = useState(props.checkIn);
+    const [checkOut, setCheckOut] = useState(props.checkOut);
     const [adults, setAdults] = useState(String(props.adults));
     const [errors, setErrors] = useState<Record<string, string>>({});
 
