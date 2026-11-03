@@ -47,14 +47,16 @@ export function BookingCard({ booking, onCancel }: BookingCardProps) {
                     </div>
                 </div>
 
-                <p className="text-xl font-bold">{formatMoney(booking.quote.total)}</p>
-            </div>
+                <div className="flex flex-col items-end gap-3">
+                    <p className="text-xl font-bold">{formatMoney(booking.quote.total)}</p>
 
-            {isConfirmed && booking.refundable && (
-                <Button type="button" variant="outline" className="self-end" onClick={onCancel}>
-                    Cancel booking
-                </Button>
-            )}
+                    {isConfirmed && booking.refundable && (
+                        <Button type="button" variant="outline" onClick={onCancel}>
+                            Cancel booking
+                        </Button>
+                    )}
+                </div>
+            </div>
 
             {isConfirmed && !booking.refundable && (
                 <p className="text-sm text-muted-foreground">
