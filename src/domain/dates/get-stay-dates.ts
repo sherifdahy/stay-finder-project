@@ -1,3 +1,4 @@
+import { MAX_STAY_NIGHTS, MIN_STAY_NIGHTS } from "../constants/stay";
 import type { ISODate } from "../types/primitives";
 import { parseISODate } from "../utils/parse-iso-date";
 import { nights } from "./nights";
@@ -8,8 +9,8 @@ export function getStayDates(
 ): ISODate[] {
     const totalNights = nights(checkIn, checkOut);
 
-    if (totalNights < 1 || totalNights > 14) {
-        throw new Error("Stay must be between 1 and 14 nights.");
+    if (totalNights < MIN_STAY_NIGHTS || totalNights > MAX_STAY_NIGHTS) {
+        throw new Error(`Stay must be between ${MIN_STAY_NIGHTS} and ${MAX_STAY_NIGHTS} nights.`);
     }
 
     const dates: ISODate[] = [];

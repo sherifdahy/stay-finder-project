@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { getDefaultStay } from "@/src/domain/dates/get-default-stay";
 import type { City } from "@/src/domain/types/city";
 import { hotelSearchSchema } from "@/src/domain/validations/hotel-search.schema";
 import { Button } from "@/src/shared/ui/button";
@@ -38,8 +39,9 @@ const ADULTS = [1, 2, 3, 4].map((count) => ({
 
 export function SearchBar(props: SearchBarProps) {
     const [city, setCity] = useState<string>(props.city);
-    const [checkIn, setCheckIn] = useState(props.checkIn);
-    const [checkOut, setCheckOut] = useState(props.checkOut);
+    // No dates in the URL yet: start from today and the longest stay.
+    const [checkIn, setCheckIn] = useState(() => props.checkIn || getDefaultStay().checkIn);
+    const [checkOut, setCheckOut] = useState(() => props.checkOut || getDefaultStay().checkOut);
     const [adults, setAdults] = useState(String(props.adults));
     const [errors, setErrors] = useState<Record<string, string>>({});
 

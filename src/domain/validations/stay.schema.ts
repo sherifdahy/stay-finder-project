@@ -1,4 +1,5 @@
 import z from "zod";
+import { MAX_STAY_NIGHTS, MIN_STAY_NIGHTS } from "../constants/stay";
 import { isCheckInInPast } from "../dates/is-checkin-in-past";
 import { nights } from "../dates/nights";
 import { isoDateSchema } from "./iso-date.schema";
@@ -32,7 +33,7 @@ export function refineStay<T extends { checkIn: string; checkOut: string }>(
         });
     }
 
-    if (total < 1 || total > 14) {
+    if (total < MIN_STAY_NIGHTS || total > MAX_STAY_NIGHTS) {
         ctx.addIssue({
             code: "custom",
             path: ["checkOut"],
