@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { staySchema } from "./stay.schema";
 import { starsSchema } from "./stars.schema";
 
@@ -8,12 +8,12 @@ function parseStay(checkIn: string, checkOut: string) {
 
 describe("staySchema", () => {
     beforeEach(() => {
-        vi.useFakeTimers();
-        vi.setSystemTime(new Date("2026-06-01T12:00:00.000Z"));
+        jest.useFakeTimers();
+        jest.setSystemTime(new Date("2026-06-01T12:00:00.000Z"));
     });
 
     afterEach(() => {
-        vi.useRealTimers();
+        jest.useRealTimers();
     });
 
     it("rejects a check-in date in the past", () => {
