@@ -114,6 +114,20 @@ export default function CheckoutPage() {
         );
     }
 
+    if (booking.status === "cancelled") {
+        return (
+            <main className="container flex flex-1 flex-col py-8 items-center justify-center gap-4 text-center">
+                <p className="font-semibold">This booking was cancelled</p>
+                <p className="text-sm text-muted-foreground">
+                    You can find it in your bookings.
+                </p>
+                <Link href="/bookings" className={buttonVariants()}>
+                    Go to my bookings
+                </Link>
+            </main>
+        );
+    }
+
     return (
         <main className="container space-y-6 py-8">
             <h1 className="text-xl font-bold">Complete your booking</h1>
