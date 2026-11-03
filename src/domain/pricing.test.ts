@@ -48,15 +48,17 @@ describe("buildQuote", () => {
     });
 
     it("rounds VAT to the nearest halala", () => {
-        const quote = buildQuote(
-            1,
-            "2026-12-06",
-            "2026-12-07"
-        );
+        // 10 halalas -> VAT 1.5 -> rounds up to 2
+        const up = buildQuote(10, "2026-12-06", "2026-12-07");
 
-        expect(quote.subtotal).toBe(1);
-        expect(quote.vat).toBe(0);
-        expect(quote.total).toBe(1);
+        expect(up.vat).toBe(2);
+        expect(up.total).toBe(12);
+
+        // 9 halalas -> VAT 1.35 -> rounds down to 1
+        const down = buildQuote(9, "2026-12-06", "2026-12-07");
+
+        expect(down.vat).toBe(1);
+        expect(down.total).toBe(10);
     });
 
     it("handles stays crossing a month boundary", () => {
