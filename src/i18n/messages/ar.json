@@ -110,6 +110,9 @@
         "confirming": "جارٍ التأكيد…"
     },
     "Validation": {
+        "dateRequired": "اختر تاريخ الوصول وتاريخ المغادرة.",
+        "invalidDateFormat": "يجب أن يكون التاريخ بصيغة YYYY-MM-DD.",
+        "invalidDate": "هذا التاريخ غير موجود.",
         "checkInInPast": "لا يمكن أن يكون تاريخ الوصول في الماضي.",
         "stayLength": "يجب أن تكون مدة الإقامة بين {min} و{max} ليلة."
     },

@@ -162,10 +162,12 @@ export function SearchForm(props: SearchFormProps) {
                             onChange={(stay) => {
                                 setCheckIn(stay.checkIn);
                                 setCheckOut(stay.checkOut);
+                                // A date error is about the old dates; the next search checks the new ones.
+                                setErrors((current) => ({ ...current, checkIn: "", checkOut: "" }));
                             }}
                         />
                         {(errors.checkIn || errors.checkOut) && (
-                            <p className="text-sm text-destructive">{errors.checkIn ?? errors.checkOut}</p>
+                            <p className="text-sm text-destructive">{errors.checkIn || errors.checkOut}</p>
                         )}
                     </div>
 

@@ -110,6 +110,9 @@
         "confirming": "Confirming…"
     },
     "Validation": {
+        "dateRequired": "Select your check-in and check-out dates.",
+        "invalidDateFormat": "Date must use YYYY-MM-DD format.",
+        "invalidDate": "This date doesn't exist.",
         "checkInInPast": "Check-in can't be in the past.",
         "stayLength": "Stay must be {min}–{max} nights."
     },
