@@ -36,7 +36,7 @@ export function SearchPage() {
     }
 
     return (
-        <main className="container mx-auto space-y-6 px-4 py-8">
+        <main className="container space-y-6 py-8">
             <header>
                 <h1 className="text-3xl font-bold">Find your next stay</h1>
                 <p className="mt-2 text-muted-foreground">

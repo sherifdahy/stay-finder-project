@@ -74,7 +74,7 @@ export default function HotelDetailsPage() {
 
     if (!hasDates) {
         return (
-            <main className="container mx-auto flex flex-1 flex-col px-4 py-8 items-center justify-center gap-4 text-center">
+            <main className="container flex flex-1 flex-col py-8 items-center justify-center gap-4 text-center">
                 <p>Select your dates first</p>
                 <Link href="/" className={buttonVariants()}>
                     Back to search
@@ -85,7 +85,7 @@ export default function HotelDetailsPage() {
 
     if (isLoading) {
         return (
-            <main className="container mx-auto space-y-6 px-4 py-8">
+            <main className="container space-y-6 py-8">
                 <Skeleton className="h-64 w-full" />
                 <Skeleton className="h-8 w-1/2" />
                 <Skeleton className="h-40 w-full" />
@@ -96,7 +96,7 @@ export default function HotelDetailsPage() {
     if (error) {
         if (isApiError(error) && error.code === "NOT_FOUND") {
             return (
-                <main className="container mx-auto flex flex-1 flex-col px-4 py-8 items-center justify-center gap-4 text-center">
+                <main className="container flex flex-1 flex-col py-8 items-center justify-center gap-4 text-center">
                     <p>Hotel not found</p>
                     <Link href="/" className={buttonVariants()}>
                         Back to search
@@ -106,7 +106,7 @@ export default function HotelDetailsPage() {
         }
 
         return (
-            <main className="container mx-auto space-y-6 px-4 py-8">
+            <main className="container space-y-6 py-8">
                 <ErrorState
                     message={isApiError(error) ? error.message : "Something went wrong."}
                     onRetry={refetch}
@@ -120,7 +120,7 @@ export default function HotelDetailsPage() {
     const { hotel, rooms } = data;
 
     return (
-        <main className="container mx-auto space-y-6 px-4 py-8">
+        <main className="container space-y-6 py-8">
             <img
                 src={hotel.image}
                 alt={hotel.name}

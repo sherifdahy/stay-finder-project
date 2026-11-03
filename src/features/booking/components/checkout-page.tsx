@@ -63,7 +63,7 @@ export default function CheckoutPage() {
 
     if (isLoading) {
         return (
-            <main className="container mx-auto space-y-6 px-4 py-8">
+            <main className="container space-y-6 py-8">
                 <Skeleton className="h-8 w-1/2" />
                 <Skeleton className="h-40 w-full" />
             </main>
@@ -73,7 +73,7 @@ export default function CheckoutPage() {
     if (error) {
         if (isApiError(error) && error.code === "NOT_FOUND") {
             return (
-                <main className="container mx-auto flex flex-1 flex-col px-4 py-8 items-center justify-center gap-4 text-center">
+                <main className="container flex flex-1 flex-col py-8 items-center justify-center gap-4 text-center">
                     <p>Booking not found</p>
                     <Link href="/" className={buttonVariants()}>
                         Back to search
@@ -83,7 +83,7 @@ export default function CheckoutPage() {
         }
 
         return (
-            <main className="container mx-auto space-y-6 px-4 py-8">
+            <main className="container space-y-6 py-8">
                 <ErrorState
                     message={isApiError(error) ? error.message : "Something went wrong."}
                     onRetry={refetch}
@@ -96,7 +96,7 @@ export default function CheckoutPage() {
 
     if (booking.status === "confirmed") {
         return (
-            <main className="container mx-auto flex flex-1 flex-col px-4 py-8 items-center justify-center gap-4 text-center">
+            <main className="container flex flex-1 flex-col py-8 items-center justify-center gap-4 text-center">
                 <p className="font-semibold">This booking is already confirmed</p>
                 <p className="text-sm text-muted-foreground">
                     You can find it in your bookings.
@@ -109,7 +109,7 @@ export default function CheckoutPage() {
     }
 
     return (
-        <main className="container mx-auto space-y-6 px-4 py-8">
+        <main className="container space-y-6 py-8">
             <h1 className="text-xl font-bold">Complete your booking</h1>
 
             {(isExpired || holdExpired) && (
