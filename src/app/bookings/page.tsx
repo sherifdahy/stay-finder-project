@@ -1,3 +1,5 @@
-export default function BookingsPage() {
-    return <h1>Bookings Page</h1>
+import BookingsPage from "@/src/features/booking/components/bookings-page";
+
+export default function BookingsRoute() {
+    return <BookingsPage />;
 }
