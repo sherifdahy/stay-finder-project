@@ -1,8 +1,20 @@
 "use client";
 
+import { Fragment } from "react";
 import type { HotelSort } from "@/src/domain/validations/sort.schema";
 import { Card, CardContent } from "@/src/shared/ui/card";
-import { Checkbox } from "@/src/shared/ui/checkbox";
+import {
+    Combobox,
+    ComboboxChip,
+    ComboboxChips,
+    ComboboxChipsInput,
+    ComboboxContent,
+    ComboboxEmpty,
+    ComboboxItem,
+    ComboboxList,
+    ComboboxValue,
+    useComboboxAnchor,
+} from "@/src/shared/ui/combobox";
 import { Input } from "@/src/shared/ui/input";
 import { Label } from "@/src/shared/ui/label";
 import {
@@ -23,6 +35,8 @@ interface HotelFiltersProps extends Filters {
     onChange: (filters: Filters) => void;
 }
 
+const STAR_OPTIONS = ["5", "4", "3", "2", "1"];
+
 const SORT_OPTIONS = [
     { value: "price", label: "Price" },
     { value: "rating", label: "Rating" },
@@ -34,12 +48,10 @@ export function HotelFilters({
     sort,
     onChange,
 }: HotelFiltersProps) {
-    function toggleStar(star: number, checked: boolean) {
-        const next = checked
-            ? [...stars, star].sort()
-            : stars.filter((value) => value !== star);
+    const starsAnchor = useComboboxAnchor();
 
-        onChange({ maxPrice, stars: next, sort });
+    function changeStars(values: string[]) {
+        onChange({ maxPrice, stars: values.map(Number).sort(), sort });
     }
 
     return (
@@ -68,22 +80,42 @@ export function HotelFilters({
                     />
                 </div>
 
-                <fieldset className="space-y-2">
-                    <legend className="mb-2 text-sm font-medium">Stars</legend>
-
-                    {[5, 4, 3, 2, 1].map((star) => (
-                        <div key={star} className="flex items-center gap-2">
-                            <Checkbox
-                                id={`stars-${star}`}
-                                checked={stars.includes(star)}
-                                onCheckedChange={(checked) =>
-                                    toggleStar(star, checked)
-                                }
-                            />
-                            <Label htmlFor={`stars-${star}`}>{star} stars</Label>
-                        </div>
-                    ))}
-                </fieldset>
+                <div className="space-y-1.5">
+                    <Label htmlFor="stars">Stars</Label>
+                    <Combobox
+                        multiple
+                        openOnInputClick
+                        items={STAR_OPTIONS}
+                        value={stars.map(String)}
+                        onValueChange={changeStars}
+                    >
+                        <ComboboxChips ref={starsAnchor}>
+                            <ComboboxValue>
+                                {(values: string[]) => (
+                                    <Fragment>
+                                        {values.map((value) => (
+                                            <ComboboxChip key={value}>{value} stars</ComboboxChip>
+                                        ))}
+                                        <ComboboxChipsInput
+                                            id="stars"
+                                            placeholder={values.length === 0 ? "Any rating" : ""}
+                                        />
+                                    </Fragment>
+                                )}
+                            </ComboboxValue>
+                        </ComboboxChips>
+                        <ComboboxContent anchor={starsAnchor}>
+                            <ComboboxEmpty>No ratings found.</ComboboxEmpty>
+                            <ComboboxList>
+                                {(item: string) => (
+                                    <ComboboxItem key={item} value={item}>
+                                        {item} stars
+                                    </ComboboxItem>
+                                )}
+                            </ComboboxList>
+                        </ComboboxContent>
+                    </Combobox>
+                </div>
 
                 <div className="space-y-1.5">
                     <Label htmlFor="sort">Sort by</Label>
