@@ -17,8 +17,12 @@ import { ServiceError } from "../errors/service-error";
 
 const DEFAULT_HOLD_TTL_SECONDS = 300;
 
-// Idempotency-Key -> Booking ID
+// `${bookingId}:${idempotencyKey}` -> Booking ID
 const confirmedBookings = new Map<string, string>();
+
+function idempotencyId(bookingId: string, key: string): string {
+    return `${bookingId}:${key}`;
+}
 
 export interface CreateHoldInput {
     hotelId: string;
@@ -201,7 +205,7 @@ export function confirmBooking(
     }
 
     // A previously used key must return the same confirmed booking.
-    const existingBookingId = confirmedBookings.get(idempotencyKey);
+    const existingBookingId = confirmedBookings.get(idempotencyId(bookingId, idempotencyKey));
 
     if (existingBookingId) {
         const existingBooking = getBookingOrThrow(existingBookingId);
@@ -240,7 +244,7 @@ export function confirmBooking(
 
     // Also support retrying the same booking after successful confirmation.
     if (booking.status === "confirmed") {
-        confirmedBookings.set(idempotencyKey, booking.id);
+        confirmedBookings.set(idempotencyId(bookingId, idempotencyKey), booking.id);
 
         return {
             booking,
@@ -270,7 +274,7 @@ export function confirmBooking(
         );
     }
 
-    confirmedBookings.set(idempotencyKey, bookingId);
+    confirmedBookings.set(idempotencyId(bookingId, idempotencyKey), bookingId);
 
     return {
         booking: confirmedBooking,
