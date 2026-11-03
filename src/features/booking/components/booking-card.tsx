@@ -47,7 +47,7 @@ export function BookingCard({ booking, onCancel }: BookingCardProps) {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-end gap-3">
+                <div className="flex flex-col items-end justify-between gap-3 self-stretch">
                     <p className="text-xl font-bold">{formatMoney(booking.quote.total)}</p>
 
                     {isConfirmed && booking.refundable && (
