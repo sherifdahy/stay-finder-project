@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { hotelHref } from "@/src/features/hotels/search-params";
 import { formatMoney } from "@/src/shared/lib/format-money";
-import { Alert, AlertDescription, AlertTitle } from "@/src/shared/ui/alert";
+import { Alert, AlertDescription } from "@/src/shared/ui/alert";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { Card } from "@/src/shared/ui/card";
 import { ErrorState } from "@/src/shared/ui/error-state";
@@ -12,10 +12,6 @@ import { Skeleton } from "@/src/shared/ui/skeleton";
 import { isApiError } from "@/src/store/baseApi";
 import { useGetBookingByIdQuery } from "../booking.api";
 import { useHoldCountdown } from "../hooks/use-hold-countdown";
-
-const MAIN_CLASS = "mx-auto w-full max-w-2xl space-y-6 p-4 sm:p-8";
-const CENTERED_CLASS =
-    "mx-auto flex w-full max-w-2xl flex-1 flex-col items-center justify-center gap-4 p-8 text-center";
 
 function formatCountdown(seconds: number | null): string {
     if (seconds === null) return "--:--";
@@ -35,7 +31,7 @@ export default function CheckoutPage() {
 
     if (isLoading) {
         return (
-            <main className={MAIN_CLASS}>
+            <main className="container mx-auto space-y-6 px-4 py-8">
                 <Skeleton className="h-8 w-1/2" />
                 <Skeleton className="h-40 w-full" />
             </main>
@@ -45,7 +41,7 @@ export default function CheckoutPage() {
     if (error) {
         if (isApiError(error) && error.code === "NOT_FOUND") {
             return (
-                <main className={CENTERED_CLASS}>
+                <main className="container mx-auto flex flex-1 flex-col px-4 py-8 items-center justify-center gap-4 text-center">
                     <p>Booking not found</p>
                     <Link href="/" className={buttonVariants()}>
                         Back to search
@@ -55,7 +51,7 @@ export default function CheckoutPage() {
         }
 
         return (
-            <main className={MAIN_CLASS}>
+            <main className="container mx-auto space-y-6 px-4 py-8">
                 <ErrorState
                     message={isApiError(error) ? error.message : "Something went wrong."}
                     onRetry={refetch}
@@ -68,42 +64,26 @@ export default function CheckoutPage() {
 
     if (booking.status === "confirmed") {
         return (
-            <main className={CENTERED_CLASS}>
-                <p>This booking is already confirmed</p>
+            <main className="container mx-auto flex flex-1 flex-col px-4 py-8 items-center justify-center gap-4 text-center">
+                <p className="font-semibold">This booking is already confirmed</p>
+                <p className="text-sm text-muted-foreground">
+                    You can find it in your bookings.
+                </p>
                 <Link href="/bookings" className={buttonVariants()}>
-                    View my bookings
+                    Go to my bookings
                 </Link>
             </main>
         );
     }
 
     return (
-        <main className={MAIN_CLASS}>
-            <h1 className="text-2xl font-bold">Checkout</h1>
+        <main className="container mx-auto space-y-6 px-4 py-8">
+            <h1 className="text-xl font-bold">Complete your booking</h1>
 
-            <Card className="gap-3 p-4">
-                <div className="flex justify-between">
-                    <span className="text-muted-foreground">Check-in</span>
-                    <span>{booking.checkIn}</span>
-                </div>
-                <div className="flex justify-between">
-                    <span className="text-muted-foreground">Check-out</span>
-                    <span>{booking.checkOut}</span>
-                </div>
-                <div className="flex justify-between">
-                    <span className="text-muted-foreground">Guests</span>
-                    <span>{booking.adults}</span>
-                </div>
-                <div className="flex justify-between border-t pt-3 text-lg font-bold">
-                    <span>Total</span>
-                    <span>{formatMoney(booking.quote.total)}</span>
-                </div>
-            </Card>
-
-            {isExpired ? (
+            {isExpired && (
                 <Alert variant="destructive">
-                    <AlertTitle>Your hold has expired</AlertTitle>
-                    <AlertDescription>
+                    <AlertDescription className="flex flex-wrap items-center justify-between gap-3">
+                        <span>Your hold has expired. The room was released.</span>
                         <Link
                             href={hotelHref(booking.hotelId, booking)}
                             className={buttonVariants({ variant: "outline" })}
@@ -112,11 +92,38 @@ export default function CheckoutPage() {
                         </Link>
                     </AlertDescription>
                 </Alert>
-            ) : (
-                <p className="text-lg font-semibold">
-                    Time left: {formatCountdown(secondsLeft)}
-                </p>
             )}
+
+            <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_280px]">
+                <Card className="p-4">
+                    <h2 className="font-semibold">Guest details</h2>
+                </Card>
+
+                <div className="order-first flex flex-col gap-4 md:order-none">
+                    <Card className="gap-1 p-4">
+                        <p className="text-xs text-muted-foreground">Time left</p>
+                        <p
+                            className={`text-3xl font-bold tabular-nums ${isExpired ? "text-destructive" : ""}`}
+                        >
+                            {formatCountdown(isExpired ? 0 : secondsLeft)}
+                        </p>
+                    </Card>
+
+                    <Card className="gap-2 p-4">
+                        <h2 className="font-semibold">Your stay</h2>
+                        <p className="text-sm text-muted-foreground">
+                            {booking.checkIn} → {booking.checkOut}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                            {booking.adults} {booking.adults === 1 ? "adult" : "adults"}
+                        </p>
+                        <div className="flex justify-between font-semibold">
+                            <span>Total</span>
+                            <span>{formatMoney(booking.quote.total)}</span>
+                        </div>
+                    </Card>
+                </div>
+            </div>
         </main>
     );
 }
