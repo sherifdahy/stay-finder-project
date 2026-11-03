@@ -10,7 +10,7 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { Link, useRouter } from "@/src/i18n/navigation";
 import { useErrorMessage } from "@/src/shared/hooks/use-error-message";
 import { isApiError } from "@/src/store/baseApi";
-import { Alert, AlertDescription } from "@/src/shared/ui/alert";
+import { toast } from "sonner";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { ErrorState } from "@/src/shared/ui/error-state";
 import { Skeleton } from "@/src/shared/ui/skeleton";
@@ -36,7 +36,6 @@ export default function HotelDetailsPage() {
     const router = useRouter();
     const [createHold, { isLoading: isReserving }] = useCreateHoldMutation();
     const [reservingRoomId, setReservingRoomId] = useState<string | null>(null);
-    const [message, setMessage] = useState<string | null>(null);
     const [priceChange, setPriceChange] = useState<{
         room: HotelRoom;
         oldTotal: number;
@@ -44,7 +43,6 @@ export default function HotelDetailsPage() {
     } | null>(null);
 
     async function reserve(room: HotelRoom, quotedTotal: number) {
-        setMessage(null);
         setReservingRoomId(room.id);
 
         try {
@@ -66,7 +64,7 @@ export default function HotelDetailsPage() {
             }
 
             setPriceChange(null);
-            setMessage(errorMessage(error));
+            toast.error(errorMessage(error));
         } finally {
             setReservingRoomId(null);
         }
@@ -161,12 +159,6 @@ export default function HotelDetailsPage() {
                     ))}
                 </div>
             </section>
-
-            {message && (
-                <Alert variant="destructive">
-                    <AlertDescription>{message}</AlertDescription>
-                </Alert>
-            )}
 
             <section className="space-y-4">
                 {rooms.map((room) => (

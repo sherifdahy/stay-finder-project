@@ -4,7 +4,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { z } from "zod";
 import { guestSchema, type Guest } from "@/src/domain/validations/guest.schema";
-import { Alert, AlertDescription } from "@/src/shared/ui/alert";
 import { Button } from "@/src/shared/ui/button";
 import { Input } from "@/src/shared/ui/input";
 import { Label } from "@/src/shared/ui/label";
@@ -12,14 +11,12 @@ import { Label } from "@/src/shared/ui/label";
 interface GuestFormProps {
     disabled: boolean;
     isSubmitting: boolean;
-    error: string | null;
     onSubmit: (guest: Guest) => void;
 }
 
 export function GuestForm({
     disabled,
     isSubmitting,
-    error,
     onSubmit,
 }: GuestFormProps) {
     const t = useTranslations("GuestForm");
@@ -96,12 +93,6 @@ export function GuestForm({
                         <p className="text-sm text-destructive">{errors.phone}</p>
                     )}
                 </div>
-
-                {error && (
-                    <Alert variant="destructive">
-                        <AlertDescription>{error}</AlertDescription>
-                    </Alert>
-                )}
 
                 <Button type="submit" className="w-full">
                     {isSubmitting ? t("confirming") : t("confirm")}

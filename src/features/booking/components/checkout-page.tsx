@@ -40,7 +40,6 @@ export default function CheckoutPage() {
     const router = useRouter();
     const idempotencyKey = useAppSelector((state) => selectIdempotencyKey(state, bookingId));
     const [confirmBooking, { isLoading: isConfirming }] = useConfirmBookingMutation();
-    const [confirmError, setConfirmError] = useState<string | null>(null);
     const [holdExpired, setHoldExpired] = useState(false);
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const redirected = useRef(false);
@@ -68,7 +67,6 @@ export default function CheckoutPage() {
 
     async function handleConfirm(guest: Guest) {
         if (!idempotencyKey) return;
-        setConfirmError(null);
         setHasSubmitted(true);
 
         try {
@@ -82,7 +80,7 @@ export default function CheckoutPage() {
 
             // The booking may have been confirmed and only the reply lost.
             // Trying again sends the same key, so no second booking is created.
-            setConfirmError(t("Checkout.retryMessage", { message: errorMessage(error) }));
+            toast.error(t("Checkout.retryMessage", { message: errorMessage(error) }));
         }
     }
 
@@ -172,7 +170,6 @@ export default function CheckoutPage() {
                     <GuestForm
                         disabled={isExpired || holdExpired}
                         isSubmitting={isConfirming}
-                        error={confirmError}
                         onSubmit={handleConfirm}
                     />
                 </Card>
