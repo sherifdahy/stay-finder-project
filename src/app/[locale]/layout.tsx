@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import "../globals.css";
 import { getDirection, LOCALES } from "@/src/domain/constants/locale";
 import StoreProvider from "@/src/store/store-provider";
-import { LanguageSwitcher } from "@/src/shared/ui/language-switcher";
+import { LanguageList, LanguageSwitcher } from "@/src/shared/ui/language-switcher";
 import { SiteHeader } from "@/src/shared/ui/site-header";
 import { Toaster } from "@/src/shared/ui/sonner";
 
@@ -41,9 +41,9 @@ export default async function Layout({ children }: LayoutProps<"/[locale]">) {
       dir={getDirection(locale)}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col overflow-x-clip">
         <NextIntlClientProvider>
-          <SiteHeader brand="StayFinder" links={navLinks} actions={<LanguageSwitcher />} />
+          <SiteHeader brand="StayFinder" links={navLinks} actions={<LanguageSwitcher />} menuActions={<LanguageList />} />
           {/* makeStore() uses Math.random (RTK Query's nanoid), which Next 16 only allows inside Suspense. */}
           <Suspense fallback={null}>
             <StoreProvider>
