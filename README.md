@@ -8,7 +8,7 @@ A small hotel booking app built with Next.js (App Router), Redux Toolkit / RTK Q
 npm install
 cp .env.example .env.local   # optional, defaults work as they are
 npm run dev                  # http://localhost:3000
-npm test                     # pricing and schema unit tests
+npm test                     # Jest: pricing and schema unit tests
 npm run lint
 npm run build
 ```
@@ -36,7 +36,8 @@ Reviewer settings: `CHAOS_MAX_LATENCY_MS=3000 CHAOS_ERROR_RATE=0.3 CHAOS_PRICE_C
 | M1 Search & results | Done |
 | M2 Hotel page, M3 reserve errors | Done |
 | M4 Checkout and countdown | Done |
-| M5 My bookings and cancel UI | Not done (the endpoints, optimistic mutation and tags exist) |
+| M5 My bookings and cancel UI | Done |
+| M6 Error and not-found states (`error.tsx`, `global-error.tsx`, `not-found.tsx`) | Done |
 | Bonuses | Skipped |
 
 ## Where state lives
@@ -54,8 +55,22 @@ Reviewer settings: `CHAOS_MAX_LATENCY_MS=3000 CHAOS_ERROR_RATE=0.3 CHAOS_PRICE_C
 - **Price change is stored on the server.** When chaos raises a price, the new rate is saved on the room, so the quote in the 409 response is the real current price. Accepting it and retrying succeeds instead of looping.
 - **The countdown follows the server clock.** Seconds left come from `holdExpiresAt`, corrected by the gap between `serverTime` and the moment the response arrived, so a refresh or a wrong device clock does not reset it.
 - **Confirm retries reuse one Idempotency-Key.** A 500 on confirm may mean the booking went through and only the reply was lost, so pressing Confirm again sends the same key and the server returns the same booking. After a page refresh the key is new, but the server also returns a booking that is already confirmed.
+- **Back goes search by search.** Changing a filter uses `replace` and a new search uses `push`, so the Back button returns to the previous search, not the previous filter.
+- **A lost confirm reply still ends well.** If confirm fails but the booking went through, the checkout page redirects to `/bookings` with a success message as soon as the booking shows as `confirmed`.
 - **Stars accept a list** (`stars=4,5`), so a guest can pick several star ratings.
 - **"Today" is computed in UTC**, so near midnight in other time zones a check-in date can be off by one day (known limitation).
 - **One schema for the form and the API.** `hotelSearchSchema` validates the search form in the browser and the query string on the server; the stay rules (not in the past, 1–14 nights) live in one refine.
 - **Errors have one shape.** `store/baseApi.ts` turns every failure into `{ status, code, message, details }`, and network failures become `NETWORK_ERROR`.
-- **Layout deviations:** UI components from shadcn/ui live in `src/shared/ui`; the store files use kebab-case names.
+- **Layout deviations:**
+  - `domain/` is split into folders (`dates/`, `validations/`, `types/`, `constants/`) instead of single `dates.ts`, `schemas.ts` and `types.ts` files, so the files stay small.
+  - File names are kebab-case (`hotel.api.ts`, `search-params.ts`, `use-hold-countdown.ts`).
+  - UI components from shadcn/ui live in `src/shared/ui`, and general helpers (`formatMoney`, `cn`) in `src/shared/lib`.
+  - Each feature has an `index.ts` that is its public API; other features may import only from it.
+
+## AI usage
+
+I used Claude Code for some of the tasks, not all of them. It helped me write
+the HTML/JSX markup of some components, some of the server-side files (services
+and route handlers), and some of the tests. After finishing each phase, I also
+used it to review the code. I designed the structure and made the decisions
+myself, I reviewed what it produced, and I can explain how each part works.
