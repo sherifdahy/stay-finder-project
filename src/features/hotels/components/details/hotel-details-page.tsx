@@ -145,12 +145,12 @@ export default function HotelDetailsPage() {
                         <MapPin className="size-4" aria-hidden />
                         {hotel.cityName}
                     </p>
-                </div>
 
-                <div className="flex flex-wrap gap-2 pt-1">
-                    {hotel.amenities.map((amenity) => (
-                        <AmenityIcon key={amenity.code} amenity={amenity} />
-                    ))}
+                    <div className="ms-auto flex flex-wrap gap-2">
+                        {hotel.amenities.map((amenity) => (
+                            <AmenityIcon key={amenity.code} amenity={amenity} />
+                        ))}
+                    </div>
                 </div>
             </section>
 

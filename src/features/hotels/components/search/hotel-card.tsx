@@ -41,15 +41,17 @@ export function HotelCard({ hotel, stay }: HotelCardProps) {
                         <span className="sr-only">{t("Common.rating")}</span>
                     </p>
 
-                    <p className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <MapPin className="size-4" aria-hidden />
-                        {hotel.cityName}
-                    </p>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p className="flex items-center gap-1 text-sm text-muted-foreground">
+                            <MapPin className="size-4" aria-hidden />
+                            {hotel.cityName}
+                        </p>
 
-                    <div className="flex flex-wrap gap-2 pt-1">
-                        {hotel.amenities.map((amenity) => (
-                            <AmenityIcon key={amenity.code} amenity={amenity} />
-                        ))}
+                        <div className="flex flex-wrap gap-2">
+                            {hotel.amenities.map((amenity) => (
+                                <AmenityIcon key={amenity.code} amenity={amenity} />
+                            ))}
+                        </div>
                     </div>
                 </div>
 

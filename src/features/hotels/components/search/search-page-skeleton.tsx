@@ -52,7 +52,7 @@ export function HotelResultsSkeleton() {
     );
 }
 
-// Mirrors HotelCard: image, name and stars, rating, city, amenities, then price and button.
+// Mirrors HotelCard: image, name and stars, rating, city with amenities, then price and button.
 function HotelCardSkeleton() {
     return (
         <div className="flex flex-col overflow-hidden rounded-xl border bg-card sm:flex-row">
@@ -65,11 +65,13 @@ function HotelCardSkeleton() {
                         <Skeleton className="h-4 w-14" />
                     </div>
                     <Skeleton className="h-4 w-12" />
-                    <Skeleton className="h-4 w-24" />
-                    <div className="flex gap-2 pt-1">
-                        {[1, 2, 3].map((item) => (
-                            <Skeleton key={item} className="size-8 rounded-lg" />
-                        ))}
+                    <div className="flex items-center justify-between gap-2">
+                        <Skeleton className="h-4 w-24" />
+                        <div className="flex gap-2">
+                            {[1, 2, 3].map((item) => (
+                                <Skeleton key={item} className="size-8 rounded-lg" />
+                            ))}
+                        </div>
                     </div>
                 </div>
 
