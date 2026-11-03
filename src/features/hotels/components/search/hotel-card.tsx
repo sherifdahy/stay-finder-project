@@ -6,7 +6,7 @@ import { formatMoney } from "@/src/shared/lib/format-money";
 import { Badge } from "@/src/shared/ui/badge";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { Card } from "@/src/shared/ui/card";
-import { hotelHref, type HotelSearchParams } from "../search-params";
+import { hotelHref, type HotelSearchParams } from "../../search-params";
 
 interface HotelCardProps {
     hotel: Hotel & { fromTotal: number };

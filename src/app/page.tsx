@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { SearchPage } from "@/src/features/hotels/components/search-page";
+import { SearchPage } from "@/src/features/hotels/components/search/search-page";
 
 export default function HomePage() {
     return (

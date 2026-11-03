@@ -1,4 +1,4 @@
-import HotelDetailsPage from "@/src/features/hotels/components/hotel-details-page";
+import HotelDetailsPage from "@/src/features/hotels/components/details/hotel-details-page";
 import { Suspense } from "react";
 
 export default function HotelPage() {

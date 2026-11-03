@@ -1,27 +1,8 @@
-import type {
-    Booking,
-    BookingGuest,
-    BookingView,
-} from "@/src/domain/types/booking";
+import type { BookingView } from "@/src/domain/types/booking";
 import { baseApi } from "@/src/store/baseApi";
-
-type CreateHoldRequest = Pick<
-    Booking,
-    "hotelId" | "roomId" | "checkIn" | "checkOut" | "adults"
-> & {
-    quotedTotal: Booking["quote"]["total"];
-};
-
-type ConfirmBookingRequest = {
-    bookingId: string;
-    guest: BookingGuest;
-    idempotencyKey: string;
-};
-
-type BookingResponse = {
-    booking: Booking;
-    serverTime: string;
-};
+import type { BookingResponse } from "./dtos/booking-response.dto";
+import type { ConfirmBookingRequest } from "./dtos/confirm-booking-request.dto";
+import type { CreateHoldRequest } from "./dtos/create-hold-request.dto";
 
 export const bookingsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({

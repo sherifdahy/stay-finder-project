@@ -10,11 +10,12 @@ import { Badge } from "@/src/shared/ui/badge";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { ErrorState } from "@/src/shared/ui/error-state";
 import { Skeleton } from "@/src/shared/ui/skeleton";
-import { useGetHotelDetailsQuery } from "../hotel-api";
-import { parseSearchParams } from "../search-params";
+import { useGetHotelDetailsQuery } from "../../hotel.api";
+import { parseSearchParams } from "../../search-params";
 import { RoomCard } from "./room-card";
 
 export default function HotelDetailsPage() {
+
     const { hotelId } = useParams<{ hotelId: string }>();
     const searchParams = useSearchParams();
     const stay = parseSearchParams(new URLSearchParams(searchParams.toString()));
@@ -28,7 +29,7 @@ export default function HotelDetailsPage() {
 
     if (!hasDates) {
         return (
-            <main className="mx-auto w-full max-w-4xl space-y-4 p-8 text-center">
+            <main className="mx-auto flex h-screen w-full max-w-4xl flex-col items-center justify-center gap-4 p-8 text-center">
                 <p>Select your dates first</p>
                 <Link href="/" className={buttonVariants()}>
                     Back to search
@@ -50,7 +51,7 @@ export default function HotelDetailsPage() {
     if (error) {
         if (isApiError(error) && error.code === "NOT_FOUND") {
             return (
-                <main className="mx-auto w-full max-w-4xl space-y-4 p-8 text-center">
+                <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
                     <p>Hotel not found</p>
                     <Link href="/" className={buttonVariants()}>
                         Back to search

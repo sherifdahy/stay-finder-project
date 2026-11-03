@@ -3,12 +3,12 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { isApiError } from "@/src/store/baseApi";
-import { useSearchHotelsQuery } from "../hotel-api";
+import { useSearchHotelsQuery } from "../../hotel.api";
 import {
     parseSearchParams,
     serializeSearchParams,
     type HotelSearchParams,
-} from "../search-params";
+} from "../../search-params";
 import { HotelFilters } from "./hotel-filters";
 import { HotelResults } from "./hotel-results";
 import { SearchBar } from "./search-bar";

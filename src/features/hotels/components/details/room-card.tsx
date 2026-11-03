@@ -7,7 +7,7 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/src/shared/ui/collapsible";
-import type { HotelRoom } from "../hotel-api";
+import type { HotelRoom } from "../../dtos/details/hotel-room.dto";
 
 interface RoomCardProps {
     room: HotelRoom;

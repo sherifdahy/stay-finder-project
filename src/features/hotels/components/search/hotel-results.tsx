@@ -1,7 +1,7 @@
 import type { Hotel } from "@/src/domain/types/hotel";
 import { ErrorState } from "@/src/shared/ui/error-state";
 import { Skeleton } from "@/src/shared/ui/skeleton";
-import type { HotelSearchParams } from "../search-params";
+import type { HotelSearchParams } from "../../search-params";
 import { HotelCard } from "./hotel-card";
 
 interface HotelResultsProps {
