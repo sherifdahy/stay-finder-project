@@ -34,8 +34,8 @@ Reviewer settings: `CHAOS_MAX_LATENCY_MS=3000 CHAOS_ERROR_RATE=0.3 CHAOS_PRICE_C
 | Shared Zod schemas (form and API) | Done |
 | RTK Query layer (base API, typed errors, cache tags, optimistic cancel, booking slice) | Done |
 | M1 Search & results | Done |
-| M2 Hotel page, M3 reserve errors | Not done |
-| M4 Checkout and countdown | Not done |
+| M2 Hotel page, M3 reserve errors | Done |
+| M4 Checkout and countdown | Done |
 | M5 My bookings and cancel UI | Not done (the endpoints, optimistic mutation and tags exist) |
 | Bonuses | Skipped |
 
@@ -52,6 +52,8 @@ Reviewer settings: `CHAOS_MAX_LATENCY_MS=3000 CHAOS_ERROR_RATE=0.3 CHAOS_PRICE_C
 ## Decisions and assumptions
 
 - **Price change is stored on the server.** When chaos raises a price, the new rate is saved on the room, so the quote in the 409 response is the real current price. Accepting it and retrying succeeds instead of looping.
+- **The countdown follows the server clock.** Seconds left come from `holdExpiresAt`, corrected by the gap between `serverTime` and the moment the response arrived, so a refresh or a wrong device clock does not reset it.
+- **Confirm retries reuse one Idempotency-Key.** A 500 on confirm may mean the booking went through and only the reply was lost, so pressing Confirm again sends the same key and the server returns the same booking. After a page refresh the key is new, but the server also returns a booking that is already confirmed.
 - **Stars accept a list** (`stars=4,5`), so a guest can pick several star ratings.
 - **"Today" is computed in UTC**, so near midnight in other time zones a check-in date can be off by one day (known limitation).
 - **One schema for the form and the API.** `hotelSearchSchema` validates the search form in the browser and the query string on the server; the stay rules (not in the past, 1–14 nights) live in one refine.
