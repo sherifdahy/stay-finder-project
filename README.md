@@ -38,7 +38,8 @@ Reviewer settings: `CHAOS_MAX_LATENCY_MS=3000 CHAOS_ERROR_RATE=0.3 CHAOS_PRICE_C
 | M4 Checkout and countdown | Done |
 | M5 My bookings and cancel UI | Done |
 | M6 Error and not-found states (`error.tsx`, `global-error.tsx`, `not-found.tsx`) | Done |
-| Bonuses | Done: translation (English and Arabic, with RTL) and Vercel deployment |
+| Bonuses | Done: B4 translation (English and Arabic, with RTL) and B5 Vercel deployment |
+| Skipped bonuses | B1 wishlist, B2 server-rendered results page, B3 component test for the countdown |
 | SEO (title, description, Open Graph and Twitter tags in each language) | Done |
 
 ## Where state lives
@@ -63,8 +64,6 @@ Reviewer settings: `CHAOS_MAX_LATENCY_MS=3000 CHAOS_ERROR_RATE=0.3 CHAOS_PRICE_C
 - **The first visit shows results.** With no dates in the URL, the search page uses a default stay of one night from today (UTC), so the cards show a one-night total. The dates are written to the URL on the first search or sort change. A bare `/` link opened on another day shows that day's results. The hotel page has no default and asks for dates, so a guest never holds dates they did not pick.
 - **Stars accept a list** (`stars=4,5`), so a guest can pick several star ratings.
 - **"Today" is computed in UTC**, so near midnight in other time zones a check-in date can be off by one day (known limitation).
-- **One schema for the form and the API.** `hotelSearchSchema` validates the search form in the browser and the query string on the server; the stay rules (not in the past, 1–14 nights) live in one refine.
-- **Errors have one shape.** `store/baseApi.ts` turns every failure into `{ status, code, message, details }`, and network failures become `NETWORK_ERROR`.
 - **Layout deviations:**
   - `domain/` is split into folders (`dates/`, `validations/`, `types/`, `constants/`) instead of single `dates.ts`, `schemas.ts` and `types.ts` files, so the files stay small.
   - File names are kebab-case (`hotel.api.ts`, `search-params.ts`, `use-hold-countdown.ts`).
