@@ -1,2 +1,2 @@
 // Public API: what other features may use.
-export { hotelHref } from "./search-params";
+export { hotelHref } from "./utils/search-params";

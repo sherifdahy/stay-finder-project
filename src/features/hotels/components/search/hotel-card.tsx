@@ -8,7 +8,7 @@ import { formatMoney } from "@/src/shared/lib/format-money";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { Card } from "@/src/shared/ui/card";
 import { AmenityIcon } from "../amenity-icon";
-import { hotelHref, type HotelSearchParams } from "../../search-params";
+import { hotelHref, type HotelSearchParams } from "../../utils/search-params";
 
 interface HotelCardProps {
     hotel: Hotel & { fromTotal: number };

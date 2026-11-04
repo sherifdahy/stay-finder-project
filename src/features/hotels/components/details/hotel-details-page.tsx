@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { buttonVariants } from "@/src/shared/ui/button";
 import { ErrorState } from "@/src/shared/ui/error-state";
 import { useGetHotelDetailsQuery } from "../../hotel.api";
-import { parseSearchParams } from "../../search-params";
+import { parseSearchParams } from "../../utils/search-params";
 import { AmenityIcon } from "../amenity-icon";
 import { HotelDetailsSkeleton } from "./hotel-details-skeleton";
 import { PriceChangedDialog } from "./price-changed-dialog";

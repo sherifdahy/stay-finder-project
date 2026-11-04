@@ -10,7 +10,7 @@ import {
     serializeSearchParams,
     withDefaultStay,
     type HotelSearchParams,
-} from "../../search-params";
+} from "../../utils/search-params";
 import { HotelResults } from "./hotel-results";
 import { MobileSearchSheet } from "./mobile-search-sheet";
 import { SearchForm } from "./search-form";

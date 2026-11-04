@@ -3,7 +3,7 @@ import { API_ERROR_CODE } from "@/src/domain/constants/api-error-code";
 import type { Hotel } from "@/src/domain/types/hotel";
 import { useErrorMessage } from "@/src/shared/hooks/use-error-message";
 import { ErrorState } from "@/src/shared/ui/error-state";
-import type { HotelSearchParams } from "../../search-params";
+import type { HotelSearchParams } from "../../utils/search-params";
 import { HotelCard } from "./hotel-card";
 import { HotelResultsSkeleton } from "./search-page-skeleton";
 

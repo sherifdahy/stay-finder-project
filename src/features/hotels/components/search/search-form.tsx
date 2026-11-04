@@ -7,7 +7,7 @@ import { Fragment, useId, useState, type FormEvent } from "react";
 import { z } from "zod";
 import { useGetCitiesQuery } from "../../hotel.api";
 import { hotelSearchSchema } from "@/src/domain/validations/hotel-search.schema";
-import type { HotelSearchParams } from "../../search-params";
+import type { HotelSearchParams } from "../../utils/search-params";
 import StayDatePicker from "./stay-date-picker";
 import { Button } from "@/src/shared/ui/button";
 import { Card, CardContent } from "@/src/shared/ui/card";
