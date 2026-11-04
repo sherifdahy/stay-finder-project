@@ -5,5 +5,6 @@ export default createMiddleware(routing);
 
 export const config = {
     // Everything except the API, Next internals and files with an extension.
-    matcher: ["/((?!api|_next|.*\..*).*)"],
+    // The dot needs a double backslash: "\." in a JS string is just ".", which excluded every path.
+    matcher: ["/((?!api|_next|.*\\..*).*)"],
 };

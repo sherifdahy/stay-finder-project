@@ -6,7 +6,7 @@ export default async function NotFound() {
     const t = await getTranslations();
 
     return (
-        <main className="container space-y-4 py-8">
+        <main className="container flex flex-1 flex-col items-center justify-center gap-4 py-8 text-center">
             <h1 className="text-page-title">{t("NotFound.title")}</h1>
             <p className="text-muted-foreground">{t("NotFound.text")}</p>
             <Link href="/" className={buttonVariants()}>
